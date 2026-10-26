@@ -104,6 +104,8 @@ var Storage = (() => {
     completedChallenges: [], // { challengeId, subject, timestamp, dateStr, title }
     completedModules: [], // ['daa', 'coa', 'flat']
     quizAttempts: [], // { quizId, score, maxScore, accuracy, timestamp, dateStr }
+    activePracticeSession: null, // Active unfinished session state for seamless resume
+    practiceAttempts: [], // Verified practice arena completed session logs
     unlockedAchievements: [], // { id, title, unlockedAt, eventId }
     recentActivity: [], // { id, labId, title, timestamp, type, dateStr }
     moduleSettings: {
@@ -194,6 +196,10 @@ var Storage = (() => {
     if (!Array.isArray(state.completedChallenges)) state.completedChallenges = [];
     if (!Array.isArray(state.completedModules)) state.completedModules = [];
     if (!Array.isArray(state.quizAttempts)) state.quizAttempts = [];
+    if (!Array.isArray(state.practiceAttempts)) state.practiceAttempts = [];
+    if (state.activePracticeSession !== null && typeof state.activePracticeSession !== 'object') {
+      state.activePracticeSession = null;
+    }
     if (!Array.isArray(state.unlockedAchievements)) state.unlockedAchievements = [];
     if (!Array.isArray(state.recentActivity)) state.recentActivity = [];
     if (typeof state.xp !== 'number' || isNaN(state.xp)) state.xp = 0;
@@ -502,6 +508,78 @@ var Storage = (() => {
   }
 
   /**
+   * Save an in-progress Practice Arena session
+   */
+  function savePracticeSession(session) {
+    if (!session || typeof session !== 'object') {
+      return clearPracticeSession();
+    }
+    const state = getState();
+    state.activePracticeSession = JSON.parse(JSON.stringify(session));
+    saveState(state);
+    return true;
+  }
+
+  /**
+   * Retrieve active unfinished Practice Arena session if present and valid
+   */
+  function getPracticeSession() {
+    const state = getState();
+    const session = state.activePracticeSession;
+    if (session && Array.isArray(session.questions) && session.questions.length > 0 && !session.completed) {
+      return session;
+    }
+    return null;
+  }
+
+  /**
+   * Clear active Practice Arena session (e.g. upon completion or restart)
+   */
+  function clearPracticeSession() {
+    const state = getState();
+    state.activePracticeSession = null;
+    saveState(state);
+    return true;
+  }
+
+  /**
+   * Record a completed Practice Arena attempt with subject, difficulty, score, and questions breakdown
+   */
+  function recordPracticeAttempt(attempt) {
+    if (!attempt) return null;
+    const state = getState();
+    const now = Date.now();
+    const dateStr = getLocalDateString(now);
+
+    const record = {
+      id: 'prc_' + now + '_' + Math.floor(Math.random() * 1000),
+      subject: attempt.subject || 'general',
+      difficulty: attempt.difficulty || 'all',
+      format: attempt.format || 'mixed',
+      score: Number(attempt.score) || 0,
+      maxScore: Number(attempt.maxScore) || 0,
+      accuracy: attempt.maxScore > 0 ? Math.round(((attempt.score || 0) / attempt.maxScore) * 100) : 0,
+      totalQuestions: attempt.totalQuestions || 0,
+      timestamp: now,
+      dateStr,
+      details: Array.isArray(attempt.details) ? attempt.details : []
+    };
+
+    if (!Array.isArray(state.practiceAttempts)) state.practiceAttempts = [];
+    state.practiceAttempts.unshift(record);
+    if (state.practiceAttempts.length > 30) {
+      state.practiceAttempts = state.practiceAttempts.slice(0, 30);
+    }
+    state.activePracticeSession = null; // Clear active session upon recorded completion
+    saveState(state);
+
+    // Feed into standard quiz attempt to sync XP bonuses & achievements
+    recordQuizAttempt(record.subject, record.score, record.maxScore);
+
+    return record;
+  }
+
+  /**
    * Record genuine user activity
    */
   function recordActivity(labId, title, type = 'visit', stateObj = null) {
@@ -746,7 +824,8 @@ var Storage = (() => {
       },
       unlockedAchievementsCount: (state.unlockedAchievements || []).length,
       totalAchievementsAvailable: ACHIEVEMENTS_DEF.length,
-      soundEnabled: state.soundEnabled
+      soundEnabled: state.soundEnabled,
+      hasUnfinishedSession: !!(state.activePracticeSession && !state.activePracticeSession.completed)
     };
   }
 
@@ -795,6 +874,10 @@ var Storage = (() => {
     awardXP,
     completeChallenge,
     recordQuizAttempt,
+    savePracticeSession,
+    getPracticeSession,
+    clearPracticeSession,
+    recordPracticeAttempt,
     recordActivity,
     getRecentActivity,
     calculateStreak,

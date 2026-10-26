@@ -1901,60 +1901,630 @@
         </section>
 
         <!-- ==========================================
-             SECTION 5: PRACTICE ARENA (Quiz Studio)
+             SECTION 5: PRACTICE ARENA (Pedagogical Assessment & Mastery)
              ========================================== -->
         <section id="quiz" class="page-section" aria-labelledby="quiz-heading" hidden>
           <div class="container" id="quiz-lab-container">
-            
-            <div class="section-header">
-              <span class="section-eyebrow" style="color: #a855f7;">Interactive Arena • Conceptual Verification</span>
-              <h2 id="quiz-heading" class="section-heading">Practice Arena &amp; Knowledge Checks</h2>
-              <p class="section-subtext">
-                Test your mastery of Divide-and-Conquer algorithms, Positional Number Systems, and Automata Theory.
-                Immediate feedback with comprehensive explanations and real dynamic calculations.
-              </p>
-            </div>
 
-            <!-- Quiz Shell -->
-            <div class="quiz-shell-layout">
-              <div class="quiz-controls-bar">
-                <div id="quiz-category-filters" class="quiz-filters-group">
-                  <button class="quiz-filter-pill active" type="button" data-category="all">All Topics</button>
-                  <button class="quiz-filter-pill" type="button" data-category="daa">DAA (Algorithms)</button>
-                  <button class="quiz-filter-pill" type="button" data-category="coa">COA (Architecture)</button>
-                  <button class="quiz-filter-pill" type="button" data-category="flat">FLAT (Automata)</button>
+            <!-- ========================================================
+                 VIEW 1: PRACTICE ARENA DASHBOARD (Step 1)
+                 ======================================================== -->
+            <div id="practice-view-dashboard" class="practice-view-panel">
+              <div class="section-header">
+                <span class="section-eyebrow" style="color: #a855f7;">Interactive Assessment • Pedagogical Verification</span>
+                <h2 id="quiz-heading" class="section-heading">Practice Arena</h2>
+                <p class="section-subtext">
+                  Learn the concepts. Test your understanding. Master the fundamentals.
+                </p>
+              </div>
+
+              <!-- Unfinished Active Session Resume Banner (Visible only when valid unfinished session exists) -->
+              <div id="practice-resume-card" class="practice-resume-card" style="display: none;">
+                <div class="practice-resume-icon">↺</div>
+                <div class="practice-resume-content">
+                  <div class="practice-resume-badge">Unfinished Session In Progress</div>
+                  <h4 id="practice-resume-title" class="practice-resume-title">DAA — Algorithms Practice</h4>
+                  <p id="practice-resume-meta" class="practice-resume-meta">Progress: Question 3 of 10 • Mixed Practice</p>
                 </div>
-
-                <div class="quiz-actions-top">
-                  <button id="quiz-btn-dynamic" class="btn btn-primary btn-sm" type="button" title="Generate a parameterized question dynamically calculated in real time">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                    <span>Generate Dynamic Problem</span>
+                <div class="practice-resume-actions">
+                  <button id="practice-btn-resume" class="btn btn-primary btn-sm" type="button">
+                    <span>Continue Session ▶</span>
+                  </button>
+                  <button id="practice-btn-discard-session" class="btn btn-outline btn-sm" type="button" title="Discard unfinished session and start fresh">
+                    <span>Discard</span>
                   </button>
                 </div>
-                
-                <div class="quiz-meta-group">
-                  <div id="quiz-progress-text" class="quiz-meta-pill">Question 1 of 15</div>
-                  <div id="quiz-score-badge" class="quiz-meta-pill score">Score: 0 / 0</div>
+              </div>
+
+              <!-- Real Telemetry Statistics Grid -->
+              <div class="practice-stats-grid">
+                <div class="practice-stat-card">
+                  <div class="practice-stat-icon">📚</div>
+                  <div class="practice-stat-data">
+                    <span class="practice-stat-label">Total Questions Available</span>
+                    <strong id="practice-stat-total" class="practice-stat-value font-mono">42</strong>
+                    <span class="practice-stat-sub">14 per subject in verified bank</span>
+                  </div>
+                </div>
+
+                <div class="practice-stat-card">
+                  <div class="practice-stat-icon">✍️</div>
+                  <div class="practice-stat-data">
+                    <span class="practice-stat-label">Questions Attempted</span>
+                    <strong id="practice-stat-attempted" class="practice-stat-value font-mono">0</strong>
+                    <span class="practice-stat-sub">Genuine verified attempts</span>
+                  </div>
+                </div>
+
+                <div class="practice-stat-card">
+                  <div class="practice-stat-icon">🎯</div>
+                  <div class="practice-stat-data">
+                    <span class="practice-stat-label">Average Accuracy</span>
+                    <strong id="practice-stat-accuracy" class="practice-stat-value font-mono">0%</strong>
+                    <span class="practice-stat-sub">Real scoring calculation</span>
+                  </div>
+                </div>
+
+                <div class="practice-stat-card">
+                  <div class="practice-stat-icon">⚡</div>
+                  <div class="practice-stat-data">
+                    <span class="practice-stat-label">Practice XP Earned</span>
+                    <strong id="practice-stat-xp" class="practice-stat-value font-mono">0 XP</strong>
+                    <span class="practice-stat-sub">Bonus XP for ≥80% accuracy</span>
+                  </div>
+                </div>
+
+                <div class="practice-stat-card">
+                  <div class="practice-stat-icon">🏆</div>
+                  <div class="practice-stat-data">
+                    <span class="practice-stat-label">Milestone Achievements</span>
+                    <strong id="practice-stat-achievements" class="practice-stat-value font-mono">0 / 8</strong>
+                    <span class="practice-stat-sub">Including Perfect Practice</span>
+                  </div>
                 </div>
               </div>
 
-              <!-- Real Accuracy Statistics HUD -->
-              <div id="quiz-stats-hud" class="quiz-stats-strip">
-                <div class="stat-pill"><span class="stat-pill-label">Attempted:</span> <strong id="quiz-stat-attempted" class="font-mono">0</strong></div>
-                <div class="stat-pill"><span class="stat-pill-label">Correct:</span> <strong id="quiz-stat-correct" class="font-mono" style="color:var(--status-success);">0</strong></div>
-                <div class="stat-pill"><span class="stat-pill-label">Accuracy:</span> <strong id="quiz-stat-accuracy" class="font-mono">0%</strong></div>
-                <div class="stat-pill"><span class="stat-pill-label">Bank Size:</span> <strong id="quiz-stat-total" class="font-mono">15+</strong></div>
+              <!-- 3 Subject Cards Overview Grid -->
+              <div class="practice-subject-cards-row">
+                <!-- DAA Card -->
+                <div class="practice-dash-subject-card daa-card">
+                  <div class="subject-card-top">
+                    <span class="subject-code-tag daa">DAA</span>
+                    <span class="subject-count-tag font-mono">14 Questions</span>
+                  </div>
+                  <h3 class="subject-card-title">Algorithms &amp; Problem-Solving</h3>
+                  <p class="subject-card-desc">
+                    Divide-and-Conquer mechanics, binary search pointer invariants, worst-case comparisons, duplicate handling, and asymptotic bounds.
+                  </p>
+                  <div class="subject-card-meta">
+                    <span class="meta-pill">9 MCQs</span>
+                    <span class="meta-pill">5 Subjective</span>
+                    <span class="meta-pill">All Difficulties</span>
+                  </div>
+                </div>
+
+                <!-- COA Card -->
+                <div class="practice-dash-subject-card coa-card">
+                  <div class="subject-card-top">
+                    <span class="subject-code-tag coa">COA</span>
+                    <span class="subject-count-tag font-mono">14 Questions</span>
+                  </div>
+                  <h3 class="subject-card-title">Number Systems &amp; Computer Representation</h3>
+                  <p class="subject-card-desc">
+                    Radix conversions, positional polynomial expansion, arbitrary-precision BigInt, signed magnitude, and two's complement ALU overflow.
+                  </p>
+                  <div class="subject-card-meta">
+                    <span class="meta-pill">9 MCQs</span>
+                    <span class="meta-pill">5 Subjective</span>
+                    <span class="meta-pill">All Difficulties</span>
+                  </div>
+                </div>
+
+                <!-- FLAT Card -->
+                <div class="practice-dash-subject-card flat-card">
+                  <div class="subject-card-top">
+                    <span class="subject-code-tag flat">FLAT</span>
+                    <span class="subject-count-tag font-mono">14 Questions</span>
+                  </div>
+                  <h3 class="subject-card-title">Finite Automata &amp; Formal Languages</h3>
+                  <p class="subject-card-desc">
+                    5-tuple deterministic automata, formal transition functions, suffix invariants, state transition matrices, and language closure.
+                  </p>
+                  <div class="subject-card-meta">
+                    <span class="meta-pill">9 MCQs</span>
+                    <span class="meta-pill">5 Subjective</span>
+                    <span class="meta-pill">All Difficulties</span>
+                  </div>
+                </div>
               </div>
 
-              <div id="quiz-card-container" class="quiz-card-wrapper">
-                <!-- Question card injected by quiz.js -->
+              <!-- Prominent Action Bar -->
+              <div class="practice-main-actions-strip">
+                <button id="practice-btn-start-learning" class="btn btn-primary btn-lg practice-hero-cta" type="button">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <span>Start Learning</span>
+                </button>
+                <button id="practice-btn-continue-bottom" class="btn btn-secondary btn-lg" type="button" style="display: none;">
+                  <span>Continue Practice Session ↺</span>
+                </button>
               </div>
 
-              <div class="quiz-actions-footer">
-                <button id="quiz-btn-prev" class="btn btn-secondary btn-sm" type="button" disabled>Previous Question</button>
-                <button id="quiz-btn-retry" class="btn btn-secondary btn-sm" type="button" style="display:none;">Retry Question</button>
-                <button id="quiz-btn-next" class="btn btn-secondary btn-sm" type="button">Next Question</button>
-                <button id="quiz-btn-reset" class="btn btn-danger-outline btn-sm" type="button" style="margin-left: auto;">Reset Practice</button>
+              <!-- History or Empty State Section -->
+              <div class="practice-history-section">
+                <div class="panel-header-clean">
+                  <div>
+                    <h3 class="panel-heading">Recent Assessment Attempts</h3>
+                    <p class="overview-subtext">Detailed log of your completed practice arena sessions.</p>
+                  </div>
+                  <span class="badge-pill">Verified Log</span>
+                </div>
+                <div id="practice-history-list" class="practice-history-list">
+                  <!-- Populated dynamically or shows honest empty state -->
+                </div>
+              </div>
+            </div>
+
+            <!-- ========================================================
+                 VIEW 2: SELECT A SUBJECT (Step 2)
+                 ======================================================== -->
+            <div id="practice-view-subject-select" class="practice-view-panel" style="display: none;">
+              <div class="view-navigation-bar">
+                <button id="practice-btn-back-to-dash" class="btn btn-secondary btn-sm" type="button">
+                  <span>← Back to Dashboard</span>
+                </button>
+                <div class="view-step-indicator">
+                  <span class="step-badge">Step 2 of 5</span>
+                  <span class="step-name">Select Subject</span>
+                </div>
+              </div>
+
+              <div class="section-header" style="margin-top: 1rem;">
+                <h2 class="section-heading">Choose Your Practice Subject</h2>
+                <p class="section-subtext">
+                  Select a computer science curriculum topic to test. Question counts reflect the verified, genuine question bank.
+                </p>
+              </div>
+
+              <div class="subject-selection-grid">
+                <!-- DAA Option Card -->
+                <div class="subject-select-card" data-subject="daa">
+                  <div class="subject-select-header">
+                    <div class="subject-icon-wrap daa">🔍</div>
+                    <div class="subject-select-title-wrap">
+                      <span class="subject-badge-pill daa">Module 2</span>
+                      <h3 class="subject-select-title">Design &amp; Analysis of Algorithms (DAA)</h3>
+                    </div>
+                  </div>
+                  <p class="subject-select-desc">
+                    Master the Divide-and-Conquer paradigm, binary search state invariants, comparison formulas, and duplicate resolution.
+                  </p>
+                  <div class="subject-question-tally">
+                    <div class="tally-item">
+                      <span class="tally-num font-mono">9</span>
+                      <span class="tally-label">MCQs</span>
+                    </div>
+                    <div class="tally-divider">+</div>
+                    <div class="tally-item">
+                      <span class="tally-num font-mono">5</span>
+                      <span class="tally-label">Subjective</span>
+                    </div>
+                    <div class="tally-divider">=</div>
+                    <div class="tally-item highlight">
+                      <span class="tally-num font-mono">14</span>
+                      <span class="tally-label">Total Questions</span>
+                    </div>
+                  </div>
+                  <div class="subject-objectives-box">
+                    <div class="objectives-title">Learning Objectives:</div>
+                    <ul class="objectives-list">
+                      <li>Divide-and-Conquer mechanics and monotonic array invariants</li>
+                      <li>Worst-case comparisons calculation: ⌊log₂ n⌋ + 1</li>
+                      <li>Overflow-safe midpoint computation: low + ⌊(high - low) / 2⌋</li>
+                      <li>Leftmost boundary search resolution for duplicate elements</li>
+                      <li>O(log n) time and O(1) auxiliary space complexity</li>
+                    </ul>
+                  </div>
+                  <button class="btn btn-primary btn-block practice-btn-choose-subject" type="button" data-subject="daa">
+                    <span>Select DAA Practice ▶</span>
+                  </button>
+                </div>
+
+                <!-- COA Option Card -->
+                <div class="subject-select-card" data-subject="coa">
+                  <div class="subject-select-header">
+                    <div class="subject-icon-wrap coa">🔢</div>
+                    <div class="subject-select-title-wrap">
+                      <span class="subject-badge-pill coa">Module 1</span>
+                      <h3 class="subject-select-title">Computer Organization &amp; Architecture (COA)</h3>
+                    </div>
+                  </div>
+                  <p class="subject-select-desc">
+                    Master positional number systems, radix polynomial expansion, arbitrary-precision BigInt arithmetic, and signed two's complement.
+                  </p>
+                  <div class="subject-question-tally">
+                    <div class="tally-item">
+                      <span class="tally-num font-mono">9</span>
+                      <span class="tally-label">MCQs</span>
+                    </div>
+                    <div class="tally-divider">+</div>
+                    <div class="tally-item">
+                      <span class="tally-num font-mono">5</span>
+                      <span class="tally-label">Subjective</span>
+                    </div>
+                    <div class="tally-divider">=</div>
+                    <div class="tally-item highlight">
+                      <span class="tally-num font-mono">14</span>
+                      <span class="tally-label">Total Questions</span>
+                    </div>
+                  </div>
+                  <div class="subject-objectives-box">
+                    <div class="objectives-title">Learning Objectives:</div>
+                    <ul class="objectives-list">
+                      <li>Positional polynomial expansion across bases 2, 8, 10, and 16</li>
+                      <li>Repeated division algorithm for decimal-to-radix conversion</li>
+                      <li>Signed magnitude, one's complement, and two's complement</li>
+                      <li>Negative weights algebraic MSB expansion: −bₙ₋₁2ⁿ⁻¹ + ∑ bᵢ2ⁱ</li>
+                      <li>ALU hardware addition and arithmetic overflow detection</li>
+                    </ul>
+                  </div>
+                  <button class="btn btn-primary btn-block practice-btn-choose-subject" type="button" data-subject="coa">
+                    <span>Select COA Practice ▶</span>
+                  </button>
+                </div>
+
+                <!-- FLAT Option Card -->
+                <div class="subject-select-card" data-subject="flat">
+                  <div class="subject-select-header">
+                    <div class="subject-icon-wrap flat">⚙️</div>
+                    <div class="subject-select-title-wrap">
+                      <span class="subject-badge-pill flat">Module 1</span>
+                      <h3 class="subject-select-title">Formal Languages &amp; Automata Theory (FLAT)</h3>
+                    </div>
+                  </div>
+                  <p class="subject-select-desc">
+                    Master deterministic finite automata 5-tuples, state transition functions, string tracking invariants, and language closure theorems.
+                  </p>
+                  <div class="subject-question-tally">
+                    <div class="tally-item">
+                      <span class="tally-num font-mono">9</span>
+                      <span class="tally-label">MCQs</span>
+                    </div>
+                    <div class="tally-divider">+</div>
+                    <div class="tally-item">
+                      <span class="tally-num font-mono">5</span>
+                      <span class="tally-label">Subjective</span>
+                    </div>
+                    <div class="tally-divider">=</div>
+                    <div class="tally-item highlight">
+                      <span class="tally-num font-mono">14</span>
+                      <span class="tally-label">Total Questions</span>
+                    </div>
+                  </div>
+                  <div class="subject-objectives-box">
+                    <div class="objectives-title">Learning Objectives:</div>
+                    <ul class="objectives-list">
+                      <li>5-tuple formal DFA specification (Q, Σ, δ, q₀, F)</li>
+                      <li>Deterministic transition function mapping δ: Q × Σ → Q</li>
+                      <li>Suffix tracking state invariants (e.g. strings ending in '01')</li>
+                      <li>Transition table matrix size calculations (|Q| × |Σ|)</li>
+                      <li>Closure properties under Union, Intersection, and Complement</li>
+                    </ul>
+                  </div>
+                  <button class="btn btn-primary btn-block practice-btn-choose-subject" type="button" data-subject="flat">
+                    <span>Select FLAT Practice ▶</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ========================================================
+                 VIEW 3: CONFIGURE PRACTICE SESSION (Steps 3, 4, 5)
+                 ======================================================== -->
+            <div id="practice-view-config" class="practice-view-panel" style="display: none;">
+              <div class="view-navigation-bar">
+                <button id="practice-btn-back-to-subjects" class="btn btn-secondary btn-sm" type="button">
+                  <span>← Back to Subjects</span>
+                </button>
+                <div class="view-step-indicator">
+                  <span class="step-badge">Steps 3 &amp; 4</span>
+                  <span class="step-name">Difficulty &amp; Format</span>
+                </div>
+              </div>
+
+              <!-- Selected Subject Confirmation Pill -->
+              <div class="config-subject-banner">
+                <span class="config-banner-label">Selected Subject:</span>
+                <span id="config-banner-subject-name" class="config-banner-title">Design &amp; Analysis of Algorithms</span>
+                <span id="config-banner-count" class="badge-pill">14 Total Questions Available</span>
+              </div>
+
+              <!-- Step 3: Difficulty Selection -->
+              <div class="config-section-card">
+                <div class="config-section-header">
+                  <span class="config-step-number">Step 3</span>
+                  <div>
+                    <h3 class="config-section-title">Select Difficulty Level</h3>
+                    <p class="config-section-desc">Difficulty is assigned to real questions in the curriculum bank.</p>
+                  </div>
+                </div>
+
+                <div class="difficulty-options-grid">
+                  <button class="difficulty-option-card active" type="button" data-difficulty="all">
+                    <div class="difficulty-card-top">
+                      <span class="difficulty-title">All Levels</span>
+                      <span class="difficulty-badge">Recommended</span>
+                    </div>
+                    <p class="difficulty-desc">Comprehensive progression across Beginner, Intermediate, and Advanced challenges.</p>
+                  </button>
+
+                  <button class="difficulty-option-card" type="button" data-difficulty="beginner">
+                    <div class="difficulty-card-top">
+                      <span class="difficulty-title">Beginner</span>
+                      <span class="difficulty-badge beginner">Level 1</span>
+                    </div>
+                    <p class="difficulty-desc">Definitions, fundamental concepts, and simple numerical calculations.</p>
+                  </button>
+
+                  <button class="difficulty-option-card" type="button" data-difficulty="intermediate">
+                    <div class="difficulty-card-top">
+                      <span class="difficulty-title">Intermediate</span>
+                      <span class="difficulty-badge intermediate">Level 2</span>
+                    </div>
+                    <p class="difficulty-desc">Application, algorithmic execution tracing, and multi-step reasoning.</p>
+                  </button>
+
+                  <button class="difficulty-option-card" type="button" data-difficulty="advanced">
+                    <div class="difficulty-card-top">
+                      <span class="difficulty-title">Advanced</span>
+                      <span class="difficulty-badge advanced">Level 3</span>
+                    </div>
+                    <p class="difficulty-desc">Edge cases, complex invariants, deeper reasoning, and formal proofs.</p>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Step 4: Question Format Selection -->
+              <div class="config-section-card">
+                <div class="config-section-header">
+                  <span class="config-step-number">Step 4</span>
+                  <div>
+                    <h3 class="config-section-title">Choose Question Format</h3>
+                    <p class="config-section-desc">Choose between multiple-choice questions, subjective written evaluations, or a progressive mixed session.</p>
+                  </div>
+                </div>
+
+                <div class="format-options-grid">
+                  <button class="format-option-card active" type="button" data-format="mixed">
+                    <div class="format-icon">⚡</div>
+                    <div class="format-card-content">
+                      <div class="format-title-row">
+                        <span class="format-title">Mixed Practice</span>
+                        <span class="format-badge-recommended">Pedagogical Default</span>
+                      </div>
+                      <p class="format-desc">
+                        Deterministic 6-stage sequence: Fundamentals → Understanding → Application → Tracing → Analysis → Challenge. Combines MCQs and subjective questions predictably.
+                      </p>
+                    </div>
+                  </button>
+
+                  <button class="format-option-card" type="button" data-format="mcq">
+                    <div class="format-icon">🔘</div>
+                    <div class="format-card-content">
+                      <div class="format-title-row">
+                        <span class="format-title">MCQ Practice</span>
+                        <span class="format-badge">Objective</span>
+                      </div>
+                      <p class="format-desc">
+                        Four answer choices per question. Immediate verification with detailed explanations for correct answers and specific distractor breakdown.
+                      </p>
+                    </div>
+                  </button>
+
+                  <button class="format-option-card" type="button" data-format="subjective">
+                    <div class="format-icon">📝</div>
+                    <div class="format-card-content">
+                      <div class="format-title-row">
+                        <span class="format-title">Subjective Practice</span>
+                        <span class="format-badge">In-Depth</span>
+                      </div>
+                      <p class="format-desc">
+                        Written responses evaluated against transparent, multi-criteria rubrics. Detailed model answers and step-by-step scoring breakdown provided.
+                      </p>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Step 5: Session Summary & Launch -->
+              <div class="config-section-card summary-card">
+                <div class="config-section-header">
+                  <span class="config-step-number">Step 5</span>
+                  <div>
+                    <h3 class="config-section-title">Session Summary</h3>
+                    <p class="config-section-desc">Review your configured session parameters before entering the assessment.</p>
+                  </div>
+                </div>
+
+                <div class="session-summary-strip">
+                  <div class="summary-item">
+                    <span class="summary-label">Subject</span>
+                    <strong id="summary-subject-val" class="summary-val">DAA (Algorithms)</strong>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-label">Difficulty</span>
+                    <strong id="summary-diff-val" class="summary-val">All Levels</strong>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-label">Format</span>
+                    <strong id="summary-format-val" class="summary-val">Mixed Practice</strong>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-label">Question Count</span>
+                    <strong id="summary-count-val" class="summary-val font-mono">10 Questions</strong>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-label">Expected Duration</span>
+                    <strong id="summary-duration-val" class="summary-val font-mono">~12-15 Mins</strong>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-label">Progressive Hints</span>
+                    <label class="hints-switch-label">
+                      <input id="config-hints-toggle" type="checkbox" checked>
+                      <span class="hints-switch-text">Enabled (2 Tiers)</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="summary-action-row">
+                  <button id="practice-btn-begin-session" class="btn btn-primary btn-lg practice-hero-cta" type="button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <span>Begin Practice Session</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ========================================================
+                 VIEW 4: ACTIVE PRACTICE SESSION (Step 4 & In-Session Experience)
+                 ======================================================== -->
+            <div id="practice-view-session" class="practice-view-panel" style="display: none;">
+              <!-- Session Top Status Bar -->
+              <div class="session-header-bar">
+                <div class="session-header-left">
+                  <span id="session-badge-subject" class="subject-code-tag daa">DAA</span>
+                  <span id="session-badge-stage" class="stage-tag fundamentals">Stage 1: Fundamentals</span>
+                  <span id="session-badge-difficulty" class="difficulty-pill beginner">Beginner</span>
+                </div>
+
+                <div class="session-header-center">
+                  <span id="session-question-counter" class="session-counter-pill font-mono">Question 1 of 10</span>
+                  <span id="session-points-pill" class="session-points-pill font-mono">1 Point</span>
+                </div>
+
+                <div class="session-header-right">
+                  <button id="session-btn-pause" class="btn btn-secondary btn-xs" type="button" title="Pause session and return to dashboard">
+                    <span>⏸ Pause &amp; Exit</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Smooth Progress Track -->
+              <div class="session-progress-track">
+                <div id="session-progress-bar" class="session-progress-fill" style="width: 10%;"></div>
+              </div>
+
+              <!-- Main Interactive Question Container -->
+              <div id="session-question-container" class="session-question-container">
+                <!-- Injected dynamically by QuizLab: MCQ or Subjective card -->
+              </div>
+
+              <!-- Keyboard Navigation Accessibility Tip -->
+              <div class="session-keyboard-tip">
+                <span id="session-keyboard-hint-text">
+                  Shortcuts: Press <kbd>1</kbd>–<kbd>4</kbd> to select options, <kbd>Enter</kbd> to submit, <kbd>Esc</kbd> to pause.
+                </span>
+              </div>
+            </div>
+
+            <!-- ========================================================
+                 VIEW 5: SESSION COMPLETION & REVIEW (Step 5 Results)
+                 ======================================================== -->
+            <div id="practice-view-results" class="practice-view-panel" style="display: none;">
+              <div class="results-celebration-hero">
+                <div class="results-hero-icon" id="results-hero-icon">🎯</div>
+                <h2 id="results-hero-title" class="results-hero-title">Practice Session Completed!</h2>
+                <p id="results-hero-subtitle" class="results-hero-subtitle">
+                  Review your answers, examine detailed feedback, and master the concepts.
+                </p>
+              </div>
+
+              <!-- Real Score Metrics Grid -->
+              <div class="results-metrics-grid">
+                <div class="results-metric-card">
+                  <span class="metric-label">Score Earned</span>
+                  <strong id="results-metric-score" class="metric-value font-mono">9 / 10</strong>
+                  <span class="metric-sub">Points accumulated</span>
+                </div>
+
+                <div class="results-metric-card">
+                  <span class="metric-label">Accuracy</span>
+                  <strong id="results-metric-accuracy" class="metric-value font-mono">90%</strong>
+                  <span id="results-metric-accuracy-sub" class="metric-sub" style="color: var(--status-success);">Excellence Achieved</span>
+                </div>
+
+                <div class="results-metric-card">
+                  <span class="metric-label">Verified XP</span>
+                  <strong id="results-metric-xp" class="metric-value font-mono">+30 XP</strong>
+                  <span class="metric-sub">Recorded in ledger</span>
+                </div>
+
+                <div class="results-metric-card">
+                  <span class="metric-label">Time Elapsed</span>
+                  <strong id="results-metric-time" class="metric-value font-mono">4m 32s</strong>
+                  <span class="metric-sub">Pacing speed</span>
+                </div>
+              </div>
+
+              <!-- Pedagogical Learning Stage Mastery Breakdown -->
+              <div class="results-breakdown-card">
+                <h3 class="breakdown-title">Curriculum Stage Mastery Breakdown</h3>
+                <p class="breakdown-subtitle">Progressive mastery tracked across cognitive learning stages.</p>
+                <div id="results-stage-breakdown" class="stage-breakdown-grid">
+                  <!-- Injected dynamically: Fundamentals, Understanding, Application, Tracing, Analysis, Challenge -->
+                </div>
+              </div>
+
+              <!-- Comprehensive Question-by-Question Review Section -->
+              <div class="results-review-section">
+                <div class="results-review-header">
+                  <div>
+                    <h3 class="panel-heading">Question-by-Question Review</h3>
+                    <p class="overview-subtext">Detailed model answers, rubric checks, and distractor analysis.</p>
+                  </div>
+                  <div class="review-filters-group">
+                    <button id="review-filter-all" class="quiz-filter-pill active" type="button" data-filter="all">All (10)</button>
+                    <button id="review-filter-correct" class="quiz-filter-pill" type="button" data-filter="correct">Correct (9)</button>
+                    <button id="review-filter-incorrect" class="quiz-filter-pill" type="button" data-filter="incorrect">Needs Review (1)</button>
+                  </div>
+                </div>
+
+                <div id="results-review-feed" class="results-review-feed">
+                  <!-- Populated dynamically with full question reviews -->
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="results-actions-strip">
+                <button id="results-btn-again" class="btn btn-primary btn-lg" type="button">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                  <span>Practice Again</span>
+                </button>
+                <button id="results-btn-dashboard" class="btn btn-secondary btn-lg" type="button">
+                  <span>Return to Practice Dashboard 🏠</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- ========================================================
+                 PAUSE / EXIT CONFIRMATION MODAL
+                 ======================================================== -->
+            <div id="practice-exit-modal" class="practice-modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="exit-modal-title">
+              <div class="practice-modal-box">
+                <div class="practice-modal-header">
+                  <div class="practice-modal-icon">⏸</div>
+                  <h3 id="exit-modal-title" class="practice-modal-title">Pause Practice Session?</h3>
+                </div>
+                <p class="practice-modal-desc">
+                  Your current session progress is automatically saved to local storage. You can resume anytime from the Practice Arena dashboard.
+                </p>
+                <div class="practice-modal-stats-preview">
+                  <span id="exit-modal-status-text">Completed 3 of 10 questions</span>
+                </div>
+                <div class="practice-modal-actions">
+                  <button id="practice-modal-btn-resume" class="btn btn-primary" type="button">Resume Practice</button>
+                  <button id="practice-modal-btn-save-exit" class="btn btn-secondary" type="button">Save &amp; Return to Dashboard</button>
+                  <button id="practice-modal-btn-abandon" class="btn btn-danger-outline btn-sm" type="button" style="margin-left: auto;">Abandon Session</button>
+                </div>
               </div>
             </div>
 
@@ -2049,6 +2619,7 @@
   <script src="js/daa.js"></script>
   <script src="js/coa.js?v=4.1"></script>
   <script src="js/flat.js?v=4.1"></script>
+  <script src="js/quiz-questions.js"></script>
   <script src="js/quiz.js"></script>
   <script src="js/presentation.js"></script>
   <script src="js/app.js"></script>
