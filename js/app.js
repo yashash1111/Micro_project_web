@@ -85,15 +85,15 @@ var App = (() => {
     };
   }
 
-  /* --- Theme Management (Dark / Light) --- */
+  /* --- Theme Management (Light / Dark) --- */
   function initTheme() {
-    const savedTheme = (typeof Storage !== 'undefined') ? Storage.get('theme', 'dark') : 'dark';
+    const savedTheme = (typeof Storage !== 'undefined') ? Storage.get('theme', 'light') : 'light';
     applyTheme(savedTheme);
 
     if (dom.themeToggleBtn) {
       dom.themeToggleBtn.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
         applyTheme(nextTheme);
         if (typeof Storage !== 'undefined') {
           Storage.set('theme', nextTheme);
@@ -101,7 +101,7 @@ var App = (() => {
         showPopup({
           type: 'info',
           title: 'Theme Switched',
-          message: `Switched to ${nextTheme === 'dark' ? 'Dark Mode (Default)' : 'Light Mode'}.`,
+          message: `Switched to ${nextTheme === 'light' ? 'Light Mode (Default)' : 'Dark Mode'}.`,
           duration: 2500
         });
       });

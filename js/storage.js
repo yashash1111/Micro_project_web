@@ -96,7 +96,7 @@ var Storage = (() => {
 
   const DEFAULT_STATE = {
     version: CURRENT_SCHEMA_VERSION,
-    theme: 'dark', // 'dark' | 'light'
+    theme: 'light', // 'light' | 'dark'
     soundEnabled: false, // off by default
     sidebarCollapsed: false,
     xp: 0,
@@ -855,7 +855,7 @@ var Storage = (() => {
    * Reset learning progress while preserving theme and sound settings
    */
   function resetAllProgress() {
-    const currentTheme = get('theme', 'dark');
+    const currentTheme = get('theme', 'light');
     const currentSound = get('soundEnabled', false);
     const fresh = JSON.parse(JSON.stringify(DEFAULT_STATE));
     
