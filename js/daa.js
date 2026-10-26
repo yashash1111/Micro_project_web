@@ -106,6 +106,11 @@ var DaaLab = (() => {
       dom.targetInput.classList.remove('is-invalid');
     });
 
+    // Disable mousewheel / trackpad scrolling from incrementing or decrementing target value
+    dom.targetInput.addEventListener('wheel', (e) => {
+      e.preventDefault();
+    }, { passive: false });
+
     // Speed selector
     if (dom.speedSelect) {
       dom.speedSelect.addEventListener('change', (e) => {
