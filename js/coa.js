@@ -279,8 +279,8 @@ var CoaLab = (() => {
     bindTwosComplementTool();
     bindPracticeArena();
 
-    // Default load: Decimal 10
-    loadPreset('10', '10', 8);
+    // Default load: Decimal 10 (silent on init)
+    loadPreset('10', '10', 8, false);
 
     // Default load in Signed tab: -5 in 8-bit
     deriveTwosComplement('-5', 8, false);
@@ -520,13 +520,13 @@ var CoaLab = (() => {
     if (dom.inputVal) dom.inputVal.classList.remove('is-invalid');
   }
 
-  function loadPreset(val, base, bitWidth) {
+  function loadPreset(val, base, bitWidth, showToast = true) {
     dom.baseSelect.value = base;
     if (dom.bitWidthSelect) dom.bitWidthSelect.value = String(bitWidth);
     dom.inputVal.value = String(val);
     clearError();
     onBaseOrWidthChange();
-    handleConvert(true);
+    handleConvert(showToast);
   }
 
   /**
@@ -1715,7 +1715,7 @@ var CoaLab = (() => {
   function onEnter() {
     // Called by router when navigating into COA
     if (dom.inputVal && dom.inputVal.value.trim() === '') {
-      loadPreset('10', '10', 8);
+      loadPreset('10', '10', 8, false);
     }
   }
 

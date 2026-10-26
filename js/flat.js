@@ -102,8 +102,8 @@ var FlatLab = (() => {
 
     bindEvents();
     renderStaticDFAComponents();
-    // Default load test case: "1001" (Accepted)
-    loadStringPreset('1001');
+    // Default load test case: "1001" (Accepted) - silent on initial setup without firing popup
+    loadStringPreset('1001', false);
   }
 
   function bindEvents() {
@@ -118,16 +118,16 @@ var FlatLab = (() => {
     }
 
     // Presets
-    if (dom.preset01) dom.preset01.addEventListener('click', () => loadStringPreset('01'));
-    if (dom.preset101) dom.preset101.addEventListener('click', () => loadStringPreset('101'));
-    if (dom.preset1001) dom.preset1001.addEventListener('click', () => loadStringPreset('1001'));
-    if (dom.preset110) dom.preset110.addEventListener('click', () => loadStringPreset('110'));
-    if (dom.preset0) dom.preset0.addEventListener('click', () => loadStringPreset('0'));
-    if (dom.presetEmpty) dom.presetEmpty.addEventListener('click', () => loadStringPreset(''));
-    if (dom.presetInvalid) dom.presetInvalid.addEventListener('click', () => loadStringPreset('10x1'));
+    if (dom.preset01) dom.preset01.addEventListener('click', () => loadStringPreset('01', true));
+    if (dom.preset101) dom.preset101.addEventListener('click', () => loadStringPreset('101', true));
+    if (dom.preset1001) dom.preset1001.addEventListener('click', () => loadStringPreset('1001', true));
+    if (dom.preset110) dom.preset110.addEventListener('click', () => loadStringPreset('110', true));
+    if (dom.preset0) dom.preset0.addEventListener('click', () => loadStringPreset('0', true));
+    if (dom.presetEmpty) dom.presetEmpty.addEventListener('click', () => loadStringPreset('', true));
+    if (dom.presetInvalid) dom.presetInvalid.addEventListener('click', () => loadStringPreset('10x1', true));
 
     // Controls
-    dom.btnValidate.addEventListener('click', handleValidateAll);
+    dom.btnValidate.addEventListener('click', () => handleValidateAll(true));
     if (dom.btnRestart) dom.btnRestart.addEventListener('click', handleRestart);
     if (dom.btnPlay) dom.btnPlay.addEventListener('click', togglePlayPause);
     if (dom.btnStepNext) dom.btnStepNext.addEventListener('click', handleStepForward);
@@ -138,7 +138,7 @@ var FlatLab = (() => {
     dom.stringInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        handleValidateAll();
+        handleValidateAll(true);
       }
     });
   }
@@ -157,7 +157,7 @@ var FlatLab = (() => {
     dom.stringInput.classList.remove('is-invalid');
   }
 
-  function loadStringPreset(str) {
+  function loadStringPreset(str, showNotification = true) {
     pausePlayback();
     dom.stringInput.value = str;
     clearError();
@@ -167,7 +167,7 @@ var FlatLab = (() => {
       return;
     }
 
-    handleValidateAll();
+    handleValidateAll(showNotification);
   }
 
   function renderStaticDFAComponents() {
@@ -373,7 +373,7 @@ var FlatLab = (() => {
     return trace;
   }
 
-  function handleValidateAll() {
+  function handleValidateAll(showNotification = true) {
     pausePlayback();
     if (!validateInputChars()) return;
 
@@ -388,7 +388,7 @@ var FlatLab = (() => {
     renderTraceTable(traceSteps);
 
     const finalStep = traceSteps[currentTraceIndex];
-    applyStepState(finalStep);
+    applyStepState(finalStep, showNotification);
     updatePlaybackControls();
   }
 
@@ -513,7 +513,7 @@ var FlatLab = (() => {
     updatePlaybackControls();
   }
 
-  function applyStepState(step) {
+  function applyStepState(step, showNotification = true) {
     if (!step) return;
 
     const inputStr = dom.stringInput.value.trim();
@@ -566,7 +566,7 @@ var FlatLab = (() => {
           </div>
         `;
 
-        if (typeof App !== 'undefined' && App.showPopup) {
+        if (showNotification && typeof App !== 'undefined' && App.showPopup) {
           App.showPopup({
             type: 'success',
             title: 'DFA String Accepted! 🎉',
@@ -580,7 +580,7 @@ var FlatLab = (() => {
         }
 
         // Record verified curriculum challenge completion & award XP
-        if (typeof Storage !== 'undefined' && Storage.completeChallenge) {
+        if (showNotification && typeof Storage !== 'undefined' && Storage.completeChallenge) {
           Storage.completeChallenge('flat_string_accepted', 'flat', 'Accepted String Ending in 01', {
             inputStr: inputStr
           });
@@ -601,7 +601,7 @@ var FlatLab = (() => {
           </div>
         `;
 
-        if (typeof App !== 'undefined' && App.showPopup) {
+        if (showNotification && typeof App !== 'undefined' && App.showPopup) {
           App.showPopup({
             type: 'error',
             title: 'DFA String Rejected! ✖',
@@ -615,7 +615,7 @@ var FlatLab = (() => {
         }
 
         // Record verified curriculum challenge completion & award XP
-        if (typeof Storage !== 'undefined' && Storage.completeChallenge) {
+        if (showNotification && typeof Storage !== 'undefined' && Storage.completeChallenge) {
           Storage.completeChallenge('flat_dfa_validation', 'flat', 'DFA String Verification', {
             inputStr: inputStr,
             accepted: false
