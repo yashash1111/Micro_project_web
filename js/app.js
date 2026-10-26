@@ -509,14 +509,14 @@ var App = (() => {
 
     // Force top-right placement below navbar inline to override any stale browser caches
     container.style.position = 'fixed';
-    container.style.top = '72px';
-    container.style.right = '18px';
+    container.style.top = '74px';
+    container.style.right = '20px';
     container.style.left = 'auto';
     container.style.bottom = 'auto';
     container.style.transform = 'none';
     container.style.zIndex = '999999';
-    container.style.maxWidth = '360px';
-    container.style.minWidth = '280px';
+    container.style.maxWidth = '420px';
+    container.style.minWidth = '320px';
     container.style.width = 'auto';
     container.style.pointerEvents = 'none';
 
@@ -528,16 +528,16 @@ var App = (() => {
     popup.className = `popup-notification popup-${type}`;
     popup.setAttribute('role', type === 'error' ? 'alert' : 'status');
     popup.style.pointerEvents = 'auto';
-    popup.style.maxWidth = '360px';
+    popup.style.maxWidth = '420px';
     popup.style.width = '100%';
     popup.style.boxSizing = 'border-box';
 
-    // Icon generation with animations (compact 12x12 SVG)
+    // Icon generation with animations (16x16 SVG)
     let iconHtml = '';
     if (type === 'success') {
       iconHtml = `
         <div class="popup-icon-wrapper success" aria-hidden="true">
-          <svg class="popup-svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="popup-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path class="circle-check-path" d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
             <polyline class="check-tick-path" points="22 4 12 14.01 9 11.01"></polyline>
           </svg>
@@ -546,7 +546,7 @@ var App = (() => {
     } else if (type === 'error') {
       iconHtml = `
         <div class="popup-icon-wrapper error" aria-hidden="true">
-          <svg class="popup-svg-icon alert-shake" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="popup-svg-icon alert-shake" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="15" y1="9" x2="9" y2="15"></line>
             <line x1="9" y1="9" x2="15" y2="15"></line>
@@ -556,7 +556,7 @@ var App = (() => {
     } else {
       iconHtml = `
         <div class="popup-icon-wrapper info" aria-hidden="true">
-          <svg class="popup-svg-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="popup-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="16" x2="12" y2="12"></line>
             <line x1="12" y1="8" x2="12.01" y2="8"></line>
