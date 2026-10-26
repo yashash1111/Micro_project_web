@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConceptLab — Computer Science Concepts Playground</title>
+  <meta name="description" content="A professional educational web platform demonstrating algorithms, computer architecture, and automata theory with real-time execution.">
+  
+  <!-- Preconnect to optional Google Fonts for progressive enhancement -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css?v=4.3">
+</head>
+<body id="app-body">
+
+  <!-- Top-Right Micro Pop-up Notification Container (Green = Success, Red = Not Success) -->
+  <div id="popup-notification-container" class="popup-notification-container" style="position: fixed !important; top: 12px !important; right: 12px !important; left: auto !important; bottom: auto !important; transform: none !important; z-index: 999999 !important; width: auto !important; max-width: 280px !important; min-width: 220px !important;" aria-live="assertive" role="region" aria-label="Action Notifications"></div>
+
+  <!-- Global Toast Notification Container (Secondary) -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Confirmation Modal for Destructive Reset -->
+  <div id="confirm-reset-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-reset-title" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-icon-badge danger" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </div>
+        <h3 id="modal-reset-title" class="modal-title">Reset All Learning Progress?</h3>
+      </div>
+      <div class="modal-body">
+        <p>This action will permanently clear your saved activity records, completed modules, quiz history, and custom visualizer settings.</p>
+        <p class="modal-subtext">This action cannot be undone. Default initial states will be restored.</p>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-cancel-reset" class="btn btn-secondary" type="button">Cancel</button>
+        <button id="btn-confirm-reset" class="btn btn-danger" type="button">Yes, Reset Everything</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Backdrop -->
+  <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+
+  <!-- Mobile Navigation Drawer -->
+  <aside id="mobile-nav-drawer" class="mobile-nav-drawer" aria-label="Mobile Navigation" role="dialog">
+    <div class="drawer-header">
+      <div class="brand-group">
+        <div class="brand-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </div>
+        <span class="brand-text">ConceptLab</span>
+      </div>
+      <button id="mobile-drawer-close" class="btn-icon" type="button" aria-label="Close Navigation Drawer">✕</button>
+    </div>
+    <nav class="drawer-nav">
+      <div class="nav-group-label">Platforms</div>
+      <a href="#home" class="nav-link active" data-route="home">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+      <a href="#daa" class="nav-link" data-route="daa">
+        <span class="nav-icon">🔍</span>
+        <span class="nav-label">Algorithm Studio (DAA)</span>
+      </a>
+      <a href="#coa" class="nav-link" data-route="coa">
+        <span class="nav-icon">🔢</span>
+        <span class="nav-label">Number Systems Lab (COA)</span>
+      </a>
+      <a href="#flat" class="nav-link" data-route="flat">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Automata Playground (FLAT)</span>
+      </a>
+      <div class="nav-group-label">Interactive Arena</div>
+      <a href="#quiz" class="nav-link" data-route="quiz">
+        <span class="nav-icon">🎯</span>
+        <span class="nav-label">Practice Arena</span>
+      </a>
+      <a href="#presentation" class="nav-link" data-route="presentation">
+        <span class="nav-icon">📽️</span>
+        <span class="nav-label">Presentation Mode</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Application Wrapper (Sidebar + Topbar + Content View) -->
+  <div id="app-root" class="app-shell">
+
+    <!-- Collapsible Desktop Sidebar -->
+    <aside id="sidebar" class="app-sidebar" aria-label="Primary Navigation">
+      <div class="sidebar-header">
+        <a href="#home" class="sidebar-brand" data-route="home">
+          <div class="sidebar-logo-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          </div>
+          <div class="sidebar-brand-text-wrapper">
+            <span class="sidebar-brand-name">ConceptLab</span>
+            <span class="sidebar-brand-badge">CS Core</span>
+          </div>
+        </a>
+        <button id="sidebar-toggle-btn" class="sidebar-toggle" type="button" aria-label="Toggle Sidebar Collapsed" aria-expanded="true" title="Collapse / Expand Sidebar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="11 17 6 12 11 7"></polyline>
+            <polyline points="18 17 13 12 18 7"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Workbench Modules">
+        <div class="sidebar-section-title">CORE PLATFORMS</div>
+        
+        <a href="#home" class="nav-link active" data-route="home" title="Dashboard">
+          <div class="nav-link-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </div>
+          <span class="nav-link-label">Dashboard</span>
+        </a>
+
+        <a href="#daa" class="nav-link" data-route="daa" title="Algorithm Studio: Binary Search">
+          <div class="nav-link-icon daa" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <span class="nav-link-label">Algorithm Studio</span>
+          <span class="nav-badge daa">DAA</span>
+        </a>
+
+        <a href="#coa" class="nav-link" data-route="coa" title="Number Systems Lab: Radix & 2's Complement">
+          <div class="nav-link-icon coa" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+              <rect x="9" y="9" width="6" height="6"></rect>
+              <line x1="9" y1="1" x2="9" y2="4"></line>
+              <line x1="15" y1="1" x2="15" y2="4"></line>
+              <line x1="9" y1="20" x2="9" y2="23"></line>
+              <line x1="15" y1="20" x2="15" y2="23"></line>
+            </svg>
+          </div>
+          <span class="nav-link-label">Number Systems Lab</span>
+          <span class="nav-badge coa">COA</span>
+        </a>
+
+        <a href="#flat" class="nav-link" data-route="flat" title="Automata Playground: DFA String Validator">
+          <div class="nav-link-icon flat" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="18" r="3"></circle>
+              <circle cx="18" cy="6" r="3"></circle>
+              <circle cx="18" cy="18" r="3"></circle>
+              <line x1="8.59" y1="16.59" x2="15.42" y2="7.41"></line>
+              <line x1="9" y1="18" x2="15" y2="18"></line>
+            </svg>
+          </div>
+          <span class="nav-link-label">Automata Playground</span>
+          <span class="nav-badge flat">FLAT</span>
+        </a>
+
+        <div class="sidebar-section-title">INTERACTIVE ARENA</div>
+
+        <a href="#quiz" class="nav-link" data-route="quiz" title="Practice Arena: Concept Quizzes">
+          <div class="nav-link-icon quiz" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <span class="nav-link-label">Practice Arena</span>
+          <span class="nav-badge">Quiz</span>
+        </a>
+
+        <a href="#presentation" class="nav-link" data-route="presentation" title="Classroom & Viva Presentation Deck">
+          <div class="nav-link-icon presentation" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+          </div>
+          <span class="nav-link-label">Presentation Mode</span>
+          <span class="nav-badge">Deck</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="btn-reset-all-progress" class="sidebar-footer-btn" type="button" title="Reset all progress and storage">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+          <span class="sidebar-footer-text">Reset Progress</span>
+        </button>
+        <div class="sidebar-engine-indicator">
+          <span class="indicator-dot"></span>
+          <span class="indicator-text">Pure Vanilla Engine</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area with Header & Routed Sections -->
+    <div class="app-main-layout">
+
+      <!-- Compact Topbar -->
+      <header id="topbar" class="app-topbar">
+        <div class="topbar-left">
+          <button id="hamburger-btn" class="hamburger-btn" type="button" aria-label="Open Navigation Menu" aria-expanded="false">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          
+          <div id="topbar-breadcrumb" class="topbar-breadcrumb" aria-label="Breadcrumb navigation">
+            <span class="breadcrumb-root">ConceptLab</span>
+            <span class="breadcrumb-separator" aria-hidden="true">/</span>
+            <span class="breadcrumb-current">Dashboard</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Sound Feedback Toggle (Web Audio API - Off by default) -->
+          <button id="btn-sound-toggle" class="btn-icon sound-toggle" type="button" aria-label="Toggle Sound Feedback (Web Audio API)" title="Toggle Sound Feedback (Web Audio API - Off by default)">
+            <span id="sound-icon" class="sound-icon-container" aria-hidden="true">
+              <svg id="sound-off-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <line x1="23" y1="9" x2="17" y2="15"></line>
+                <line x1="17" y1="9" x2="23" y2="15"></line>
+              </svg>
+              <svg id="sound-on-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
+            </span>
+          </button>
+
+          <!-- Light/Dark Theme Toggle -->
+          <button id="theme-toggle-btn" class="btn-icon theme-toggle" type="button" aria-label="Switch between light and dark themes" title="Toggle Theme (Dark / Light)">
+            <span id="theme-icon" class="theme-icon-container" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            </span>
+          </button>
+
+          <!-- Presentation Quick Launch -->
+          <button class="btn btn-outline btn-sm topbar-pres-btn" type="button" data-route="presentation" title="Open Fullscreen Presentation Deck">
+            <span>📽️ Present</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Routed Page Container -->
+      <main id="main-content" class="app-content-view" role="main">
+
+        <!-- ==========================================
+             SECTION 1: HOME DASHBOARD
+             ========================================== -->
+        <section id="home" class="page-section active" aria-labelledby="home-hero-heading">
+          <div class="container dashboard-container">
+            
+            <!-- Hero Card -->
+            <div class="hero-card">
+              <div class="hero-eyebrow">
+                <span class="pulse-dot"></span>
+                <span>Computer Science Core Curriculum Workbench</span>
+              </div>
+              <h1 id="home-hero-heading" class="hero-title">
+                Explore Foundational Computing Concepts in <span class="text-gradient">Real-Time.</span>
+              </h1>
+              <p class="hero-description">
+                Interactive, mathematically verified demonstrators for <strong>Algorithms</strong>, <strong>Computer Architecture</strong>, and <strong>Automata Theory</strong>. Zero frameworks, zero external APIs — 100% computed client-side.
+              </p>
+              
+              <div class="hero-cta-group">
+                <button class="btn btn-primary" type="button" data-route="daa">
+                  <span>Start Learning: Algorithm Studio</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+                <button class="btn btn-secondary" type="button" data-route="quiz">
+                  <span>Practice Arena Quizzes</span>
+                </button>
+                <button class="btn btn-outline" type="button" data-route="presentation">
+                  <span>Open Presentation Deck</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Subject Cards Grid (3 Core Labs) -->
+            <div class="section-header">
+              <span class="section-eyebrow brand">Core Laboratory Modules</span>
+              <h2 class="section-heading">Interactive Learning Modules</h2>
+              <p class="section-subtext">Choose a technical subject below to inspect real-time algorithmic steps, hardware register translations, and formal automata.</p>
+            </div>
+
+            <div class="subject-cards-grid">
+              
+              <!-- Card 1: DAA -->
+              <article class="subject-card daa">
+                <div class="card-top">
+                  <div class="card-badge-header">
+                    <div class="card-icon" aria-hidden="true">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      </svg>
+                    </div>
+                    <span class="subject-tag">DAA-201 • Module 2</span>
+                  </div>
+                  <h3 class="card-title">Algorithm Studio</h3>
+                  <p class="card-subtitle">Binary Search &amp; Divide-and-Conquer</p>
+                  <p class="card-desc">
+                    Analyze how binary search halves the candidate space at every midpoint comparison to achieve optimal logarithmic time complexity O(log n).
+                  </p>
+                  <ul class="key-topics-list" aria-label="Key Topics Covered">
+                    <li class="topic-tag">O(log n) Complexity</li>
+                    <li class="topic-tag">Divide &amp; Conquer</li>
+                    <li class="topic-tag">L / M / R Pointers</li>
+                    <li class="topic-tag">Trace Telemetry</li>
+                  </ul>
+                </div>
+                <button class="card-action-btn" data-target-lab="daa" aria-label="Launch Algorithm Studio">
+                  <span>Launch Algorithm Studio</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </article>
+
+              <!-- Card 2: COA -->
+              <article class="subject-card coa">
+                <div class="card-top">
+                  <div class="card-badge-header">
+                    <div class="card-icon" aria-hidden="true">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                        <rect x="9" y="9" width="6" height="6"></rect>
+                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                      </svg>
+                    </div>
+                    <span class="subject-tag">COA-202 • Module 1</span>
+                  </div>
+                  <h3 class="card-title">Number Systems Lab</h3>
+                  <p class="card-subtitle">Radix Translations &amp; 2's Complement</p>
+                  <p class="card-desc">
+                    Inspect binary, octal, decimal, and hexadecimal representations with hardware register bit matrices, sign-magnitude, and signed 2's complement arithmetic.
+                  </p>
+                  <ul class="key-topics-list" aria-label="Key Topics Covered">
+                    <li class="topic-tag">Radix Conversions</li>
+                    <li class="topic-tag">2's Complement ALU</li>
+                    <li class="topic-tag">Arbitrary BigInt</li>
+                    <li class="topic-tag">8/16/32-Bit Register</li>
+                  </ul>
+                </div>
+                <button class="card-action-btn" data-target-lab="coa" aria-label="Launch Number Systems Lab">
+                  <span>Launch Number Systems Lab</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </article>
+
+              <!-- Card 3: FLAT -->
+              <article class="subject-card flat">
+                <div class="card-top">
+                  <div class="card-badge-header">
+                    <div class="card-icon" aria-hidden="true">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <circle cx="6" cy="18" r="3"></circle>
+                        <circle cx="18" cy="6" r="3"></circle>
+                        <circle cx="18" cy="18" r="3"></circle>
+                        <line x1="8.59" y1="16.59" x2="15.42" y2="7.41"></line>
+                      </svg>
+                    </div>
+                    <span class="subject-tag">FLAT-203 • Module 1</span>
+                  </div>
+                  <h3 class="card-title">Automata Playground</h3>
+                  <p class="card-subtitle">Deterministic Finite Automata (DFA)</p>
+                  <p class="card-desc">
+                    Simulate formal finite-state machines M = (Q, Σ, δ, q0, F) recognizing binary strings ending in '01' with tape pointer and state diagram.
+                  </p>
+                  <ul class="key-topics-list" aria-label="Key Topics Covered">
+                    <li class="topic-tag">5-Tuple (Q,Σ,δ,q0,F)</li>
+                    <li class="topic-tag">Formal Language L</li>
+                    <li class="topic-tag">Transition Matrix</li>
+                    <li class="topic-tag">Tape Pointer Head</li>
+                  </ul>
+                </div>
+                <button class="card-action-btn" data-target-lab="flat" aria-label="Launch Automata Playground">
+                  <span>Launch Automata Playground</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </article>
+
+            </div>
+
+            <!-- Learning Overview Section (Genuine Saved Progress Only - Part A) -->
+            <div class="dashboard-split-grid">
+              
+              <div class="overview-panel">
+                <div class="panel-header-clean">
+                  <div>
+                    <h3 class="panel-heading">Curriculum Learning Telemetry</h3>
+                    <p class="overview-subtext">Authentic metrics calculated from client-side challenge execution. Zero fabricated stats.</p>
+                  </div>
+                  <span class="badge-pill">Persisted Local Storage (v2)</span>
+                </div>
+
+                <!-- Browser-only local storage disclaimer -->
+                <div class="storage-disclaimer-pill" role="note">
+                  <span class="disclaimer-icon">ℹ️</span>
+                  <span>Progress is saved locally in this browser. Works completely offline; no data leaves your device.</span>
+                </div>
+
+                <!-- Honest First-Time Learner State (Displayed when history is empty) -->
+                <div id="overview-empty-state" class="first-time-learner-card" style="display: none;">
+                  <div class="empty-state-badge">🌱 First-Time Learner</div>
+                  <h4 class="empty-state-heading">Ready to begin your Computer Science journey?</h4>
+                  <p class="empty-state-desc">You haven't completed any challenges yet. Solve challenges in any of the three subject labs or take a practice quiz to test your mastery and unlock achievements!</p>
+                  <div class="empty-state-actions">
+                    <button class="btn btn-primary btn-sm" type="button" data-route="daa">Start DAA Lab</button>
+                    <button class="btn btn-secondary btn-sm" type="button" data-route="coa">Start COA Lab</button>
+                    <button class="btn btn-outline btn-sm" type="button" data-route="flat">Start FLAT Lab</button>
+                  </div>
+                </div>
+                
+                <!-- 5 Genuine Telemetry Metrics Grid -->
+                <div class="stats-counter-grid-expanded">
+                  <div class="stat-box">
+                    <div class="stat-number" id="overview-challenges-count">0 / 3</div>
+                    <div class="stat-label">Unique Challenges</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-number" id="overview-questions-count">0</div>
+                    <div class="stat-label">Questions Attempted</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-number" id="overview-correct-count">0</div>
+                    <div class="stat-label">Correct Answers</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-number" id="overview-accuracy-count">0%</div>
+                    <div class="stat-label">Quiz Accuracy</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-number streak-number" id="overview-streak-count">
+                      <span class="streak-fire" aria-hidden="true">🔥</span> <span id="overview-streak-val">0</span>d
+                    </div>
+                    <div class="stat-label">Learning Streak</div>
+                  </div>
+                </div>
+
+                <!-- Subject Completion Status Strip -->
+                <div class="subject-status-strip">
+                  <div class="subject-status-title">Subject Modules Status:</div>
+                  <div class="subject-status-pills">
+                    <div id="dash-subject-daa" class="subject-status-pill daa" data-route="daa">
+                      <span class="pill-dot"></span>
+                      <span class="pill-name">DAA Lab</span>
+                      <span class="pill-state">Not Started</span>
+                    </div>
+                    <div id="dash-subject-coa" class="subject-status-pill coa" data-route="coa">
+                      <span class="pill-dot"></span>
+                      <span class="pill-name">COA Lab</span>
+                      <span class="pill-state">Not Started</span>
+                    </div>
+                    <div id="dash-subject-flat" class="subject-status-pill flat" data-route="flat">
+                      <span class="pill-dot"></span>
+                      <span class="pill-name">FLAT Lab</span>
+                      <span class="pill-state">Not Started</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Overall Progress Track -->
+                <div class="overall-progress-track">
+                  <div class="progress-track-header">
+                    <span>Curriculum Workbench Coverage</span>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div id="overview-progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recently Used Labs Feed -->
+              <div class="recent-activity-panel">
+                <div class="panel-header-clean">
+                  <div>
+                    <h3 class="panel-heading">Recent Activity</h3>
+                    <p class="overview-subtext">Audit log of your verified local actions.</p>
+                  </div>
+                  <span class="badge-pill">Session Audit</span>
+                </div>
+                <div id="recent-activity-container" class="recent-activity-wrapper">
+                  <!-- Rendered dynamically by App.refreshDashboard() -->
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 2: DAA LAB (Algorithm Studio)
+             ========================================== -->
+        <section id="daa" class="page-section" aria-labelledby="daa-heading" hidden>
+          <div class="container" id="daa-lab-container">
+            
+            <div class="section-header">
+              <span class="section-eyebrow daa">DAA Lab • Syllabus: Module 2 — Binary Search Fundamentals</span>
+              <h2 id="daa-heading" class="section-heading">Binary Search Visualizer</h2>
+              <p class="section-subtext">
+                Explore the Divide-and-Conquer paradigm. Binary search halves the candidate search space at every step,
+                achieving optimal logarithmic time complexity O(log n).
+              </p>
+            </div>
+
+            <div class="lab-layout">
+              
+              <!-- Controls Panel (Arranged Professionally with Dedicated Hero Search Bar) -->
+              <div class="lab-panel daa-search-panel">
+                <div class="panel-header">
+                  <div class="panel-title-wrapper">
+                    <div class="panel-title-icon daa">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="panel-title">Binary Search Explorer</h3>
+                      <p class="panel-subtitle-text">Divide-and-Conquer search visualizer on sorted integer vectors</p>
+                    </div>
+                  </div>
+                  <div class="panel-header-badges">
+                    <span class="panel-badge daa">O(log n) Complexity</span>
+                  </div>
+                </div>
+
+                <!-- Block 1: Array Configuration & Presets -->
+                <div class="array-config-card">
+                  <div class="form-group">
+                    <div class="form-label-row">
+                      <label for="daa-array-input" class="form-label">
+                        <span class="label-with-icon">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                          </svg>
+                          <strong>Sorted Array Dataset:</strong>
+                        </span>
+                        <span class="form-hint"><span class="badge-pill-subtle">Ascending order required</span></span>
+                      </label>
+                      <div class="form-actions-inline">
+                        <button id="daa-btn-sort-helper" class="btn-text-action" type="button" title="Automatically sort current array ascending">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M3 16l4 4 4-4M7 20V4M21 8l-4-4-4 4M17 4v16"></path>
+                          </svg>
+                          <span>Auto-Sort</span>
+                        </button>
+                        <button id="daa-btn-random" class="btn-text-action" type="button" title="Generate a random sorted array">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path>
+                          </svg>
+                          <span>Random Array</span>
+                        </button>
+                        <button id="daa-btn-load-example" class="btn-text-action" type="button" title="Load standard textbook example">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                          </svg>
+                          <span>Load Example</span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="input-with-adornment">
+                      <span class="input-adornment-prefix">[ ]</span>
+                      <input id="daa-array-input" class="input-control font-mono" type="text" placeholder="e.g. 2, 4, 6, 8, 10, 14, 18, 22" autocomplete="off" spellcheck="false">
+                    </div>
+                    <div id="daa-array-feedback" class="input-feedback" role="alert"></div>
+                  </div>
+
+                  <!-- Categorized Test Case Presets -->
+                  <div class="presets-container">
+                    <span class="presets-label">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                      </svg>
+                      Presets:
+                    </span>
+                    <div class="presets-chips-list">
+                      <button id="daa-btn-preset1" class="preset-chip preset-chip-success" type="button" title="Test target 8 which exists in array">
+                        <span class="preset-tag-dot success"></span>[2,4,6,8,10] ➔ Target 8 (Found)
+                      </button>
+                      <button id="daa-btn-preset2" class="preset-chip preset-chip-error" type="button" title="Test target 7 which does not exist">
+                        <span class="preset-tag-dot error"></span>[2,4,6,8,10] ➔ Target 7 (Absent)
+                      </button>
+                      <button id="daa-btn-preset3" class="preset-chip preset-chip-info" type="button" title="Test single element array">
+                        <span class="preset-tag-dot info"></span>[5] ➔ Target 5 (Single)
+                      </button>
+                      <button id="daa-btn-preset5" class="preset-chip preset-chip-purple" type="button" title="Test array with duplicate elements">
+                        <span class="preset-tag-dot purple"></span>[2,4,4,4,6,8] ➔ Target 4 (Duplicates)
+                      </button>
+                      <button id="daa-btn-preset6" class="preset-chip preset-chip-amber" type="button" title="Test array with negative numbers">
+                        <span class="preset-tag-dot amber"></span>[-12,-7,-3,0,4,9] ➔ Target -7
+                      </button>
+                      <button id="daa-btn-preset4" class="preset-chip preset-chip-warn" type="button" title="Test unsorted array validation rejection">
+                        <span class="preset-tag-dot warn"></span>[10,5,2] (Unsorted Test)
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Block 2: The Dedicated Hero Search Box -->
+                <div class="search-hero-card">
+                  <div class="search-hero-header">
+                    <span class="search-hero-label">Target Search Bar &amp; Algorithm Mode:</span>
+                    <span class="search-hero-hint">Enter an integer or click a preset, then choose Mode and Speed</span>
+                  </div>
+                  <div class="search-box-row">
+                    <!-- Search Input Field -->
+                    <div class="search-input-group">
+                      <div class="search-icon-left" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="11" cy="11" r="8"></circle>
+                          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                      </div>
+                      <input id="daa-target-input" class="search-hero-input font-mono" type="number" placeholder="Enter target integer (e.g. 8)..." autocomplete="off">
+                      <div class="search-kbd-hint" title="Press Enter on keyboard to search">
+                        <span>↵ Enter</span>
+                      </div>
+                    </div>
+
+                    <!-- Search Mode Selector (Standard vs Left-Boundary First Match) -->
+                    <div class="search-mode-wrapper">
+                      <label for="daa-search-mode" class="speed-label">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <polyline points="12 6 12 12 14 14"></polyline>
+                        </svg>
+                        <span>Mode:</span>
+                      </label>
+                      <select id="daa-search-mode" class="mode-select-control">
+                        <option value="standard" selected>Standard (Any Match)</option>
+                        <option value="first">First Match (Leftmost)</option>
+                      </select>
+                    </div>
+
+                    <!-- Speed Control in Search Row -->
+                    <div class="search-speed-wrapper">
+                      <label for="daa-speed-select" class="speed-label">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                        <span>Speed:</span>
+                      </label>
+                      <select id="daa-speed-select" class="speed-select-control">
+                        <option value="1600">0.25x (1.6s)</option>
+                        <option value="1200">0.5x (1.2s)</option>
+                        <option value="800" selected>1.0x (0.8s)</option>
+                        <option value="500">1.5x (0.5s)</option>
+                        <option value="300">2.0x (0.3s)</option>
+                        <option value="150">4.0x (0.15s)</option>
+                      </select>
+                    </div>
+
+                    <!-- Primary Search Button -->
+                    <button id="daa-btn-start" class="btn btn-search-primary" type="button" title="Initiate Binary Search">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      </svg>
+                      <span>Search Target</span>
+                    </button>
+                  </div>
+
+                  <div id="daa-target-feedback" class="input-feedback" role="alert"></div>
+                </div>
+
+                <!-- Block 3: Playback Controls Console -->
+                <div class="playback-console-card">
+                  <div class="playback-left-group">
+                    <button id="daa-btn-restart" class="btn btn-secondary btn-step" type="button" title="Restart simulation from beginning">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polygon points="11 19 2 12 11 5 11 19"></polygon>
+                        <polygon points="22 19 13 12 22 5 22 19"></polygon>
+                      </svg>
+                      <span>Restart</span>
+                    </button>
+
+                    <button id="daa-btn-play" class="btn btn-play" type="button" title="Play or pause auto-step execution">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                      </svg>
+                      <span>Play</span>
+                    </button>
+
+                    <div class="step-buttons-group">
+                      <button id="daa-btn-prev" class="btn btn-secondary btn-step" type="button" disabled title="Step to previous comparison">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                        <span>Previous Step</span>
+                      </button>
+
+                      <button id="daa-btn-next" class="btn btn-secondary btn-step" type="button" disabled title="Step to next comparison">
+                        <span>Next Step</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                      </button>
+                    </div>
+
+                    <div id="daa-step-badge" class="step-counter-badge">
+                      <span>Step: Ready</span>
+                    </div>
+                  </div>
+
+                  <div class="playback-right-group">
+                    <div id="daa-step-progress-wrapper" class="step-progress-wrapper" title="Recorded execution steps progress">
+                      <div class="step-progress-label"><span id="daa-progress-fraction">0 / 0</span></div>
+                      <div class="step-progress-bar"><div id="daa-step-progress-fill" class="step-progress-fill" style="width: 0%;"></div></div>
+                    </div>
+
+                    <button id="daa-btn-reset" class="btn btn-danger-outline btn-sm" type="button" title="Reset visualizer">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                      </svg>
+                      <span>Reset</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Visualizer Stage -->
+              <div id="daa-visualizer-stage" class="visualizer-stage">
+                
+                <!-- Empty State View -->
+                <div id="daa-empty-state" class="empty-state" style="display: none;">
+                  <div class="empty-state-icon" aria-hidden="true">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                  </div>
+                  <h4 class="empty-state-title">No Search in Progress</h4>
+                  <p class="empty-state-desc">
+                    Enter an ascending sorted array and target number above, or click a Quick Preset to initialize the visualizer.
+                  </p>
+                </div>
+
+                <!-- Array Track Container (Number Cards) -->
+                <div id="daa-array-track" class="array-track" aria-live="polite">
+                  <!-- Dynamically populated number cards -->
+                </div>
+              </div>
+
+              <!-- Live Telemetry Grid -->
+              <div class="telemetry-grid">
+                <div class="telemetry-card">
+                  <div class="telemetry-label">Low Index (L)</div>
+                  <div id="daa-tel-low" class="telemetry-value">-</div>
+                </div>
+                <div class="telemetry-card">
+                  <div class="telemetry-label">Mid Index (M)</div>
+                  <div id="daa-tel-mid" class="telemetry-value">-</div>
+                </div>
+                <div class="telemetry-card">
+                  <div class="telemetry-label">High Index (R)</div>
+                  <div id="daa-tel-high" class="telemetry-value">-</div>
+                </div>
+                <div class="telemetry-card">
+                  <div class="telemetry-label">Comparison &amp; Direction</div>
+                  <div id="daa-tel-comparison" class="telemetry-value" style="font-size: 0.95rem;">-</div>
+                </div>
+                <div class="telemetry-card">
+                  <div class="telemetry-label">Total Comparisons</div>
+                  <div id="daa-tel-comparisons-count" class="telemetry-value">0</div>
+                </div>
+                <div class="telemetry-card">
+                  <div class="telemetry-label">Final Result &amp; Index</div>
+                  <div id="daa-tel-status" class="telemetry-value" style="font-size: 0.95rem;">Ready</div>
+                </div>
+                <div class="telemetry-card" style="grid-column: 1 / -1;">
+                  <div class="telemetry-label">Time &amp; Space Complexity</div>
+                  <div id="daa-tel-complexity" class="telemetry-value" style="font-size: 0.95rem;">O(log n)</div>
+                </div>
+              </div>
+
+              <!-- Duplicate Handling Policy Notice -->
+              <div id="daa-duplicate-notice" class="policy-card">
+                <div class="policy-card-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                  <span>Duplicate Value Handling Policy</span>
+                </div>
+                <p>
+                  In standard Binary Search, when identical numbers exist in the array (e.g. <code>[2, 4, 4, 4, 6]</code> with target <code>4</code>),
+                  the algorithm immediately halts at the first midpoint where <code>A[mid] == Target</code>. Standard Binary Search returns 
+                  <strong>any valid matching index</strong> rather than guaranteeing the leftmost or rightmost occurrence.
+                </p>
+              </div>
+
+              <!-- Execution Trace Log -->
+              <div class="trace-log-panel">
+                <h4>Algorithm Step-by-Step Trace &amp; Subproblem History</h4>
+                <ul id="daa-trace-list" class="trace-log-list" aria-live="polite">
+                  <li class="trace-log-item">Array initialized. Ready for execution.</li>
+                </ul>
+              </div>
+
+              <!-- Real Linear Search Comparison HUD (Empirical & Theoretical) -->
+              <div id="daa-linear-comparison" class="comparison-panel">
+                <div class="panel-header">
+                  <div class="panel-title-wrapper">
+                    <div class="panel-title-icon daa">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    </div>
+                    <div>
+                      <h3 class="panel-title">Empirical Benchmark: Binary vs Linear Search</h3>
+                      <p class="panel-subtitle-text">Side-by-side comparison of real comparisons and microsecond execution time</p>
+                    </div>
+                  </div>
+                  <div class="panel-header-badges">
+                    <span id="daa-speedup-badge" class="speedup-badge">Speedup: -</span>
+                  </div>
+                </div>
+
+                <div class="benchmark-grid">
+                  <div class="benchmark-card linear">
+                    <div class="benchmark-badge linear">Linear Search: O(n)</div>
+                    <div class="benchmark-stat-row">
+                      <span class="benchmark-stat-label">Real Comparisons:</span>
+                      <span id="daa-linear-comps" class="benchmark-stat-val font-mono">0</span>
+                    </div>
+                    <div class="benchmark-stat-row">
+                      <span class="benchmark-stat-label">Measured Wall-Clock Time:</span>
+                      <span id="daa-linear-time" class="benchmark-stat-val font-mono">0.000 ms</span>
+                    </div>
+                    <div class="benchmark-note">Inspects elements sequentially from index 0 until match or end.</div>
+                  </div>
+
+                  <div class="benchmark-card binary">
+                    <div class="benchmark-badge binary">Binary Search: O(log n)</div>
+                    <div class="benchmark-stat-row">
+                      <span class="benchmark-stat-label">Real Comparisons:</span>
+                      <span id="daa-binary-comps" class="benchmark-stat-val font-mono">0</span>
+                    </div>
+                    <div class="benchmark-stat-row">
+                      <span class="benchmark-stat-label">Measured Wall-Clock Time:</span>
+                      <span id="daa-binary-time" class="benchmark-stat-val font-mono">0.000 ms</span>
+                    </div>
+                    <div class="benchmark-note">Halves search space on each comparison using sorted order invariant.</div>
+                  </div>
+                </div>
+
+                <div class="benchmark-explanation">
+                  <div class="bench-exp-title">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <strong>Algorithmic Operations vs Browser Wall-Clock Time:</strong>
+                  </div>
+                  <p>
+                    In theoretical computer science, complexity is quantified by fundamental <em>operation counts</em> (comparisons), not raw milliseconds. On tiny in-memory arrays (N &le; 25), both searches execute in fractions of a microsecond where CPU caching, branch prediction, and JavaScript JIT warmup dominate timing. However, the comparison counts strictly demonstrate the exponential asymptotic superiority of O(log n) over O(n).
+                  </p>
+                </div>
+              </div>
+
+              <!-- Interactive Pseudocode Panel with Active Line Highlighting -->
+              <div id="daa-pseudocode-panel" class="pseudocode-card">
+                <div class="pseudocode-header">
+                  <div class="pseudocode-title-wrapper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    <h4>Algorithm Studio: Iterative Binary Search Pseudocode</h4>
+                  </div>
+                  <span id="daa-code-current-action" class="pseudocode-action-tag">Awaiting execution...</span>
+                </div>
+                <div class="pseudocode-editor font-mono">
+                  <div class="code-line" id="daa-code-line-1"><span class="code-lineno">1</span><span class="code-content"><span class="kw">function</span> binarySearch(A, target):</span></div>
+                  <div class="code-line" id="daa-code-line-2"><span class="code-lineno">2</span><span class="code-content">&nbsp;&nbsp;low = <span class="num">0</span>, high = A.length - <span class="num">1</span></span></div>
+                  <div class="code-line" id="daa-code-line-3"><span class="code-lineno">3</span><span class="code-content">&nbsp;&nbsp;<span class="kw">while</span> low &le; high:</span></div>
+                  <div class="code-line" id="daa-code-line-4"><span class="code-lineno">4</span><span class="code-content">&nbsp;&nbsp;&nbsp;&nbsp;mid = &lfloor;(low + high) / <span class="num">2</span>&rfloor;</span></div>
+                  <div class="code-line" id="daa-code-line-5"><span class="code-lineno">5</span><span class="code-content">&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> A[mid] == target: <span class="kw">return</span> mid <span class="cm">// Target discovered</span></span></div>
+                  <div class="code-line" id="daa-code-line-6"><span class="code-lineno">6</span><span class="code-content">&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">else if</span> target &lt; A[mid]: high = mid - <span class="num">1</span> <span class="cm">// Discard right half</span></span></div>
+                  <div class="code-line" id="daa-code-line-7"><span class="code-lineno">7</span><span class="code-content">&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">else</span>: low = mid + <span class="num">1</span> <span class="cm">// Discard left half</span></span></div>
+                  <div class="code-line" id="daa-code-line-8"><span class="code-lineno">8</span><span class="code-content">&nbsp;&nbsp;<span class="kw">return</span> -<span class="num">1</span> <span class="cm">// Target absent: search interval exhausted</span></span></div>
+                </div>
+              </div>
+
+              <!-- Learn this concept: Binary Search Deep Dive -->
+              <div id="daa-learn-panel" class="learn-concept-panel">
+                <details class="learn-details">
+                  <summary class="learn-summary">
+                    <div class="summary-left">
+                      <span class="summary-icon">📖</span>
+                      <div>
+                        <strong>Learn this Concept: Binary Search &amp; Divide-and-Conquer Analysis</strong>
+                        <span class="summary-subtext">Syllabus: DAA Module 2 • Invariants, Recurrence Relations, and Proof of Correctness</span>
+                      </div>
+                    </div>
+                    <span class="summary-toggle-pill">Expand Guide ▾</span>
+                  </summary>
+
+                  <div class="learn-body">
+                    <div class="learn-section">
+                      <h5>1. Formal Specification &amp; Invariant</h5>
+                      <p>
+                        Binary search operates on an array <code>A[0..n-1]</code> sorted such that <code>A[i] &le; A[j]</code> for all <code>i &lt; j</code>.
+                        The loop maintains the fundamental <strong>loop invariant</strong>: if <code>target &isin; A</code>, then <code>target &isin; A[low..high]</code>.
+                        At each iteration, comparing <code>target</code> with <code>A[mid]</code> eliminates at least <code>&lfloor;(high - low + 1) / 2&rfloor;</code> candidates,
+                        halving the problem size.
+                      </p>
+                    </div>
+
+                    <div class="learn-section">
+                      <h5>2. Recurrence Relation &amp; Master Theorem</h5>
+                      <p>
+                        The worst-case recurrence is <code>T(n) = T(n / 2) + O(1)</code>, where <code>a = 1</code>, <code>b = 2</code>, and <code>f(n) = O(1)</code>.
+                        By the Master Theorem (Case 2 with <code>c = log_b(a) = log_2(1) = 0</code>), <code>T(n) = &Theta;(log n)</code>.
+                        Maximum comparisons = <code>&lfloor;log&sub2; n&rfloor; + 1</code>.
+                      </p>
+                    </div>
+
+                    <div class="learn-section">
+                      <h5>3. Common Pitfalls &amp; Edge Cases</h5>
+                      <ul class="learn-list">
+                        <li><strong>Unsorted Array:</strong> Binary search produces incorrect results on unsorted data because the invariant is broken.</li>
+                        <li><strong>Integer Overflow:</strong> In low-level languages (C++/Java), <code>(low + high) / 2</code> can overflow for large indices. The safe formulation is <code>low + ((high - low) / 2)</code>.</li>
+                        <li><strong>Duplicate Values:</strong> Standard binary search terminates at the first matching midpoint, returning <em>any</em> matching index. For the first occurrence, left-boundary logic must continue searching left (<code>high = mid - 1</code>) even when a match is found.</li>
+                        <li><strong>Off-by-One Termination:</strong> Using <code>while (low &lt; high)</code> instead of <code>while (low &le; high)</code> will fail to evaluate single-element candidate ranges.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </details>
+              </div>
+
+              <!-- Theoretical Reference Card -->
+              <div class="reference-card">
+                <h3>Theoretical Reference: Divide-and-Conquer Analysis</h3>
+                <table class="complexity-table">
+                  <thead>
+                    <tr>
+                      <th>Metric</th>
+                      <th>Complexity</th>
+                      <th>Operational Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Best Case Time</td>
+                      <td><code>O(1)</code></td>
+                      <td>Target is found directly on the initial middle comparison (<code>mid = ⌊(0 + n - 1) / 2⌋</code>).</td>
+                    </tr>
+                    <tr>
+                      <td>Average Case Time</td>
+                      <td><code>O(log n)</code></td>
+                      <td>Target located at an internal decision node in the binary search tree.</td>
+                    </tr>
+                    <tr>
+                      <td>Worst Case Time</td>
+                      <td><code>O(log n)</code></td>
+                      <td>Target is absent or located at the deepest leaf node (maximum <code>⌊log₂ n⌋ + 1</code> comparisons).</td>
+                    </tr>
+                    <tr>
+                      <td>Auxiliary Space</td>
+                      <td><code>O(1)</code></td>
+                      <td>Iterative implementation requires only constant extra storage for <code>low</code>, <code>mid</code>, and <code>high</code> pointers.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 3: COA LAB (Number Systems Lab)
+             ========================================== -->
+        <section id="coa" class="page-section" aria-labelledby="coa-heading" hidden>
+          <div class="container" id="coa-lab-container">
+            
+            <div class="section-header">
+              <span class="section-eyebrow coa">COA Lab • Syllabus: Module 1 — Number Systems</span>
+              <h2 id="coa-heading" class="section-heading">Number System &amp; Machine Representation Lab</h2>
+              <p class="section-subtext">
+                Explore positional radix systems, exact BigInt conversions, mathematical step-by-step derivations,
+                signed two's complement representations, and interactive practice arena.
+              </p>
+            </div>
+
+            <!-- COA Tabs Navigation (4 Dedicated Sections) -->
+            <div class="coa-tabs-nav" role="tablist" aria-label="COA Lab Sections">
+              <button id="coa-tab-btn-converter" class="coa-tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="coa-tab-pane-converter" data-tab="converter">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                <span>1. Base Converter</span>
+              </button>
+              <button id="coa-tab-btn-steps" class="coa-tab-btn" type="button" role="tab" aria-selected="false" aria-controls="coa-tab-pane-steps" data-tab="steps">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                <span>2. Step-by-Step Explanation</span>
+              </button>
+              <button id="coa-tab-btn-signed" class="coa-tab-btn" type="button" role="tab" aria-selected="false" aria-controls="coa-tab-pane-signed" data-tab="signed">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>3. Signed Numbers &amp; 2's Complement</span>
+              </button>
+              <button id="coa-tab-btn-practice" class="coa-tab-btn" type="button" role="tab" aria-selected="false" aria-controls="coa-tab-pane-practice" data-tab="practice">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <span>4. Number System Practice</span>
+              </button>
+            </div>
+
+            <!-- ==========================================
+                 TAB 1: BASE CONVERTER
+                 ========================================== -->
+            <div id="coa-tab-pane-converter" class="coa-tab-pane active" role="tabpanel" aria-labelledby="coa-tab-btn-converter">
+              <div class="lab-layout">
+                
+                <!-- Input Controls Panel -->
+                <div class="lab-panel">
+                  <div class="panel-header">
+                    <div class="panel-title-wrapper">
+                      <h3 class="panel-title">Conversion Parameters</h3>
+                      <span class="panel-badge coa">Radix &amp; Positional Systems</span>
+                    </div>
+                  </div>
+
+                  <!-- Presets -->
+                  <div class="presets-strip">
+                    <span class="presets-label">Test Case Presets:</span>
+                    <button id="coa-preset-dec10" class="preset-chip" type="button">Decimal 10</button>
+                    <button id="coa-preset-bin1010" class="preset-chip" type="button">Binary 1010</button>
+                    <button id="coa-preset-hexff" class="preset-chip" type="button">Hex FF (255)</button>
+                    <button id="coa-preset-oct17" class="preset-chip" type="button">Octal 17 (15)</button>
+                    <button id="coa-preset-dec25" class="preset-chip" type="button">Decimal 25</button>
+                    <button id="coa-preset-zero" class="preset-chip" type="button">Zero (0)</button>
+                    <button id="coa-preset-bigint" class="preset-chip" type="button">BigInt (2⁶⁰)</button>
+                    <button id="coa-preset-neg17" class="preset-chip" type="button">Negative -17</button>
+                    <button id="coa-preset-invalid-bin" class="preset-chip" type="button">Invalid Bin (102)</button>
+                    <button id="coa-preset-invalid-oct" class="preset-chip" type="button">Invalid Oct (89)</button>
+                    <button id="coa-preset-invalid-dec" class="preset-chip" type="button">Invalid Dec (12A)</button>
+                  </div>
+
+                  <!-- Form Grid -->
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label for="coa-base-select" class="form-label">Source Base (Radix)</label>
+                      <select id="coa-base-select" class="select-control" style="background-color: #0b1120; color: #f8fafc;">
+                        <option value="10" selected>Decimal (Base 10)</option>
+                        <option value="2">Binary (Base 2)</option>
+                        <option value="8">Octal (Base 8)</option>
+                        <option value="16">Hexadecimal (Base 16)</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="coa-bitwidth-select" class="form-label">Hardware Register Bit-Width</label>
+                      <select id="coa-bitwidth-select" class="select-control" style="background-color: #0b1120; color: #f8fafc;">
+                        <option value="8" selected>8-Bit (Byte: -128 to +127)</option>
+                        <option value="16">16-Bit (Half-Word: -32768 to +32767)</option>
+                        <option value="32">32-Bit (Full Word: Standard ALU)</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                      <label for="coa-value-input" class="form-label">
+                        <span>Numeric Input Value</span>
+                        <span class="form-hint">Non-negative integers, zero, uppercase &amp; lowercase hex</span>
+                      </label>
+                      <input id="coa-value-input" class="input-control font-mono" type="text" placeholder="e.g. 10, 1011, FF, 17" autocomplete="off">
+                      <div id="coa-input-feedback" class="input-feedback" role="alert"></div>
+                    </div>
+                  </div>
+
+                  <!-- Toolbar -->
+                  <div class="action-toolbar">
+                    <button id="coa-btn-convert" class="btn btn-primary" type="button">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                      </svg>
+                      <span>Convert Number</span>
+                    </button>
+
+                    <button id="coa-btn-swap" class="btn btn-secondary btn-sm" type="button" title="Swap source base with target base">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16V4M7 4L3 8M7 4L11 8M17 8v12M17 20l4-4M17 20l-4-4"></path></svg>
+                      <span>Swap Base</span>
+                    </button>
+
+                    <button id="coa-btn-reset" class="btn btn-danger-outline btn-sm" type="button" style="margin-left: auto;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                      </svg>
+                      <span>Reset</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Empty State View -->
+                <div id="coa-empty-state" class="empty-state" style="display: none;">
+                  <div class="empty-state-icon" aria-hidden="true">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                      <line x1="9" y1="9" x2="15" y2="15"></line>
+                      <line x1="15" y1="9" x2="9" y2="15"></line>
+                    </svg>
+                  </div>
+                  <h4 class="empty-state-title">Awaiting Input Value</h4>
+                  <p class="empty-state-desc">Enter an integer or select a test preset above, then click "Convert Number".</p>
+                </div>
+
+                <!-- Output Results Section -->
+                <div id="coa-results-section" class="coa-results-container">
+                  
+                  <!-- 4 Radices Results Grid with Copy & Swap Buttons -->
+                  <div class="coa-results-grid">
+                    <div class="radix-card dec">
+                      <div class="radix-card-header">
+                        <span class="radix-badge">DEC</span>
+                        <h4>Decimal (Base 10)</h4>
+                        <div class="radix-card-actions">
+                          <button class="btn-swap-card" data-swap-base="10" type="button" title="Set Decimal as source base">⇄ Source</button>
+                          <button class="btn-copy-card" data-copy-target="coa-out-dec" type="button" title="Copy Decimal value">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span>Copy</span>
+                          </button>
+                        </div>
+                      </div>
+                      <div id="coa-out-dec" class="radix-value font-mono">10</div>
+                    </div>
+
+                    <div class="radix-card bin">
+                      <div class="radix-card-header">
+                        <span class="radix-badge">BIN</span>
+                        <h4>Binary (Base 2)</h4>
+                        <div class="radix-card-actions">
+                          <button class="btn-swap-card" data-swap-base="2" type="button" title="Set Binary as source base">⇄ Source</button>
+                          <button class="btn-copy-card" data-copy-target="coa-out-bin" type="button" title="Copy Binary value">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span>Copy</span>
+                          </button>
+                        </div>
+                      </div>
+                      <div id="coa-out-bin" class="radix-value font-mono">1010</div>
+                    </div>
+
+                    <div class="radix-card oct">
+                      <div class="radix-card-header">
+                        <span class="radix-badge">OCT</span>
+                        <h4>Octal (Base 8)</h4>
+                        <div class="radix-card-actions">
+                          <button class="btn-swap-card" data-swap-base="8" type="button" title="Set Octal as source base">⇄ Source</button>
+                          <button class="btn-copy-card" data-copy-target="coa-out-oct" type="button" title="Copy Octal value">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span>Copy</span>
+                          </button>
+                        </div>
+                      </div>
+                      <div id="coa-out-oct" class="radix-value font-mono">12</div>
+                    </div>
+
+                    <div class="radix-card hex">
+                      <div class="radix-card-header">
+                        <span class="radix-badge">HEX</span>
+                        <h4>Hexadecimal (Base 16)</h4>
+                        <div class="radix-card-actions">
+                          <button class="btn-swap-card" data-swap-base="16" type="button" title="Set Hexadecimal as source base">⇄ Source</button>
+                          <button class="btn-copy-card" data-copy-target="coa-out-hex" type="button" title="Copy Hexadecimal value">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span>Copy</span>
+                          </button>
+                        </div>
+                      </div>
+                      <div id="coa-out-hex" class="radix-value font-mono">A</div>
+                    </div>
+                  </div>
+
+                  <!-- 4-Bit Nibble Grouping View -->
+                  <div id="coa-nibble-display" class="nibble-display-card">
+                    <div class="nibble-title-row">
+                      <div class="nibble-title-left">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                        <strong>4-Bit Nibble Grouping &amp; Positional Bit Weights</strong>
+                      </div>
+                      <span class="badge-pill-subtle">BCD 8-4-2-1 Weights</span>
+                    </div>
+                    <div id="coa-nibble-groups" class="nibble-groups-row">
+                      <!-- Populated dynamically by coa.js -->
+                    </div>
+                  </div>
+
+                  <!-- Hardware Register Encodings Summary -->
+                  <div class="hardware-rep-card">
+                    <h4 style="margin-bottom: 0.75rem; font-size: 0.95rem;">Machine Register Encodings (Hardware Level)</h4>
+                    <div class="hardware-grid">
+                      <div class="hw-item">
+                        <span class="hw-label">Sign-Magnitude:</span>
+                        <span id="coa-out-sign-mag" class="hw-value font-mono">-</span>
+                      </div>
+                      <div class="hw-item">
+                        <span class="hw-label">1's Complement:</span>
+                        <span id="coa-out-ones-comp" class="hw-value font-mono">-</span>
+                      </div>
+                      <div class="hw-item highlight">
+                        <span class="hw-label">2's Complement (Standard ALU):</span>
+                        <span id="coa-out-twos-comp" class="hw-value font-mono">-</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Hardware Bit Matrix Visualization -->
+                  <div class="bit-matrix-card">
+                    <h4 style="margin-bottom: 0.5rem; font-size: 0.92rem;">Register Bit Cells (MSB to LSB)</h4>
+                    <div id="coa-bit-cells" class="bit-cells-row">
+                      <!-- Bit cells injected by coa.js -->
+                    </div>
+                  </div>
+
+                  <!-- Reference Tables: Powers of 2 & Hexadecimal Symbols -->
+                  <div class="ref-tables-grid">
+                    <div class="ref-table-card">
+                      <div class="ref-table-header">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                        <h4>Binary Powers of 2 (2⁰ to 2¹⁵)</h4>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table-mini font-mono">
+                          <thead><tr><th>Power</th><th>Decimal Value</th><th>Hexadecimal</th></tr></thead>
+                          <tbody>
+                            <tr><td>2⁰</td><td>1</td><td>0x0001</td></tr>
+                            <tr><td>2¹</td><td>2</td><td>0x0002</td></tr>
+                            <tr><td>2²</td><td>4</td><td>0x0004</td></tr>
+                            <tr><td>2³</td><td>8</td><td>0x0008</td></tr>
+                            <tr><td>2⁴</td><td>16</td><td>0x0010</td></tr>
+                            <tr><td>2⁵</td><td>32</td><td>0x0020</td></tr>
+                            <tr><td>2⁶</td><td>64</td><td>0x0040</td></tr>
+                            <tr><td>2⁷</td><td>128</td><td>0x0080</td></tr>
+                            <tr><td>2⁸</td><td>256</td><td>0x0100</td></tr>
+                            <tr><td>2⁹</td><td>512</td><td>0x0200</td></tr>
+                            <tr><td>2¹⁰</td><td>1,024 (1 KiB)</td><td>0x0400</td></tr>
+                            <tr><td>2¹¹</td><td>2,048</td><td>0x0800</td></tr>
+                            <tr><td>2¹²</td><td>4,096</td><td>0x1000</td></tr>
+                            <tr><td>2¹³</td><td>8,192</td><td>0x2000</td></tr>
+                            <tr><td>2¹⁴</td><td>16,384</td><td>0x4000</td></tr>
+                            <tr><td>2¹⁵</td><td>32,768 (16-bit Limit)</td><td>0x8000</td></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="ref-table-card">
+                      <div class="ref-table-header">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+                        <h4>Hexadecimal Digits &amp; 4-Bit Nibbles</h4>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table-mini font-mono">
+                          <thead><tr><th>Hex Digit</th><th>Decimal</th><th>4-Bit Nibble</th></tr></thead>
+                          <tbody>
+                            <tr><td>0</td><td>0</td><td>0000</td></tr>
+                            <tr><td>1</td><td>1</td><td>0001</td></tr>
+                            <tr><td>2</td><td>2</td><td>0010</td></tr>
+                            <tr><td>3</td><td>3</td><td>0011</td></tr>
+                            <tr><td>4</td><td>4</td><td>0100</td></tr>
+                            <tr><td>5</td><td>5</td><td>0101</td></tr>
+                            <tr><td>6</td><td>6</td><td>0110</td></tr>
+                            <tr><td>7</td><td>7</td><td>0111</td></tr>
+                            <tr><td>8</td><td>8</td><td>1000</td></tr>
+                            <tr><td>9</td><td>9</td><td>1001</td></tr>
+                            <tr><td>A</td><td>10</td><td>1010</td></tr>
+                            <tr><td>B</td><td>11</td><td>1011</td></tr>
+                            <tr><td>C</td><td>12</td><td>1100</td></tr>
+                            <tr><td>D</td><td>13</td><td>1101</td></tr>
+                            <tr><td>E</td><td>14</td><td>1110</td></tr>
+                            <tr><td>F</td><td>15</td><td>1111</td></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            <!-- ==========================================
+                 TAB 2: STEP-BY-STEP EXPLANATION
+                 ========================================== -->
+            <div id="coa-tab-pane-steps" class="coa-tab-pane" role="tabpanel" aria-labelledby="coa-tab-btn-steps">
+              <div class="lab-panel">
+                <div class="panel-header">
+                  <div class="panel-title-wrapper">
+                    <h3 class="panel-title">Mathematical Step-by-Step Derivation</h3>
+                    <span class="panel-badge coa">Polynomial Expansion &amp; Repeated Division</span>
+                  </div>
+                </div>
+
+                <!-- Explanation Mode & Playback Bar -->
+                <div class="steps-controls-header">
+                  <div class="steps-target-selector">
+                    <button id="coa-step-mode-dec" class="steps-target-pill active" data-mode="dec" type="button">Positional Weight (To Decimal)</button>
+                    <button id="coa-step-mode-bin" class="steps-target-pill" data-mode="bin" type="button">Repeated Division (To Binary)</button>
+                    <button id="coa-step-mode-oct" class="steps-target-pill" data-mode="oct" type="button">Repeated Division (To Octal)</button>
+                    <button id="coa-step-mode-hex" class="steps-target-pill" data-mode="hex" type="button">Repeated Division (To Hexadecimal)</button>
+                  </div>
+
+                  <div class="steps-playback-bar">
+                    <span id="coa-steps-counter" class="step-counter-badge">Step 1 of 1</span>
+                    <button id="coa-steps-restart" class="btn-step-control" type="button" title="Restart animation">⏮ Restart</button>
+                    <button id="coa-steps-prev" class="btn-step-control" type="button" title="Previous step">◀ Prev</button>
+                    <button id="coa-steps-play" class="btn-step-control" type="button" title="Play / Pause animation">▶ Play</button>
+                    <button id="coa-steps-next" class="btn-step-control" type="button" title="Next step">Next ▶</button>
+                    <button id="coa-steps-showall" class="btn-step-control" type="button" title="Show all steps immediately">Show All</button>
+                  </div>
+                </div>
+
+                <!-- Positional Place-Value Breakdown Table Container -->
+                <div id="coa-placevalue-wrapper" class="placevalue-card" style="margin-bottom: 1.25rem;">
+                  <h4 style="margin-bottom: 0.5rem; font-size: 0.92rem;">Positional Place-Value Breakdown Formula</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                    Evaluated as polynomial weight summation: <code>Decimal Value = ∑ (Digit × Baseⁱ)</code>
+                  </p>
+                  <div id="coa-placevalue-container" class="table-responsive">
+                    <!-- Table injected by coa.js -->
+                  </div>
+                </div>
+
+                <!-- Repeated Division Steps Card Container -->
+                <div id="coa-steps-wrapper" class="conversion-steps-card">
+                  <h4 style="margin-bottom: 0.5rem; font-size: 0.92rem;">Repeated Radix Division Breakdown</h4>
+                  <div id="coa-steps-content" class="steps-content">
+                    <!-- Steps injected by coa.js -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ==========================================
+                 TAB 3: SIGNED NUMBERS & 2'S COMPLEMENT
+                 ========================================== -->
+            <div id="coa-tab-pane-signed" class="coa-tab-pane" role="tabpanel" aria-labelledby="coa-tab-btn-signed">
+              <div id="coa-twos-comp-tool" class="twos-comp-card">
+                <div class="panel-header">
+                  <div class="panel-title-wrapper">
+                    <div class="panel-title-icon coa">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </div>
+                    <div>
+                      <h3 class="panel-title">Dedicated Signed Integer &amp; Two's Complement Tool</h3>
+                      <p class="panel-subtitle-text">Strict signed boundary validation: strictly rejects values outside [-2ⁿ⁻¹, 2ⁿ⁻¹ - 1]</p>
+                    </div>
+                  </div>
+                  <span class="panel-badge coa">Strict Range Enforcement</span>
+                </div>
+
+                <div class="twos-comp-body">
+                  <div class="twos-controls-row">
+                    <div class="form-group" style="min-width: 260px;">
+                      <label for="coa-twos-width" class="form-label">Register Width (n bits):</label>
+                      <select id="coa-twos-width" class="select-control" style="background-color: #0b1120; color: #f8fafc;">
+                        <option value="8" selected>8-Bit Signed: Range [-128 to +127]</option>
+                        <option value="16">16-Bit Signed: Range [-32768 to +32767]</option>
+                        <option value="32">32-Bit Signed: Range [-2147483648 to +2147483647]</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group flex-grow">
+                      <label for="coa-twos-input" class="form-label">
+                        <span>Signed Decimal Integer</span>
+                        <span class="form-hint">Negative or positive integers (e.g. -5, -128, +127)</span>
+                      </label>
+                      <div class="input-with-button">
+                        <input id="coa-twos-input" class="input-control font-mono" type="text" placeholder="e.g. -5, -17, -128, +42..." autocomplete="off">
+                        <button id="coa-btn-twos-calc" class="btn btn-primary" type="button">Derive 2's Complement</button>
+                        <button id="coa-btn-twos-reset" class="btn btn-secondary btn-sm" type="button">Reset</button>
+                      </div>
+                      <div id="coa-twos-feedback" class="input-feedback" role="alert"></div>
+                    </div>
+                  </div>
+
+                  <div class="presets-container" style="margin-top: 0.75rem;">
+                    <span class="presets-label">Signed Test Cases:</span>
+                    <div class="presets-chips-list">
+                      <button class="preset-chip btn-twos-preset" data-val="-5" data-width="8" type="button">-5 (8-bit)</button>
+                      <button class="preset-chip btn-twos-preset" data-val="-17" data-width="8" type="button">-17 (8-bit)</button>
+                      <button class="preset-chip btn-twos-preset" data-val="-128" data-width="8" type="button">-128 (8-bit Min)</button>
+                      <button class="preset-chip btn-twos-preset" data-val="127" data-width="8" type="button">+127 (8-bit Max)</button>
+                      <button class="preset-chip btn-twos-preset" data-val="128" data-width="8" type="button">128 (Overflow Reject)</button>
+                      <button class="preset-chip btn-twos-preset" data-val="-129" data-width="8" type="button">-129 (Underflow Reject)</button>
+                      <button class="preset-chip btn-twos-preset" data-val="-32768" data-width="16" type="button">-32768 (16-bit Min)</button>
+                      <button class="preset-chip btn-twos-preset" data-val="32767" data-width="16" type="button">+32767 (16-bit Max)</button>
+                    </div>
+                  </div>
+
+                  <div id="coa-twos-results" class="twos-results-container" style="display:none;">
+                    <!-- Populated dynamically by coa.js with 4 representation cards, step derivation, and algebraic verification -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ==========================================
+                 TAB 4: NUMBER SYSTEM PRACTICE
+                 ========================================== -->
+            <div id="coa-tab-pane-practice" class="coa-tab-pane" role="tabpanel" aria-labelledby="coa-tab-btn-practice">
+              <div class="coa-practice-shell">
+                <div class="panel-header">
+                  <div class="panel-title-wrapper">
+                    <h3 class="panel-title">COA Number Systems Interactive Practice Arena</h3>
+                    <span class="panel-badge coa">Mastery &amp; Self-Testing</span>
+                  </div>
+                </div>
+
+                <!-- Stats Bar -->
+                <div class="coa-practice-stats">
+                  <div class="practice-stat-box">
+                    <span class="practice-stat-label">Questions Attempted</span>
+                    <span id="coa-practice-attempted" class="practice-stat-val">0</span>
+                  </div>
+                  <div class="practice-stat-box">
+                    <span class="practice-stat-label">Correct Answers</span>
+                    <span id="coa-practice-correct" class="practice-stat-val">0</span>
+                  </div>
+                  <div class="practice-stat-box">
+                    <span class="practice-stat-label">Accuracy Rate</span>
+                    <span id="coa-practice-accuracy" class="practice-stat-val">0%</span>
+                  </div>
+                </div>
+
+                <!-- Active Question Card -->
+                <div id="coa-practice-card" class="lab-panel" style="background: var(--bg-surface);">
+                  <div class="practice-q-header">
+                    <span id="coa-practice-topic" class="practice-topic-badge">Binary to Decimal</span>
+                    <span id="coa-practice-counter" class="step-counter-badge">Question 1 of 12</span>
+                  </div>
+
+                  <div id="coa-practice-question" class="practice-q-text">
+                    Convert the binary number 1011₂ to its equivalent decimal value.
+                  </div>
+
+                  <div id="coa-practice-interactive-area">
+                    <!-- Interactive options or input field injected by coa.js -->
+                  </div>
+
+                  <div id="coa-practice-feedback" class="practice-feedback-banner" role="alert">
+                    <!-- Feedback injected dynamically -->
+                  </div>
+
+                  <div class="practice-nav-actions">
+                    <button id="coa-practice-btn-prev" class="btn btn-secondary btn-sm" type="button">◀ Previous Question</button>
+                    <button id="coa-practice-btn-random" class="btn btn-secondary btn-sm" type="button">🎲 Random Challenge</button>
+                    <button id="coa-practice-btn-next" class="btn btn-primary btn-sm" type="button">Next Question ▶</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Learn this concept: Number Systems Deep Dive (Beginner Friendly Theory) -->
+            <div id="coa-learn-panel" class="learn-concept-panel" style="margin-top: 1.5rem;">
+              <details class="learn-details" open>
+                <summary class="learn-summary">
+                  <div class="summary-left">
+                    <span class="summary-icon">💡</span>
+                    <div>
+                      <strong>COA Core Concepts Guide: Number Systems &amp; Machine Architecture</strong>
+                      <span class="summary-subtext">Syllabus: COA Module 1 • Bits, Bytes, Radix Representation &amp; Two's Complement</span>
+                    </div>
+                  </div>
+                  <span class="summary-toggle-pill">Toggle Guide ▾</span>
+                </summary>
+
+                <div class="learn-body">
+                  <div class="learn-section">
+                    <h5>1. What a Bit and a Byte Are</h5>
+                    <p>
+                      A <strong>bit</strong> (binary digit) is the atomic unit of digital information, holding either a <code>0</code> (low voltage) or <code>1</code> (high voltage).
+                      A <strong>byte</strong> is a contiguous group of <strong>8 bits</strong>. A single byte can encode 2⁸ = 256 distinct bit patterns (from <code>00000000</code> to <code>11111111</code>), serving as the standard addressable memory unit in modern computing architectures.
+                    </p>
+                  </div>
+
+                  <div class="learn-section">
+                    <h5>2. Why Computers Use Binary (Base 2)</h5>
+                    <p>
+                      Modern microprocessors are built from billions of microscopic silicon <strong>MOSFET transistors</strong> acting as electronic switches.
+                      Having only two discrete physical states (ON = saturation voltage, OFF = cut-off voltage) provides immense noise immunity, thermal stability, and circuit simplicity compared to multi-voltage analog systems.
+                    </p>
+                  </div>
+
+                  <div class="learn-section">
+                    <h5>3. Why Octal and Hexadecimal are Useful Shorthand</h5>
+                    <p>
+                      Because 2³ = 8 and 2⁴ = 16, exactly 3 bits map to 1 octal digit, and exactly <strong>4 bits (1 nibble)</strong> map to 1 hexadecimal character (<code>0-9, A-F</code>).
+                      Instead of reading 32 unwieldy bits like <code>11111111000000001010101001010101</code>, engineers represent it cleanly as <code>0xFF00AA55</code> without any numerical rounding.
+                    </p>
+                  </div>
+
+                  <div class="learn-section">
+                    <h5>4. How Positional Radix Notation Works</h5>
+                    <p>
+                      Every positional number system represents a magnitude <code>N</code> as the polynomial sum of digit weights:
+                      <code>N = ∑ (dᵢ × bⁱ)</code> where <code>b ≥ 2</code> is the radix and <code>0 ≤ dᵢ &lt; b</code>.
+                      Position <code>i</code> denotes the exponent of the base: for binary, weights are powers of 2 (1, 2, 4, 8, 16...); for decimal, powers of 10; for hexadecimal, powers of 16.
+                    </p>
+                  </div>
+
+                  <div class="learn-section">
+                    <h5>5. Why Fixed-Width Binary Matters in Computer Architecture</h5>
+                    <p>
+                      Physical CPU registers have rigid hardware bit widths (e.g., 8-bit, 16-bit, 32-bit, 64-bit).
+                      Arithmetic operates strictly modulo 2ⁿ. When an operation exceeds the register capacity, <strong>hardware overflow</strong> occurs, and the carry bit out of the MSB is either stored in a processor status flag or discarded.
+                    </p>
+                  </div>
+
+                  <div class="learn-section">
+                    <h5>6. Why Hardware ALUs Universalize Two's Complement</h5>
+                    <p>
+                      In sign-magnitude or 1's complement, there are two distinct encodings for zero (<code>+0</code> and <code>-0</code>), requiring extra comparison logic.
+                      In <strong>Two's Complement</strong>:
+                    </p>
+                    <ul class="learn-list">
+                      <li>Zero has a single, unique encoding (<code>00000000</code>).</li>
+                      <li>Subtraction <code>A - B</code> is executed as <code>A + (-B)</code> where <code>-B = ~B + 1</code>, using identical binary adder circuitry without separate subtractors.</li>
+                      <li>The MSB carries negative weight <code>-2ⁿ⁻¹</code>, while all other bits represent positive weights, naturally enforcing the signed range <code>[-2ⁿ⁻¹, 2ⁿ⁻¹ - 1]</code>.</li>
+                    </ul>
+                  </div>
+                </div>
+              </details>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 4: FLAT LAB (Automata Playground)
+             ========================================== -->
+        <section id="flat" class="page-section" aria-labelledby="flat-heading" hidden>
+          <div class="container" id="flat-lab-container">
+            
+            <div class="section-header">
+              <span class="section-eyebrow flat">FLAT Lab • Syllabus: Module 1 — Deterministic Finite Automata (DFA)</span>
+              <h2 id="flat-heading" class="section-heading">DFA String Validator (Language Ending in "01")</h2>
+              <p class="section-subtext">
+                Verify regular language membership against an interactive Deterministic Finite Automaton (DFA) that accepts 
+                binary strings ending in "01". Trace state transitions symbol-by-symbol with replay controls.
+              </p>
+            </div>
+
+            <div class="lab-layout">
+              
+              <!-- Machine Definition & State Specifications -->
+              <div class="lab-panel">
+                <div class="panel-header">
+                  <div class="panel-title-wrapper">
+                    <h3 class="panel-title">Automaton Specification: M = (Q, Σ, δ, q0, F)</h3>
+                    <span class="panel-badge flat">Language L = { w ∈ {0, 1}* | w ends in '01' }</span>
+                  </div>
+                </div>
+
+                <!-- Formal 5-tuple Display -->
+                <div class="dfa-spec-card">
+                  <span class="presets-label">Formal 5-Tuple Mathematical Definition:</span>
+                  <div class="dfa-tuple-row">
+                    <div class="dfa-tuple-item">
+                      <span class="dfa-tuple-label">States (Q)</span>
+                      <div id="flat-tuple-q" class="dfa-tuple-math">{ q0, q1, q2 }</div>
+                    </div>
+                    <div class="dfa-tuple-item">
+                      <span class="dfa-tuple-label">Alphabet (Σ)</span>
+                      <div id="flat-tuple-sigma" class="dfa-tuple-math">{ 0, 1 }</div>
+                    </div>
+                    <div class="dfa-tuple-item">
+                      <span class="dfa-tuple-label">Start State (q0)</span>
+                      <div id="flat-tuple-q0" class="dfa-tuple-math">q0</div>
+                    </div>
+                    <div class="dfa-tuple-item">
+                      <span class="dfa-tuple-label">Accept States (F)</span>
+                      <div id="flat-tuple-f" class="dfa-tuple-math">{ q2 }</div>
+                    </div>
+                  </div>
+
+                  <!-- State Definitions List -->
+                  <div style="margin-top: 1rem; padding: 0.85rem 1rem; background-color: rgba(var(--bg-surface-rgb), 0.6); border-radius: var(--radius-sm); font-size: 0.85rem; line-height: 1.6;">
+                    <strong>Formal State Semantics:</strong>
+                    <ul style="list-style: square; padding-left: 1.25rem; margin-top: 0.35rem; color: var(--text-secondary);">
+                      <li><code>q0</code>: Initial state; no relevant suffix matched.</li>
+                      <li><code>q1</code>: The most recent character read is <strong>0</strong>.</li>
+                      <li><code>q2</code>: The string ends in <strong>01</strong> (Accepting / Final state).</li>
+                    </ul>
+                  </div>
+
+                  <!-- Explicit Transition Table -->
+                  <div id="flat-transition-table-container" class="transition-table-wrapper">
+                    <!-- Transition matrix injected by flat.js -->
+                  </div>
+                </div>
+
+                <!-- Test Cases Presets Strip -->
+                <div class="presets-strip">
+                  <span class="presets-label">Test Case Presets:</span>
+                  <button id="flat-preset-01" class="preset-chip" type="button">01 (Accepted)</button>
+                  <button id="flat-preset-101" class="preset-chip" type="button">101 (Accepted)</button>
+                  <button id="flat-preset-1001" class="preset-chip" type="button">1001 (Accepted)</button>
+                  <button id="flat-preset-110" class="preset-chip" type="button">110 (Rejected)</button>
+                  <button id="flat-preset-0" class="preset-chip" type="button">0 (Rejected)</button>
+                  <button id="flat-preset-empty" class="preset-chip" type="button">ε Empty (Rejected)</button>
+                  <button id="flat-preset-invalid" class="preset-chip" type="button">10x1 (Validation Error)</button>
+                </div>
+
+                <!-- String Input Controls -->
+                <div class="form-grid" style="margin-bottom: 1.25rem;">
+                  <div class="form-group" style="grid-column: 1 / -2;">
+                    <div class="form-label">
+                      <span>Binary Input String (w)</span>
+                      <span id="flat-alphabet-badge" class="topic-tag">Alphabet Σ = { 0, 1 }</span>
+                    </div>
+                    <input id="flat-string-input" class="input-control" type="text" placeholder="e.g. 1001" autocomplete="off">
+                    <div id="flat-input-feedback" class="input-feedback" role="alert"></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="flat-speed-select" class="form-label">Simulation Speed</label>
+                    <select id="flat-speed-select" class="select-control" style="background-color: #0b1120; color: #f8fafc;">
+                      <option value="1200">Slow (1.2s)</option>
+                      <option value="750" selected>Normal (0.75s)</option>
+                      <option value="400">Fast (0.4s)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Action Toolbar (Replay, Play, Pause, Next, Prev, Reset) -->
+                <div class="action-toolbar">
+                  <button id="flat-btn-validate" class="btn btn-primary" type="button" title="Validate and process entire string">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>Validate String</span>
+                  </button>
+
+                  <button id="flat-btn-restart" class="btn btn-secondary btn-sm" type="button" title="Restart simulation from initial state">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <polygon points="11 19 2 12 11 5 11 19"></polygon>
+                      <polygon points="22 19 13 12 22 5 22 19"></polygon>
+                    </svg>
+                    <span>Restart</span>
+                  </button>
+
+                  <button id="flat-btn-play" class="btn btn-secondary btn-play" type="button" title="Play / Pause simulation">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span>Play</span>
+                  </button>
+
+                  <button id="flat-btn-prev" class="btn btn-secondary btn-sm" type="button" disabled title="Previous step">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <span>Previous Step</span>
+                  </button>
+
+                  <button id="flat-btn-next" class="btn btn-secondary btn-sm" type="button" disabled title="Next step">
+                    <span>Next Step</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+
+                  <button id="flat-btn-reset" class="btn btn-danger-outline btn-sm" type="button" style="margin-left: auto;" title="Reset simulator">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="1 4 1 10 7 10"></polyline>
+                      <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                    </svg>
+                    <span>Reset</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Interactive State Diagram & Tape View -->
+              <div id="flat-visual-stage" class="visualizer-stage">
+                
+                <div class="stage-header-row">
+                  <span class="stage-label">Current DFA Active State Diagram:</span>
+                  <div id="flat-current-state-badge" class="state-badge">Current: q0 (Start)</div>
+                </div>
+
+                <!-- Professional Interactive SVG State Machine Canvas -->
+                <div id="flat-svg-container" class="flat-svg-container" aria-label="DFA Transition State Machine Graphic">
+                  <svg id="flat-svg-diagram" class="flat-svg-diagram" viewBox="0 0 620 220" role="img">
+                    <defs>
+                      <marker id="arrow-default" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 1 L 9 5 L 0 9 z" fill="var(--text-muted)" />
+                      </marker>
+                      <marker id="arrow-active" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M 0 1 L 9 5 L 0 9 z" fill="var(--accent-flat)" />
+                      </marker>
+                      <filter id="glow-flat" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="3" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                      </filter>
+                    </defs>
+
+                    <!-- Incoming Start Arrow pointing into q0 -->
+                    <g class="svg-start-group">
+                      <line x1="30" y1="110" x2="70" y2="110" stroke="var(--text-muted)" stroke-width="2.5" marker-end="url(#arrow-default)" />
+                      <text x="35" y="100" fill="var(--text-muted)" font-size="11" font-weight="600" font-family="var(--font-mono)">Start</text>
+                    </g>
+
+                    <!-- Transition Paths (Curved Arcs & Self Loops) -->
+                    <!-- q0 -> q1 on '0' (Top arc) -->
+                    <path id="flat-edge-q0-0-q1" class="svg-edge" d="M 140 92 Q 210 55 278 92" fill="none" stroke="var(--text-muted)" stroke-width="2.2" marker-end="url(#arrow-default)" />
+                    <rect x="202" y="55" width="18" height="18" rx="4" fill="var(--bg-card)" stroke="var(--border-subtle)" />
+                    <text x="211" y="68" class="svg-edge-label" text-anchor="middle">0</text>
+
+                    <!-- q0 -> q0 on '1' (Self-loop on q0) -->
+                    <path id="flat-edge-q0-1-q0" class="svg-edge" d="M 92 82 C 70 25, 145 25, 125 82" fill="none" stroke="var(--text-muted)" stroke-width="2.2" marker-end="url(#arrow-default)" />
+                    <rect x="100" y="24" width="18" height="18" rx="4" fill="var(--bg-card)" stroke="var(--border-subtle)" />
+                    <text x="109" y="37" class="svg-edge-label" text-anchor="middle">1</text>
+
+                    <!-- q1 -> q1 on '0' (Self-loop on q1) -->
+                    <path id="flat-edge-q1-0-q1" class="svg-edge" d="M 292 82 C 270 25, 345 25, 325 82" fill="none" stroke="var(--text-muted)" stroke-width="2.2" marker-end="url(#arrow-default)" />
+                    <rect x="300" y="24" width="18" height="18" rx="4" fill="var(--bg-card)" stroke="var(--border-subtle)" />
+                    <text x="309" y="37" class="svg-edge-label" text-anchor="middle">0</text>
+
+                    <!-- q1 -> q2 on '1' (Top arc) -->
+                    <path id="flat-edge-q1-1-q2" class="svg-edge" d="M 340 92 Q 410 55 478 92" fill="none" stroke="var(--text-muted)" stroke-width="2.2" marker-end="url(#arrow-default)" />
+                    <rect x="402" y="55" width="18" height="18" rx="4" fill="var(--bg-card)" stroke="var(--border-subtle)" />
+                    <text x="411" y="68" class="svg-edge-label" text-anchor="middle">1</text>
+
+                    <!-- q2 -> q1 on '0' (Bottom arc from q2 to q1) -->
+                    <path id="flat-edge-q2-0-q1" class="svg-edge" d="M 480 128 Q 410 165 342 128" fill="none" stroke="var(--text-muted)" stroke-width="2.2" marker-end="url(#arrow-default)" />
+                    <rect x="402" y="145" width="18" height="18" rx="4" fill="var(--bg-card)" stroke="var(--border-subtle)" />
+                    <text x="411" y="158" class="svg-edge-label" text-anchor="middle">0</text>
+
+                    <!-- q2 -> q0 on '1' (Deep bottom arc from q2 to q0) -->
+                    <path id="flat-edge-q2-1-q0" class="svg-edge" d="M 495 138 Q 310 215 125 138" fill="none" stroke="var(--text-muted)" stroke-width="2.2" marker-end="url(#arrow-default)" />
+                    <rect x="300" y="185" width="18" height="18" rx="4" fill="var(--bg-card)" stroke="var(--border-subtle)" />
+                    <text x="309" y="198" class="svg-edge-label" text-anchor="middle">1</text>
+
+                    <!-- State Nodes (Circles) -->
+                    <!-- q0 (Start) -->
+                    <g id="flat-svg-node-q0" class="svg-dfa-node is-active" transform="translate(108, 110)">
+                      <circle class="svg-node-outer" r="32" fill="var(--bg-card)" stroke="var(--border-color)" stroke-width="2.5" />
+                      <text class="svg-node-text" dy="5" text-anchor="middle">q0</text>
+                      <text class="svg-node-sub" dy="48" text-anchor="middle">Initial</text>
+                    </g>
+
+                    <!-- q1 (Last symbol 0) -->
+                    <g id="flat-svg-node-q1" class="svg-dfa-node" transform="translate(308, 110)">
+                      <circle class="svg-node-outer" r="32" fill="var(--bg-card)" stroke="var(--border-color)" stroke-width="2.5" />
+                      <text class="svg-node-text" dy="5" text-anchor="middle">q1</text>
+                      <text class="svg-node-sub" dy="48" text-anchor="middle">Ends in 0</text>
+                    </g>
+
+                    <!-- q2 (Accept state - Double Circle) -->
+                    <g id="flat-svg-node-q2" class="svg-dfa-node is-accept" transform="translate(508, 110)">
+                      <circle class="svg-node-outer" r="34" fill="var(--bg-card)" stroke="var(--accent-flat)" stroke-width="2.5" />
+                      <circle class="svg-node-inner" r="28" fill="none" stroke="var(--accent-flat)" stroke-width="1.8" />
+                      <text class="svg-node-text" dy="5" text-anchor="middle">q2</text>
+                      <text class="svg-node-sub" dy="48" text-anchor="middle">Accept (01)</text>
+                    </g>
+                  </svg>
+                </div>
+
+                <!-- State Nodes Diagram Row (Cards view) -->
+                <div id="flat-state-nodes-row" class="state-nodes-row">
+                  <!-- Nodes injected by flat.js -->
+                </div>
+
+                <!-- Tape Track -->
+                <div class="tape-wrapper">
+                  <div class="tape-label">Input String Processing Tape &amp; Pointer Head:</div>
+                  <div id="flat-tape-track" class="tape-track">
+                    <!-- Tape cells injected by flat.js -->
+                  </div>
+                </div>
+
+                <!-- Acceptance Verdict Banner -->
+                <div id="flat-result-banner" class="result-banner" aria-live="polite">
+                  Awaiting input validation...
+                </div>
+
+              </div>
+
+              <!-- Transition Trace Log -->
+              <div class="trace-log-panel">
+                <h4>Transition Computation History &amp; Decision Trace</h4>
+                <div class="table-responsive">
+                  <table class="trace-table">
+                    <thead>
+                      <tr>
+                        <th>Step</th>
+                        <th>Current State</th>
+                        <th>Input Symbol</th>
+                        <th>Next State</th>
+                        <th>Rule δ(q, a)</th>
+                        <th>Action Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody id="flat-trace-table-body">
+                      <!-- Rows injected by flat.js -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Learn this concept: Deterministic Finite Automata Deep Dive -->
+              <div id="flat-learn-panel" class="learn-concept-panel">
+                <details class="learn-details">
+                  <summary class="learn-summary">
+                    <div class="summary-left">
+                      <span class="summary-icon">⚙️</span>
+                      <div>
+                        <strong>Learn this Concept: Deterministic Finite Automata (DFA)</strong>
+                        <span class="summary-subtext">Syllabus: FLAT Module 1 • Regular Languages, Invariants &amp; State Minimization</span>
+                      </div>
+                    </div>
+                    <span class="summary-toggle-pill">Expand Guide ▾</span>
+                  </summary>
+
+                  <div class="learn-body">
+                    <div class="learn-section">
+                      <h5>1. Formal Definition of a DFA</h5>
+                      <p>
+                        A Deterministic Finite Automaton is a 5-tuple <code>M = (Q, &Sigma;, &delta;, q<sub>0</sub>, F)</code>:
+                      </p>
+                      <ul class="learn-list">
+                        <li><code>Q</code>: A finite set of internal control states (here <code>{ q0, q1, q2 }</code>).</li>
+                        <li><code>&Sigma;</code>: A finite set of input alphabet symbols (here binary <code>{ 0, 1 }</code>).</li>
+                        <li><code>&delta;: Q &times; &Sigma; &rarr; Q</code>: The deterministic transition function with exactly one target state per input.</li>
+                        <li><code>q<sub>0</sub> &isin; Q</code>: The designated initial start state (here <code>q0</code>).</li>
+                        <li><code>F &sube; Q</code>: The set of accepting / final states (here <code>{ q2 }</code>).</li>
+                      </ul>
+                    </div>
+
+                    <div class="learn-section">
+                      <h5>2. Language Suffix Invariant for L = { w | w ends in "01" }</h5>
+                      <p>
+                        Every state in this DFA represents an equivalence class of string suffixes:
+                      </p>
+                      <ul class="learn-list">
+                        <li><strong>State q0:</strong> Represents the state where the most recent symbol was '1' (not preceded by 0) or the string is empty. No progress toward "01".</li>
+                        <li><strong>State q1:</strong> Represents strings ending in '0'. If a '1' arrives next, we achieve the target suffix "01" (moving to q2). If another '0' arrives, we remain in q1 because the string still ends in '0'.</li>
+                        <li><strong>State q2 (Accept):</strong> Represents strings ending in "01". If '0' arrives, the suffix becomes "010" which ends in '0', so &delta;(q2, 0) = q1. If '1' arrives, the suffix becomes "011", completely resetting the progress to q0.</li>
+                      </ul>
+                    </div>
+
+                    <div class="learn-section">
+                      <h5>3. Common Pitfalls &amp; Misconceptions</h5>
+                      <ul class="learn-list">
+                        <li><strong>Intermediate State Acceptance:</strong> A string is NOT accepted simply because it visits <code>q2</code> at some intermediate step; acceptance is evaluated <em>strictly upon consuming the final symbol</em> of the input.</li>
+                        <li><strong>Empty String (&epsilon;):</strong> The empty string executes 0 transitions and halts in <code>q0</code>. Because <code>q0 &notin; F</code>, &epsilon; is correctly rejected.</li>
+                        <li><strong>Non-Determinism:</strong> Unlike NFAs, every state must have an explicit outgoing transition for every symbol in &Sigma;, with no ambiguity and zero &epsilon;-transitions.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </details>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 5: PRACTICE ARENA (Quiz Studio)
+             ========================================== -->
+        <section id="quiz" class="page-section" aria-labelledby="quiz-heading" hidden>
+          <div class="container" id="quiz-lab-container">
+            
+            <div class="section-header">
+              <span class="section-eyebrow" style="color: #a855f7;">Interactive Arena • Conceptual Verification</span>
+              <h2 id="quiz-heading" class="section-heading">Practice Arena &amp; Knowledge Checks</h2>
+              <p class="section-subtext">
+                Test your mastery of Divide-and-Conquer algorithms, Positional Number Systems, and Automata Theory.
+                Immediate feedback with comprehensive explanations and real dynamic calculations.
+              </p>
+            </div>
+
+            <!-- Quiz Shell -->
+            <div class="quiz-shell-layout">
+              <div class="quiz-controls-bar">
+                <div id="quiz-category-filters" class="quiz-filters-group">
+                  <button class="quiz-filter-pill active" type="button" data-category="all">All Topics</button>
+                  <button class="quiz-filter-pill" type="button" data-category="daa">DAA (Algorithms)</button>
+                  <button class="quiz-filter-pill" type="button" data-category="coa">COA (Architecture)</button>
+                  <button class="quiz-filter-pill" type="button" data-category="flat">FLAT (Automata)</button>
+                </div>
+
+                <div class="quiz-actions-top">
+                  <button id="quiz-btn-dynamic" class="btn btn-primary btn-sm" type="button" title="Generate a parameterized question dynamically calculated in real time">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <span>Generate Dynamic Problem</span>
+                  </button>
+                </div>
+                
+                <div class="quiz-meta-group">
+                  <div id="quiz-progress-text" class="quiz-meta-pill">Question 1 of 15</div>
+                  <div id="quiz-score-badge" class="quiz-meta-pill score">Score: 0 / 0</div>
+                </div>
+              </div>
+
+              <!-- Real Accuracy Statistics HUD -->
+              <div id="quiz-stats-hud" class="quiz-stats-strip">
+                <div class="stat-pill"><span class="stat-pill-label">Attempted:</span> <strong id="quiz-stat-attempted" class="font-mono">0</strong></div>
+                <div class="stat-pill"><span class="stat-pill-label">Correct:</span> <strong id="quiz-stat-correct" class="font-mono" style="color:var(--status-success);">0</strong></div>
+                <div class="stat-pill"><span class="stat-pill-label">Accuracy:</span> <strong id="quiz-stat-accuracy" class="font-mono">0%</strong></div>
+                <div class="stat-pill"><span class="stat-pill-label">Bank Size:</span> <strong id="quiz-stat-total" class="font-mono">15+</strong></div>
+              </div>
+
+              <div id="quiz-card-container" class="quiz-card-wrapper">
+                <!-- Question card injected by quiz.js -->
+              </div>
+
+              <div class="quiz-actions-footer">
+                <button id="quiz-btn-prev" class="btn btn-secondary btn-sm" type="button" disabled>Previous Question</button>
+                <button id="quiz-btn-retry" class="btn btn-secondary btn-sm" type="button" style="display:none;">Retry Question</button>
+                <button id="quiz-btn-next" class="btn btn-secondary btn-sm" type="button">Next Question</button>
+                <button id="quiz-btn-reset" class="btn btn-danger-outline btn-sm" type="button" style="margin-left: auto;">Reset Practice</button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 6: PRESENTATION MODE (College Review Ready - 9 Slides)
+             ========================================== -->
+        <section id="presentation" class="page-section" aria-labelledby="presentation-heading" hidden>
+          <div class="container" id="presentation-container">
+            
+            <div class="presentation-deck-layout">
+              <div class="presentation-deck-header">
+                <div class="deck-header-left">
+                  <span id="presentation-slide-subject" class="presentation-subject-badge">Architecture &amp; Overview</span>
+                  <div id="presentation-slide-counter" class="presentation-counter-pill">Slide 1 of 9</div>
+                  
+                  <!-- Direct Slide Jump Dropdown -->
+                  <div class="presentation-jump-wrapper">
+                    <label for="presentation-jump-select" class="visually-hidden">Jump to Slide:</label>
+                    <select id="presentation-jump-select" class="presentation-jump-select" aria-label="Jump directly to presentation slide">
+                      <option value="0">1. Problem Statement</option>
+                      <option value="1">2. Project Objectives</option>
+                      <option value="2">3. Technology Stack</option>
+                      <option value="3">4. DAA Concept &amp; Live Binary Search</option>
+                      <option value="4">5. COA Concept &amp; Live Number Conversion</option>
+                      <option value="5">6. FLAT Concept &amp; Live DFA Transitions</option>
+                      <option value="6">7. Testing Methodology</option>
+                      <option value="7">8. Test Cases &amp; Observed Results</option>
+                      <option value="8">9. Conclusion &amp; Learning Outcomes</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="deck-header-right">
+                  <button id="presentation-btn-home" class="btn btn-secondary btn-xs" type="button" data-route="home" title="Return to Home Dashboard">
+                    <span>🏠 Dashboard</span>
+                  </button>
+                  <button id="presentation-btn-restart-top" class="btn btn-secondary btn-xs" type="button" title="Restart Deck from Slide 1">
+                    <span>🔄 Restart</span>
+                  </button>
+                  <button id="presentation-btn-fullscreen" class="btn btn-outline btn-xs" type="button" title="Toggle Fullscreen">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                    <span>Fullscreen</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Slide Card View -->
+              <div id="presentation-slide-card" class="presentation-slide-card">
+                <h2 id="presentation-slide-title" class="presentation-slide-title">ConceptLab: CS Concepts Playground</h2>
+                <p id="presentation-slide-subtitle" class="presentation-slide-subtitle">A Modern Educational Web Architecture for Core Computer Science Concepts</p>
+                
+                <ul id="presentation-slide-points" class="presentation-points-list">
+                  <!-- Points injected by presentation.js -->
+                </ul>
+
+                <!-- Embedded Interactive Live Demo Widget Container (Slides 4, 5, 6) -->
+                <div id="presentation-demo-container" class="presentation-demo-wrapper" style="display: none;">
+                  <!-- Injected dynamically by presentation.js for live classroom execution -->
+                </div>
+              </div>
+
+              <!-- Deck Controls Bar -->
+              <div class="presentation-controls-bar">
+                <button id="presentation-btn-prev" class="btn btn-secondary btn-sm" type="button">◀ Previous Slide</button>
+                <div id="presentation-dots" class="presentation-dots-group">
+                  <!-- 9 Dots injected by presentation.js -->
+                </div>
+                <button id="presentation-btn-next" class="btn btn-primary btn-sm" type="button">Next Slide ▶</button>
+                <button id="presentation-btn-restart" class="btn btn-outline btn-sm" type="button">Restart</button>
+              </div>
+
+              <div class="presentation-shortcuts-hint">
+                <span>Keyboard Shortcuts: Use <kbd>←</kbd> and <kbd>→</kbd> or <kbd>Space</kbd> to change slides. Press <kbd>Esc</kbd> to return to Dashboard.</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Technical Scripts in Strict Dependency Order -->
+  <script src="js/storage.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/daa.js"></script>
+  <script src="js/coa.js?v=4.0"></script>
+  <script src="js/flat.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/presentation.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
