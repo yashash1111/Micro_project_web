@@ -891,20 +891,20 @@
                     <table class="comparison-report-table" id="daa-comparison-report-table" aria-label="Binary vs Linear Search Comparison Table">
                       <thead>
                         <tr>
-                          <th scope="col">Array</th>
-                          <th scope="col">Target</th>
-                          <th scope="col">Binary comparisons</th>
-                          <th scope="col">Linear comparisons</th>
-                          <th scope="col" class="th-action text-right">Interactive Action</th>
+                          <th scope="col" class="th-array">Array</th>
+                          <th scope="col" class="th-target">Target</th>
+                          <th scope="col" class="th-binary">Binary comparisons</th>
+                          <th scope="col" class="th-linear">Linear comparisons</th>
+                          <th scope="col" class="th-action">Interactive Action</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr class="comparison-row" data-arr="1, 3, 5, 7, 9" data-target="7" tabindex="0" role="button" aria-label="Load array 1, 3, 5, 7, 9 with target 7">
-                          <td><code class="array-code font-mono">[1, 3, 5, 7, 9]</code></td>
-                          <td><span class="target-val font-mono font-bold">7</span></td>
-                          <td><span class="badge-count binary-badge-count font-mono">2</span></td>
-                          <td><span class="badge-count linear-badge-count font-mono">4</span></td>
-                          <td class="text-right">
+                          <td class="td-array"><code class="array-code font-mono">[1, 3, 5, 7, 9]</code></td>
+                          <td class="td-target"><span class="target-val font-mono font-bold">7</span></td>
+                          <td class="td-binary"><span class="badge-count binary-badge-count font-mono">2</span></td>
+                          <td class="td-linear"><span class="badge-count linear-badge-count font-mono">4</span></td>
+                          <td class="td-action">
                             <button type="button" class="btn btn-sm btn-outline-cyan btn-test-row" data-arr="1, 3, 5, 7, 9" data-target="7">
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                               <span>Load &amp; Trace</span>
@@ -912,11 +912,11 @@
                           </td>
                         </tr>
                         <tr class="comparison-row" data-arr="1, 3, 5, 7, 9" data-target="2" tabindex="0" role="button" aria-label="Load array 1, 3, 5, 7, 9 with target 2 absent">
-                          <td><code class="array-code font-mono">[1, 3, 5, 7, 9]</code></td>
-                          <td><span class="target-val font-mono font-bold">2 <small class="text-muted">(absent)</small></span></td>
-                          <td><span class="badge-count binary-badge-count font-mono">3</span></td>
-                          <td><span class="badge-count linear-badge-count font-mono">5</span></td>
-                          <td class="text-right">
+                          <td class="td-array"><code class="array-code font-mono">[1, 3, 5, 7, 9]</code></td>
+                          <td class="td-target"><span class="target-val font-mono font-bold">2 <small class="text-muted">(absent)</small></span></td>
+                          <td class="td-binary"><span class="badge-count binary-badge-count font-mono">3</span></td>
+                          <td class="td-linear"><span class="badge-count linear-badge-count font-mono">5</span></td>
+                          <td class="td-action">
                             <button type="button" class="btn btn-sm btn-outline-cyan btn-test-row" data-arr="1, 3, 5, 7, 9" data-target="2">
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                               <span>Load &amp; Trace</span>
@@ -924,11 +924,11 @@
                           </td>
                         </tr>
                         <tr class="comparison-row" data-arr="1, 3, 5, 7, 9" data-target="9" tabindex="0" role="button" aria-label="Load array 1, 3, 5, 7, 9 with target 9">
-                          <td><code class="array-code font-mono">[1, 3, 5, 7, 9]</code></td>
-                          <td><span class="target-val font-mono font-bold">9</span></td>
-                          <td><span class="badge-count binary-badge-count font-mono">3</span></td>
-                          <td><span class="badge-count linear-badge-count font-mono">5</span></td>
-                          <td class="text-right">
+                          <td class="td-array"><code class="array-code font-mono">[1, 3, 5, 7, 9]</code></td>
+                          <td class="td-target"><span class="target-val font-mono font-bold">9</span></td>
+                          <td class="td-binary"><span class="badge-count binary-badge-count font-mono">3</span></td>
+                          <td class="td-linear"><span class="badge-count linear-badge-count font-mono">5</span></td>
+                          <td class="td-action">
                             <button type="button" class="btn btn-sm btn-outline-cyan btn-test-row" data-arr="1, 3, 5, 7, 9" data-target="9">
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                               <span>Load &amp; Trace</span>
@@ -936,11 +936,11 @@
                           </td>
                         </tr>
                         <tr class="comparison-row" data-arr="4" data-target="4" tabindex="0" role="button" aria-label="Load single element array 4 with target 4">
-                          <td><code class="array-code font-mono">[4]</code></td>
-                          <td><span class="target-val font-mono font-bold">4</span></td>
-                          <td><span class="badge-count binary-badge-count font-mono">1</span></td>
-                          <td><span class="badge-count linear-badge-count font-mono">1</span></td>
-                          <td class="text-right">
+                          <td class="td-array"><code class="array-code font-mono">[4]</code></td>
+                          <td class="td-target"><span class="target-val font-mono font-bold">4</span></td>
+                          <td class="td-binary"><span class="badge-count binary-badge-count font-mono">1</span></td>
+                          <td class="td-linear"><span class="badge-count linear-badge-count font-mono">1</span></td>
+                          <td class="td-action">
                             <button type="button" class="btn btn-sm btn-outline-cyan btn-test-row" data-arr="4" data-target="4">
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                               <span>Load &amp; Trace</span>

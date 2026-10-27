@@ -4326,7 +4326,7 @@ select option,
   margin-bottom: 1rem;
 }
 
-.comparison-row {
+.review-comparison-box .comparison-row {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -5638,49 +5638,107 @@ select option,
 .table-responsive-wrapper {
   width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .comparison-report-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
   text-align: left;
   font-size: 0.88rem;
+  display: table !important;
+}
+
+.comparison-report-table thead {
+  display: table-header-group !important;
+}
+
+.comparison-report-table tbody {
+  display: table-row-group !important;
+}
+
+.comparison-report-table tr,
+.comparison-report-table tr.comparison-row {
+  display: table-row !important;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.comparison-report-table th,
+.comparison-report-table td {
+  display: table-cell !important;
+  vertical-align: middle;
+  padding: 0.85rem 1rem;
 }
 
 .comparison-report-table th {
-  padding: 0.8rem 1rem;
-  background: rgba(var(--bg-surface-rgb), 0.75);
+  background: var(--bg-surface);
   color: var(--text-secondary);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-bottom: 1.5px solid var(--border-color);
+  border-bottom: 2px solid var(--border-color);
   white-space: nowrap;
 }
 
+[data-theme="light"] .comparison-report-table th {
+  background: #f8fafc;
+  color: #475569;
+  border-bottom: 2px solid #e2e8f0;
+}
+
 .comparison-report-table td {
-  padding: 0.85rem 1rem;
   border-bottom: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  vertical-align: middle;
 }
 
-.comparison-row {
-  cursor: pointer;
-  transition: all var(--transition-fast);
+[data-theme="light"] .comparison-report-table td {
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.comparison-row:hover {
-  background-color: rgba(6, 182, 212, 0.06);
+/* Precise column alignments and width allocations */
+.comparison-report-table .th-array,
+.comparison-report-table .td-array {
+  width: 28%;
+  text-align: left;
 }
 
-.comparison-row.active-comparison-row {
+.comparison-report-table .th-target,
+.comparison-report-table .td-target {
+  width: 18%;
+  text-align: center;
+}
+
+.comparison-report-table .th-binary,
+.comparison-report-table .td-binary {
+  width: 20%;
+  text-align: center;
+}
+
+.comparison-report-table .th-linear,
+.comparison-report-table .td-linear {
+  width: 20%;
+  text-align: center;
+}
+
+.comparison-report-table .th-action,
+.comparison-report-table .td-action {
+  width: 14%;
+  text-align: right;
+}
+
+.comparison-report-table tr.comparison-row:hover {
+  background-color: rgba(6, 182, 212, 0.06) !important;
+}
+
+.comparison-report-table tr.comparison-row.active-comparison-row {
   background-color: rgba(6, 182, 212, 0.12) !important;
   box-shadow: inset 4px 0 0 var(--accent-daa);
 }
 
-.comparison-row.active-comparison-row td {
+.comparison-report-table tr.comparison-row.active-comparison-row td {
   font-weight: 600;
 }
 
