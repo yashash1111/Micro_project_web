@@ -26,6 +26,15 @@ var DaaLab = (() => {
   let animationSpeed = 800; // ms per step
   let searchMode = 'standard'; // 'standard' | 'first'
 
+  // Linear Search Dedicated Real-Time State
+  let linearArrayData = [1, 3, 5, 7, 9];
+  let linearTargetValue = 7;
+  let linearSteps = [];
+  let linearCurrentStepIndex = -1;
+  let linearIsPlaying = false;
+  let linearAnimationTimer = null;
+  let linearAnimationSpeed = 800; // ms per step
+
   // DOM Elements Cache
   let dom = {};
 
@@ -68,6 +77,29 @@ var DaaLab = (() => {
       binaryComps: document.getElementById('daa-binary-comps'),
       binaryTime: document.getElementById('daa-binary-time'),
       speedupBadge: document.getElementById('daa-speedup-badge'),
+      // Linear Search Visualizer Elements
+      linearTargetInput: document.getElementById('daa-linear-target-input'),
+      linearTargetFeedback: document.getElementById('daa-linear-target-feedback'),
+      linearSpeedSelect: document.getElementById('daa-linear-speed-select'),
+      linearBtnStart: document.getElementById('daa-linear-btn-start'),
+      linearBtnSync: document.getElementById('daa-linear-btn-sync'),
+      linearBtnRestart: document.getElementById('daa-linear-btn-restart'),
+      linearBtnPlay: document.getElementById('daa-linear-btn-play'),
+      linearBtnPrev: document.getElementById('daa-linear-btn-prev'),
+      linearBtnNext: document.getElementById('daa-linear-btn-next'),
+      linearBtnReset: document.getElementById('daa-linear-btn-reset'),
+      linearStepBadge: document.getElementById('daa-linear-step-badge'),
+      linearProgressFraction: document.getElementById('daa-linear-progress-fraction'),
+      linearProgressFill: document.getElementById('daa-linear-progress-fill'),
+      linearVisualizerStage: document.getElementById('daa-linear-visualizer-stage'),
+      linearEmptyState: document.getElementById('daa-linear-empty-state'),
+      linearArrayTrack: document.getElementById('daa-linear-array-track'),
+      linearTelIndex: document.getElementById('daa-linear-tel-index'),
+      linearTelVal: document.getElementById('daa-linear-tel-val'),
+      linearTelComparison: document.getElementById('daa-linear-tel-comparison'),
+      linearTelStatus: document.getElementById('daa-linear-tel-status'),
+      linearTraceBadge: document.getElementById('daa-linear-trace-badge'),
+      linearTraceList: document.getElementById('daa-linear-trace-list'),
       // Pseudocode Panel
       pseudocodeAction: document.getElementById('daa-code-current-action'),
       // Presets
@@ -85,6 +117,7 @@ var DaaLab = (() => {
     bindEvents();
     // Default load preset: Figure 3 canonical array [1, 3, 5, 7, 9], target 7
     loadPresetArray([1, 3, 5, 7, 9], 7);
+    loadLinearPresetArray([1, 3, 5, 7, 9], 7);
   }
 
   function bindEvents() {
@@ -113,6 +146,9 @@ var DaaLab = (() => {
         loadPresetArray(parsedArr, parsedTarget);
         handleSearchClick();
 
+        loadLinearPresetArray(parsedArr, parsedTarget);
+        handleLinearSearchClick();
+
         if (dom.arrayTrack) {
           dom.arrayTrack.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
@@ -137,6 +173,35 @@ var DaaLab = (() => {
         }
       });
     });
+
+    // Linear Search Visualizer Events
+    if (dom.linearBtnStart) dom.linearBtnStart.addEventListener('click', handleLinearSearchClick);
+    if (dom.linearBtnSync) dom.linearBtnSync.addEventListener('click', handleLinearSync);
+    if (dom.linearBtnRestart) dom.linearBtnRestart.addEventListener('click', handleLinearRestart);
+    if (dom.linearBtnPlay) dom.linearBtnPlay.addEventListener('click', toggleLinearPlayPause);
+    if (dom.linearBtnPrev) dom.linearBtnPrev.addEventListener('click', handleLinearStepBack);
+    if (dom.linearBtnNext) dom.linearBtnNext.addEventListener('click', handleLinearStepForward);
+    if (dom.linearBtnReset) dom.linearBtnReset.addEventListener('click', handleLinearReset);
+    if (dom.linearSpeedSelect) {
+      dom.linearSpeedSelect.addEventListener('change', (e) => {
+        linearAnimationSpeed = parseInt(e.target.value, 10) || 800;
+      });
+    }
+    if (dom.linearTargetInput) {
+      dom.linearTargetInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleLinearSearchClick();
+        }
+      });
+      dom.linearTargetInput.addEventListener('input', () => {
+        clearError(dom.linearTargetFeedback);
+        dom.linearTargetInput.classList.remove('is-invalid');
+      });
+      dom.linearTargetInput.addEventListener('wheel', (e) => {
+        e.preventDefault();
+      }, { passive: false });
+    }
 
     // Input clears
     dom.arrayInput.addEventListener('input', () => {
@@ -506,6 +571,7 @@ var DaaLab = (() => {
     resetPseudocode();
     resetProgress();
     runLinearSearchBenchmark(arr, target);
+    loadLinearPresetArray(arr, target);
   }
 
   function updateReportTableActiveRow(arr, target) {
@@ -538,6 +604,7 @@ var DaaLab = (() => {
 
   function resetVisualDisplay() {
     updateReportTableActiveRow([], null);
+    handleLinearReset();
     dom.emptyState.style.display = 'flex';
     dom.arrayTrack.style.display = 'none';
     dom.arrayTrack.innerHTML = '';
@@ -791,6 +858,362 @@ var DaaLab = (() => {
 
     // Synchronize Figure 3 canonical report table row highlight
     updateReportTableActiveRow(arr, target);
+  }
+
+  // =========================================================================
+  // Linear Search Real-Time Engine, Visualizer & Sequential Tracer
+  // =========================================================================
+
+  function computeLinearSearchTrace(arr, target) {
+    const trace = [];
+    let comps = 0;
+    let found = false;
+
+    for (let i = 0; i < arr.length; i++) {
+      comps++;
+      const val = arr[i];
+      const match = (val === target);
+
+      trace.push({
+        stepNum: comps,
+        index: i,
+        val: val,
+        target: target,
+        comparisonCount: comps,
+        found: match,
+        exhausted: false,
+        scannedIndices: Array.from({ length: i }, (_, k) => k),
+        message: match
+          ? `Step ${comps}: Inspect index [${i}] (A[${i}] = ${val}). Comparison: A[${i}] (${val}) == Target (${target}). Match discovered! Sequential scan terminates in ${comps} comparison(s).`
+          : `Step ${comps}: Inspect index [${i}] (A[${i}] = ${val}). Comparison: A[${i}] (${val}) != Target (${target}). Advancing pointer to index [${i + 1}]. (Comparisons: ${comps}).`
+      });
+
+      if (match) {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      trace.push({
+        stepNum: comps + 1,
+        index: arr.length,
+        val: null,
+        target: target,
+        comparisonCount: comps,
+        found: false,
+        exhausted: true,
+        scannedIndices: arr.map((_, k) => k),
+        message: `Step ${comps + 1}: Sequential scan exhausted all ${arr.length} elements from left to right. Target ${target} not found after ${comps} comparison(s).`
+      });
+    }
+
+    return trace;
+  }
+
+  function loadLinearPresetArray(arr, target) {
+    pauseLinearPlayback();
+    if (dom.linearTargetInput) {
+      dom.linearTargetInput.value = target !== undefined && target !== null ? target : '';
+    }
+    clearError(dom.linearTargetFeedback);
+    if (dom.linearTargetInput) dom.linearTargetInput.classList.remove('is-invalid');
+
+    linearArrayData = [...arr];
+    linearTargetValue = target;
+    linearSteps = [];
+    linearCurrentStepIndex = -1;
+
+    renderLinearInitialArray(linearArrayData);
+  }
+
+  function renderLinearInitialArray(arr) {
+    if (!dom.linearArrayTrack) return;
+    if (!arr || arr.length === 0) {
+      if (dom.linearEmptyState) dom.linearEmptyState.style.display = 'flex';
+      dom.linearArrayTrack.style.display = 'none';
+      dom.linearArrayTrack.innerHTML = '';
+      return;
+    }
+
+    if (dom.linearEmptyState) dom.linearEmptyState.style.display = 'none';
+    dom.linearArrayTrack.style.display = 'flex';
+    dom.linearArrayTrack.innerHTML = '';
+
+    arr.forEach((val, idx) => {
+      const node = document.createElement('div');
+      node.className = 'array-node';
+      node.id = `daa-linear-node-${idx}`;
+      node.innerHTML = `
+        <div class="array-box font-mono">${val}</div>
+        <div class="array-index font-mono">[${idx}]</div>
+      `;
+      dom.linearArrayTrack.appendChild(node);
+    });
+
+    if (dom.linearTelIndex) dom.linearTelIndex.textContent = 'i = 0';
+    if (dom.linearTelVal) dom.linearTelVal.textContent = arr.length > 0 ? arr[0] : '-';
+    if (dom.linearTelComparison) dom.linearTelComparison.textContent = 'Awaiting execution';
+    if (dom.linearTelStatus) dom.linearTelStatus.textContent = 'Ready';
+    if (dom.linearTraceBadge) dom.linearTraceBadge.textContent = '0 Comparisons';
+    if (dom.linearTraceList) {
+      dom.linearTraceList.innerHTML = `<li class="trace-log-item">Array loaded with ${arr.length} element(s). Target: ${linearTargetValue !== null ? linearTargetValue : 'None'}. Click <strong>"Scan Target"</strong> or <strong>"Play"</strong>.</li>`;
+    }
+
+    resetLinearProgress();
+    updateLinearPlaybackControls();
+  }
+
+  function renderLinearStep(stepIndex) {
+    if (!linearSteps || stepIndex < 0 || stepIndex >= linearSteps.length) return;
+    const step = linearSteps[stepIndex];
+
+    // Clear previous highlights
+    linearArrayData.forEach((_, idx) => {
+      const node = document.getElementById(`daa-linear-node-${idx}`);
+      if (node) {
+        node.classList.remove('linear-active', 'linear-scanned', 'target-found');
+        const oldPointers = node.querySelectorAll('.pointer-badge');
+        oldPointers.forEach(p => p.remove());
+      }
+    });
+
+    // Mark scanned elements
+    step.scannedIndices.forEach(idx => {
+      const node = document.getElementById(`daa-linear-node-${idx}`);
+      if (node) node.classList.add('linear-scanned');
+    });
+
+    // Mark current inspecting element
+    if (step.index < linearArrayData.length) {
+      const activeNode = document.getElementById(`daa-linear-node-${step.index}`);
+      if (activeNode) {
+        if (step.found) {
+          activeNode.classList.add('target-found');
+          const badge = document.createElement('div');
+          badge.className = 'pointer-badge pointer-found-badge';
+          badge.innerHTML = `<span class="pointer-arrow">▼</span> Found [${step.index}]`;
+          activeNode.appendChild(badge);
+        } else {
+          activeNode.classList.add('linear-active');
+          const badge = document.createElement('div');
+          badge.className = 'pointer-badge linear-pointer';
+          badge.innerHTML = `<span class="pointer-arrow">▼</span> i = ${step.index}`;
+          activeNode.appendChild(badge);
+        }
+      }
+    }
+
+    // Telemetry
+    if (dom.linearTelIndex) {
+      dom.linearTelIndex.textContent = step.index < linearArrayData.length ? `i = ${step.index}` : 'Exhausted';
+    }
+    if (dom.linearTelVal) {
+      dom.linearTelVal.textContent = step.val !== null ? step.val : 'None';
+    }
+    if (dom.linearTelComparison) {
+      if (step.found) {
+        dom.linearTelComparison.innerHTML = `<span style="color:var(--status-success); font-weight:700;">A[${step.index}] == Target (${step.target}) ★</span>`;
+      } else if (step.exhausted) {
+        dom.linearTelComparison.innerHTML = `<span style="color:var(--status-error); font-weight:700;">Exhausted (Not Found)</span>`;
+      } else {
+        dom.linearTelComparison.innerHTML = `<span>A[${step.index}] (${step.val}) &ne; Target (${step.target})</span>`;
+      }
+    }
+    if (dom.linearTelStatus) {
+      dom.linearTelStatus.textContent = step.found ? 'Match Discovered ★' : (step.exhausted ? 'Target Absent ✖' : `Inspecting index [${step.index}]`);
+    }
+
+    // Trace Log
+    if (dom.linearTraceList) {
+      const li = document.createElement('li');
+      li.className = `trace-log-item ${step.found ? 'trace-item-found' : (step.exhausted ? 'trace-item-exhausted' : 'trace-item-linear-step')}`;
+      li.textContent = step.message;
+      dom.linearTraceList.appendChild(li);
+      li.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    if (dom.linearTraceBadge) {
+      dom.linearTraceBadge.textContent = `${step.comparisonCount} Comparison${step.comparisonCount === 1 ? '' : 's'}`;
+    }
+
+    // Progress
+    if (dom.linearStepBadge) {
+      dom.linearStepBadge.textContent = `Step ${stepIndex + 1} of ${linearSteps.length}`;
+    }
+    if (dom.linearProgressFraction) {
+      dom.linearProgressFraction.textContent = `${stepIndex + 1} / ${linearSteps.length}`;
+    }
+    if (dom.linearProgressFill) {
+      const pct = Math.round(((stepIndex + 1) / linearSteps.length) * 100);
+      dom.linearProgressFill.style.width = `${pct}%`;
+    }
+
+    updateLinearPlaybackControls();
+  }
+
+  function handleLinearSearchClick() {
+    pauseLinearPlayback();
+    if (!dom.linearTargetInput) return;
+    const raw = dom.linearTargetInput.value.trim();
+    if (raw === '') {
+      showError(dom.linearTargetFeedback, 'Please specify an integer target to search for.');
+      dom.linearTargetInput.classList.add('is-invalid');
+      return;
+    }
+    const target = Number(raw);
+    if (isNaN(target) || !Number.isInteger(target)) {
+      showError(dom.linearTargetFeedback, 'Target must be a valid safe integer.');
+      dom.linearTargetInput.classList.add('is-invalid');
+      return;
+    }
+
+    clearError(dom.linearTargetFeedback);
+    dom.linearTargetInput.classList.remove('is-invalid');
+
+    linearTargetValue = target;
+    linearSteps = computeLinearSearchTrace(linearArrayData, linearTargetValue);
+    linearCurrentStepIndex = -1;
+
+    renderLinearInitialArray(linearArrayData);
+    if (dom.linearTraceList) dom.linearTraceList.innerHTML = '';
+    handleLinearStepForward();
+  }
+
+  function handleLinearStepForward() {
+    if (linearCurrentStepIndex < linearSteps.length - 1) {
+      linearCurrentStepIndex++;
+      renderLinearStep(linearCurrentStepIndex);
+    } else {
+      pauseLinearPlayback();
+    }
+  }
+
+  function handleLinearStepBack() {
+    if (linearCurrentStepIndex > 0) {
+      linearCurrentStepIndex--;
+      renderLinearInitialArray(linearArrayData);
+      if (dom.linearTraceList) dom.linearTraceList.innerHTML = '';
+      for (let i = 0; i <= linearCurrentStepIndex; i++) {
+        renderLinearStep(i);
+      }
+    }
+  }
+
+  function handleLinearRestart() {
+    pauseLinearPlayback();
+    if (linearArrayData.length === 0) return;
+    linearCurrentStepIndex = -1;
+    renderLinearInitialArray(linearArrayData);
+    if (dom.linearTraceList) dom.linearTraceList.innerHTML = '';
+    if (linearSteps.length > 0) {
+      handleLinearStepForward();
+    }
+  }
+
+  function toggleLinearPlayPause() {
+    if (linearIsPlaying) {
+      pauseLinearPlayback();
+    } else {
+      startLinearPlayback();
+    }
+  }
+
+  function startLinearPlayback() {
+    if (linearSteps.length === 0) {
+      handleLinearSearchClick();
+    }
+    if (linearCurrentStepIndex >= linearSteps.length - 1) {
+      linearCurrentStepIndex = -1;
+      renderLinearInitialArray(linearArrayData);
+      if (dom.linearTraceList) dom.linearTraceList.innerHTML = '';
+    }
+
+    linearIsPlaying = true;
+    updateLinearPlayButton();
+
+    linearAnimationTimer = setInterval(() => {
+      if (linearCurrentStepIndex < linearSteps.length - 1) {
+        handleLinearStepForward();
+      } else {
+        pauseLinearPlayback();
+      }
+    }, linearAnimationSpeed);
+  }
+
+  function pauseLinearPlayback() {
+    linearIsPlaying = false;
+    if (linearAnimationTimer) {
+      clearInterval(linearAnimationTimer);
+      linearAnimationTimer = null;
+    }
+    updateLinearPlayButton();
+  }
+
+  function updateLinearPlayButton() {
+    if (!dom.linearBtnPlay) return;
+    if (linearIsPlaying) {
+      dom.linearBtnPlay.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="6" y="4" width="4" height="16"></rect>
+          <rect x="14" y="4" width="4" height="16"></rect>
+        </svg>
+        <span>Pause</span>
+      `;
+      dom.linearBtnPlay.classList.add('playing');
+    } else {
+      dom.linearBtnPlay.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <span>Play</span>
+      `;
+      dom.linearBtnPlay.classList.remove('playing');
+    }
+  }
+
+  function updateLinearPlaybackControls() {
+    const hasSteps = linearSteps.length > 0;
+    const isAtStart = linearCurrentStepIndex <= 0;
+    const isAtEnd = linearCurrentStepIndex >= linearSteps.length - 1;
+
+    if (dom.linearBtnPrev) dom.linearBtnPrev.disabled = !hasSteps || isAtStart;
+    if (dom.linearBtnNext) dom.linearBtnNext.disabled = !hasSteps || isAtEnd;
+    if (dom.linearBtnRestart) dom.linearBtnRestart.disabled = !hasSteps;
+  }
+
+  function resetLinearProgress() {
+    if (dom.linearStepBadge) dom.linearStepBadge.textContent = 'Step: Ready';
+    if (dom.linearProgressFraction) dom.linearProgressFraction.textContent = '0 / 0';
+    if (dom.linearProgressFill) dom.linearProgressFill.style.width = '0%';
+  }
+
+  function handleLinearReset() {
+    pauseLinearPlayback();
+    linearSteps = [];
+    linearCurrentStepIndex = -1;
+    renderLinearInitialArray(linearArrayData);
+  }
+
+  function handleLinearSync() {
+    pauseLinearPlayback();
+    if (arrayData && arrayData.length > 0) {
+      linearArrayData = [...arrayData];
+    }
+    if (targetValue !== null && targetValue !== undefined) {
+      linearTargetValue = targetValue;
+      if (dom.linearTargetInput) dom.linearTargetInput.value = targetValue;
+    }
+    linearSteps = [];
+    linearCurrentStepIndex = -1;
+    renderLinearInitialArray(linearArrayData);
+
+    if (typeof App !== 'undefined' && App.showPopup) {
+      App.showPopup({
+        type: 'success',
+        title: 'Dataset Synchronized! 🔄',
+        message: `Linear Search dataset synced with active array [${linearArrayData.join(', ')}] and target ${linearTargetValue}.`
+      });
+    }
   }
 
   function handleSearchClick() {

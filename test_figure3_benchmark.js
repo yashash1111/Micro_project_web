@@ -76,7 +76,11 @@ assert(html.includes('data-arr="1, 3, 5, 7, 9" data-target="9"'), 'Row 3 attribu
 assert(html.includes('data-arr="4" data-target="4"'), 'Row 4 attributes must exist');
 assert(html.includes('The gap is small for five elements but widens quickly'), 'Asymptotic text must exist');
 assert(html.includes('id="daa-btn-preset-report"'), 'Figure 3 quick preset button must exist');
-console.log('  ✓ Table, rows, badges, asymptotic callout, and preset chips verified in index.html');
+assert(html.includes('id="daa-linear-target-input"'), 'Dedicated Linear Search input must exist');
+assert(html.includes('id="daa-linear-visualizer-stage"'), 'Dedicated Linear Search visualizer stage must exist');
+assert(html.includes('id="daa-linear-array-track"'), 'Dedicated Linear Search array track must exist');
+assert(html.includes('id="daa-linear-trace-list"'), 'Dedicated Linear Search trace list must exist');
+console.log('  ✓ Table, rows, badges, asymptotic callout, and Linear Search visualizer verified in index.html');
 
 // 4. Verify CSS in css/style.css
 console.log('\n[GROUP 3] CSS Styling Verification');
@@ -87,7 +91,9 @@ assert(css.includes('.binary-badge-count'), 'Binary badge class defined in CSS')
 assert(css.includes('.linear-badge-count'), 'Linear badge class defined in CSS');
 assert(css.includes('.asymptotic-callout-box'), 'Asymptotic callout box defined in CSS');
 assert(css.includes('.fig-badge'), 'Figure badge defined in CSS');
-console.log('  ✓ CSS classes for Figure 3 comparison table and callout verified');
+assert(css.includes('.linear-studio-wrapper'), 'Linear studio wrapper defined in CSS');
+assert(css.includes('.pointer-badge.linear-pointer'), 'Linear pointer badge defined in CSS');
+console.log('  ✓ CSS classes for Figure 3 comparison table, callout, and Linear Studio verified');
 
 // 5. Verify DAA JavaScript module wiring
 console.log('\n[GROUP 4] JavaScript Event Wiring Verification');
@@ -95,7 +101,10 @@ const js = fs.readFileSync('js/daa.js', 'utf8');
 assert(js.includes('updateReportTableActiveRow'), 'updateReportTableActiveRow defined in js/daa.js');
 assert(js.includes('btnPresetReport'), 'btnPresetReport handled in js/daa.js');
 assert(js.includes('.comparison-row'), 'Row click listeners bound in js/daa.js');
-console.log('  ✓ JavaScript dynamic synchronization and click handlers verified');
+assert(js.includes('computeLinearSearchTrace'), 'computeLinearSearchTrace defined in js/daa.js');
+assert(js.includes('loadLinearPresetArray'), 'loadLinearPresetArray defined in js/daa.js');
+assert(js.includes('renderLinearStep'), 'renderLinearStep defined in js/daa.js');
+console.log('  ✓ JavaScript dynamic synchronization, Linear search engine, and click handlers verified');
 
 console.log('\n======================================================');
 console.log('ALL FIGURE 3 BENCHMARK TESTS PASSED WITH 100% SUCCESS!');

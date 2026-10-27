@@ -952,6 +952,152 @@
                   </div>
                 </div>
 
+                <!-- Dedicated Linear Search Real-Time Studio & Visualizer -->
+                <div class="linear-studio-wrapper">
+                  <div class="linear-studio-header">
+                    <div class="lsh-title-group">
+                      <div class="panel-title-icon daa linear-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                      </div>
+                      <div>
+                        <h4 class="linear-studio-title">Linear Search Real-Time Studio &amp; Visualizer</h4>
+                        <p class="linear-studio-desc">Sequential left-to-right element inspection with moving pointer and live comparison telemetry</p>
+                      </div>
+                    </div>
+                    <div class="lsh-badges">
+                      <span class="benchmark-badge linear font-mono">O(n) Linear Scan</span>
+                    </div>
+                  </div>
+
+                  <!-- 1. Dedicated Search Bar for Linear Search -->
+                  <div class="search-hero-card linear-search-hero">
+                    <div class="search-hero-header">
+                      <span class="search-hero-label">Linear Search Target &amp; Algorithm Mode:</span>
+                      <span class="search-hero-hint">Enter an integer target to scan sequentially, or sync with active dataset</span>
+                    </div>
+                    <div class="search-box-row">
+                      <div class="search-input-group">
+                        <div class="search-icon-left" aria-hidden="true">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </div>
+                        <input id="daa-linear-target-input" class="search-hero-input font-mono" type="text" inputmode="numeric" placeholder="Enter target (e.g. 7)..." autocomplete="off" spellcheck="false">
+                        <div class="search-kbd-hint" title="Press Enter to scan"><span>↵ Enter</span></div>
+                      </div>
+
+                      <div class="search-speed-wrapper">
+                        <label for="daa-linear-speed-select" class="speed-label">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                          <span>Speed:</span>
+                        </label>
+                        <select id="daa-linear-speed-select" class="speed-select-control">
+                          <option value="1600">0.25x (1.6s)</option>
+                          <option value="1200">0.5x (1.2s)</option>
+                          <option value="800" selected>1.0x (0.8s)</option>
+                          <option value="500">1.5x (0.5s)</option>
+                          <option value="300">2.0x (0.3s)</option>
+                        </select>
+                      </div>
+
+                      <button id="daa-linear-btn-start" class="btn btn-search-primary linear-search-btn" type="button" title="Initiate Linear Search">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        <span>Scan Target</span>
+                      </button>
+
+                      <button id="daa-linear-btn-sync" class="btn btn-secondary btn-sync-array" type="button" title="Sync array from Binary Search above">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                        <span>Sync Array</span>
+                      </button>
+                    </div>
+                    <div id="daa-linear-target-feedback" class="input-feedback" role="alert"></div>
+                  </div>
+
+                  <!-- 2. Dedicated Playback Controls Console for Linear Search -->
+                  <div class="playback-console-card linear-playback-console">
+                    <div class="playback-left-group">
+                      <button id="daa-linear-btn-restart" class="btn btn-secondary btn-step" type="button" title="Restart simulation from beginning">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 19 2 12 11 5 11 19"></polygon><polygon points="22 19 13 12 22 5 22 19"></polygon></svg>
+                        <span>Restart</span>
+                      </button>
+
+                      <button id="daa-linear-btn-play" class="btn btn-play linear-play-btn" type="button" title="Play or pause auto-step execution">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <span>Play</span>
+                      </button>
+
+                      <div class="step-buttons-group">
+                        <button id="daa-linear-btn-prev" class="btn btn-secondary btn-step" type="button" disabled title="Step to previous comparison">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                          <span>Previous</span>
+                        </button>
+
+                        <button id="daa-linear-btn-next" class="btn btn-secondary btn-step" type="button" disabled title="Step to next comparison">
+                          <span>Next</span>
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </button>
+                      </div>
+
+                      <div id="daa-linear-step-badge" class="step-counter-badge">
+                        <span>Step: Ready</span>
+                      </div>
+                    </div>
+
+                    <div class="playback-right-group">
+                      <div id="daa-linear-progress-wrapper" class="step-progress-wrapper" title="Linear search progress">
+                        <div class="step-progress-label"><span id="daa-linear-progress-fraction">0 / 0</span></div>
+                        <div class="step-progress-bar"><div id="daa-linear-progress-fill" class="step-progress-fill" style="width: 0%;"></div></div>
+                      </div>
+
+                      <button id="daa-linear-btn-reset" class="btn btn-danger-outline btn-sm" type="button" title="Reset linear visualizer">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                        <span>Reset</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 3. Dedicated Visualizer Stage for Linear Search -->
+                  <div id="daa-linear-visualizer-stage" class="visualizer-stage linear-visualizer-stage">
+                    <div id="daa-linear-empty-state" class="empty-state" style="display: none;">
+                      <h4 class="empty-state-title">No Linear Search in Progress</h4>
+                      <p class="empty-state-desc">Enter a target above to start sequential scan.</p>
+                    </div>
+                    <div id="daa-linear-array-track" class="array-track" aria-live="polite"></div>
+                  </div>
+
+                  <!-- Telemetry Bar for Linear Search -->
+                  <div class="linear-telemetry-strip">
+                    <div class="linear-tel-item">
+                      <span class="linear-tel-label">Scan Pointer:</span>
+                      <span id="daa-linear-tel-index" class="linear-tel-val font-mono">i = 0</span>
+                    </div>
+                    <div class="linear-tel-item">
+                      <span class="linear-tel-label">Element A[i]:</span>
+                      <span id="daa-linear-tel-val" class="linear-tel-val font-mono">-</span>
+                    </div>
+                    <div class="linear-tel-item">
+                      <span class="linear-tel-label">Comparison:</span>
+                      <span id="daa-linear-tel-comparison" class="linear-tel-val font-mono">-</span>
+                    </div>
+                    <div class="linear-tel-item">
+                      <span class="linear-tel-label">Status:</span>
+                      <span id="daa-linear-tel-status" class="linear-tel-val font-mono status-ready">Ready</span>
+                    </div>
+                  </div>
+
+                  <!-- 4. Separate Tracing Space after its Heading -->
+                  <div class="trace-log-panel linear-trace-log-panel">
+                    <div class="trace-log-header">
+                      <div class="trace-log-title-wrapper">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                        <h4>Linear Search Step-by-Step Inspection Trace</h4>
+                      </div>
+                      <span id="daa-linear-trace-badge" class="trace-badge font-mono">0 Comparisons</span>
+                    </div>
+                    <ul id="daa-linear-trace-list" class="trace-log-list" aria-live="polite">
+                      <li class="trace-log-item">Linear Search initialized. Ready for execution.</li>
+                    </ul>
+                  </div>
+                </div>
+
                 <!-- Active Search Real-time HUD cards -->
                 <div class="benchmark-grid">
                   <div class="benchmark-card linear">
