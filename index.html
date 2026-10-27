@@ -967,83 +967,152 @@
                     </div>
                   </div>
 
-                  <!-- 1. Dedicated Dual Controls Card -->
-                  <div class="dual-controls-card">
-                    <div class="dual-controls-top-row">
-                      <div class="dual-target-input-group">
-                        <label for="daa-linear-target-input" class="dual-ctrl-label">Target to Compare:</label>
-                        <div class="dual-input-box-wrap">
-                          <input id="daa-linear-target-input" class="dual-search-input font-mono" type="text" inputmode="numeric" placeholder="Target (e.g. 7)" value="7" autocomplete="off" spellcheck="false">
-                          <button id="daa-linear-btn-start" class="btn btn-search-primary dual-search-btn" type="button" title="Initiate Dual Real-time Comparison">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                            <span>Compare Both</span>
+                  <!-- 1. Dedicated Dual Dataset Configuration Card (Array Input Bar) -->
+                  <div class="array-config-card dual-array-config-card">
+                    <div class="form-group">
+                      <div class="form-label-row">
+                        <label for="daa-dual-array-input" class="form-label">
+                          <span class="label-with-icon">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <line x1="8" y1="6" x2="21" y2="6"></line>
+                              <line x1="8" y1="12" x2="21" y2="12"></line>
+                              <line x1="8" y1="18" x2="21" y2="18"></line>
+                              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            </svg>
+                            <strong>Comparison Dataset Array (Sorted):</strong>
+                          </span>
+                          <span class="form-hint"><span class="badge-pill-subtle">Ascending order required</span></span>
+                        </label>
+                        <div class="form-actions-inline">
+                          <button id="daa-dual-btn-sort-helper" class="btn-text-action" type="button" title="Automatically sort dual comparison array ascending">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                              <path d="M3 16l4 4 4-4M7 20V4M21 8l-4-4-4 4M17 4v16"></path>
+                            </svg>
+                            <span>Auto-Sort</span>
+                          </button>
+                          <button id="daa-dual-btn-random" class="btn-text-action" type="button" title="Generate random sorted dataset for comparison">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path>
+                            </svg>
+                            <span>Random Array</span>
+                          </button>
+                          <button id="daa-linear-btn-sync" class="btn-text-action" type="button" title="Sync array from main visualizer above">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                            </svg>
+                            <span>Sync Playground</span>
                           </button>
                         </div>
                       </div>
-
-                      <div class="dual-presets-group">
-                        <span class="dual-ctrl-label">Figure 3 Presets:</span>
-                        <div class="dual-pills-row">
-                          <button type="button" class="dual-preset-pill active" data-arr="1, 3, 5, 7, 9" data-target="7">Target 7</button>
-                          <button type="button" class="dual-preset-pill" data-arr="1, 3, 5, 7, 9" data-target="2">Target 2 (Absent)</button>
-                          <button type="button" class="dual-preset-pill" data-arr="1, 3, 5, 7, 9" data-target="9">Target 9</button>
-                          <button type="button" class="dual-preset-pill" data-arr="4" data-target="4">[4] Target 4</button>
-                        </div>
+                      <div class="input-with-adornment">
+                        <span class="input-adornment-prefix">[ ]</span>
+                        <input id="daa-dual-array-input" class="input-control font-mono" type="text" placeholder="e.g. 1, 3, 5, 7, 9" value="1, 3, 5, 7, 9" autocomplete="off" spellcheck="false">
                       </div>
+                      <div id="daa-dual-array-feedback" class="input-feedback" role="alert"></div>
+                    </div>
 
-                      <div class="dual-speed-group">
-                        <label for="daa-linear-speed-select" class="dual-ctrl-label">Speed:</label>
-                        <select id="daa-linear-speed-select" class="speed-select-control dual-speed-select">
-                          <option value="1600">0.25x</option>
-                          <option value="1200">0.5x</option>
-                          <option value="800" selected>1.0x</option>
-                          <option value="500">1.5x</option>
-                          <option value="300">2.0x</option>
-                        </select>
+                    <!-- Figure 3 Quick Test Case Presets -->
+                    <div class="presets-container">
+                      <span class="presets-label">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        Figure 3 Presets:
+                      </span>
+                      <div class="presets-chips-list">
+                        <button type="button" class="preset-chip preset-chip-cyan dual-preset-pill active" data-arr="1, 3, 5, 7, 9" data-target="7">
+                          <span class="preset-tag-dot cyan"></span>[1,3,5,7,9] ➔ Target 7
+                        </button>
+                        <button type="button" class="preset-chip preset-chip-error dual-preset-pill" data-arr="1, 3, 5, 7, 9" data-target="2">
+                          <span class="preset-tag-dot error"></span>[1,3,5,7,9] ➔ Target 2 (Absent)
+                        </button>
+                        <button type="button" class="preset-chip preset-chip-success dual-preset-pill" data-arr="1, 3, 5, 7, 9" data-target="9">
+                          <span class="preset-tag-dot success"></span>[1,3,5,7,9] ➔ Target 9
+                        </button>
+                        <button type="button" class="preset-chip preset-chip-info dual-preset-pill" data-arr="4" data-target="4">
+                          <span class="preset-tag-dot info"></span>[4] ➔ Target 4 (Single)
+                        </button>
                       </div>
                     </div>
+                  </div>
+
+                  <!-- 2. Dedicated Dual Target Search Hero Bar -->
+                  <div class="search-hero-card dual-search-hero">
+                    <div class="search-hero-header">
+                      <span class="search-hero-label">Target Search Bar &amp; Comparison Speed:</span>
+                      <span class="search-hero-hint">Enter target integer or click preset, then click Compare Both</span>
+                    </div>
+                    <div class="search-box-row">
+                      <div class="search-input-group">
+                        <div class="search-icon-left" aria-hidden="true">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </div>
+                        <input id="daa-linear-target-input" class="search-hero-input font-mono" type="text" inputmode="numeric" placeholder="Enter target integer to compare (e.g. 7)..." value="7" autocomplete="off" spellcheck="false">
+                        <div class="search-kbd-hint" title="Press Enter to compare"><span>↵ Enter</span></div>
+                      </div>
+
+                      <div class="search-speed-wrapper">
+                        <label for="daa-linear-speed-select" class="speed-label">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                          <span>Speed:</span>
+                        </label>
+                        <select id="daa-linear-speed-select" class="speed-select-control">
+                          <option value="1600">0.25x (1.6s)</option>
+                          <option value="1200">0.5x (1.2s)</option>
+                          <option value="800" selected>1.0x (0.8s)</option>
+                          <option value="500">1.5x (0.5s)</option>
+                          <option value="300">2.0x (0.3s)</option>
+                        </select>
+                      </div>
+
+                      <button id="daa-linear-btn-start" class="btn btn-search-primary dual-search-btn" type="button" title="Initiate Dual Real-time Comparison">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <span>Compare Both</span>
+                      </button>
+                    </div>
                     <div id="daa-linear-target-feedback" class="input-feedback" role="alert"></div>
+                  </div>
 
-                    <!-- Dual Playback Action Bar -->
-                    <div class="dual-playback-bar">
-                      <div class="dual-playback-left">
-                        <button id="daa-linear-btn-restart" class="btn btn-secondary btn-step btn-sm" type="button" title="Restart simulation from beginning">
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 19 2 12 11 5 11 19"></polygon><polygon points="22 19 13 12 22 5 22 19"></polygon></svg>
-                          <span>Restart</span>
+                  <!-- 3. Dedicated Dual Playback Console -->
+                  <div class="playback-console-card dual-playback-console">
+                    <div class="playback-left-group">
+                      <button id="daa-linear-btn-restart" class="btn btn-secondary btn-step" type="button" title="Restart simulation from beginning">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 19 2 12 11 5 11 19"></polygon><polygon points="22 19 13 12 22 5 22 19"></polygon></svg>
+                        <span>Restart</span>
+                      </button>
+
+                      <button id="daa-linear-btn-play" class="btn btn-play linear-play-btn" type="button" title="Play or pause auto-step execution">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <span>Play Both</span>
+                      </button>
+
+                      <div class="step-buttons-group">
+                        <button id="daa-linear-btn-prev" class="btn btn-secondary btn-step" type="button" disabled title="Step back both algorithms">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                          <span>Previous</span>
                         </button>
-                        <button id="daa-linear-btn-play" class="btn btn-play linear-play-btn btn-sm" type="button" title="Play or pause auto-step execution">
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                          <span>Play Both</span>
-                        </button>
-                        <div class="step-buttons-group">
-                          <button id="daa-linear-btn-prev" class="btn btn-secondary btn-step btn-sm" type="button" disabled title="Step back both algorithms">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                            <span>Prev</span>
-                          </button>
-                          <button id="daa-linear-btn-next" class="btn btn-secondary btn-step btn-sm" type="button" title="Step forward both algorithms">
-                            <span>Next</span>
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                          </button>
-                        </div>
-                        <button id="daa-linear-btn-reset" class="btn btn-danger-outline btn-sm" type="button" title="Reset simulation">
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-                          <span>Reset</span>
-                        </button>
-                        <button id="daa-linear-btn-sync" class="btn btn-secondary btn-sync-array btn-sm" type="button" title="Sync array from main visualizer above">
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
-                          <span>Sync Array Input</span>
+
+                        <button id="daa-linear-btn-next" class="btn btn-secondary btn-step" type="button" title="Step forward both algorithms">
+                          <span>Next</span>
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </button>
                       </div>
 
-                      <div class="dual-playback-right">
-                        <div id="daa-linear-step-badge" class="step-counter-badge font-mono">
-                          <span>Step: Ready</span>
-                        </div>
-                        <div id="daa-linear-progress-wrapper" class="step-progress-wrapper" title="Dual simulation progress">
-                          <div class="step-progress-label"><span id="daa-linear-progress-fraction" class="font-mono">0 / 0</span></div>
-                          <div class="step-progress-bar"><div id="daa-linear-progress-fill" class="step-progress-fill" style="width: 0%;"></div></div>
-                        </div>
+                      <div id="daa-linear-step-badge" class="step-counter-badge font-mono">
+                        <span>Step: Ready</span>
                       </div>
+                    </div>
+
+                    <div class="playback-right-group">
+                      <div id="daa-linear-progress-wrapper" class="step-progress-wrapper" title="Dual simulation progress">
+                        <div class="step-progress-label"><span id="daa-linear-progress-fraction" class="font-mono">0 / 0</span></div>
+                        <div class="step-progress-bar"><div id="daa-linear-progress-fill" class="step-progress-fill" style="width: 0%;"></div></div>
+                      </div>
+
+                      <button id="daa-linear-btn-reset" class="btn btn-danger-outline btn-sm" type="button" title="Reset simulation">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                        <span>Reset</span>
+                      </button>
                     </div>
                   </div>
 

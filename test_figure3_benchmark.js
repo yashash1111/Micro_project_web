@@ -77,6 +77,9 @@ assert(html.includes('data-arr="4" data-target="4"'), 'Row 4 attributes must exi
 assert(html.includes('The gap is small for five elements but widens quickly'), 'Asymptotic text must exist');
 assert(html.includes('id="daa-btn-preset-report"'), 'Figure 3 quick preset button must exist');
 assert(html.includes('id="daa-linear-target-input"'), 'Dedicated Linear Search input must exist');
+assert(html.includes('id="daa-dual-array-input"'), 'Dedicated Dual Comparison array input must exist');
+assert(html.includes('id="daa-dual-btn-sort-helper"'), 'Dual Auto-Sort helper button must exist');
+assert(html.includes('id="daa-dual-btn-random"'), 'Dual Random Array helper button must exist');
 assert(html.includes('id="daa-linear-visualizer-stage"'), 'Dedicated Linear Search visualizer stage must exist');
 assert(html.includes('id="daa-linear-array-track"'), 'Dedicated Linear Search array track must exist');
 assert(html.includes('id="daa-linear-trace-list"'), 'Dedicated Linear Search trace list must exist');
@@ -120,6 +123,9 @@ assert(js.includes('computeDualBinarySearchTrace'), 'computeDualBinarySearchTrac
 assert(js.includes('renderDualStep'), 'renderDualStep defined in js/daa.js');
 assert(js.includes('handleDualStepForward'), 'handleDualStepForward defined in js/daa.js');
 assert(js.includes('toggleDualPlayPause'), 'toggleDualPlayPause defined in js/daa.js');
+assert(js.includes('validateDualArrayInput'), 'validateDualArrayInput defined in js/daa.js');
+assert(js.includes('validateDualTargetInput'), 'validateDualTargetInput defined in js/daa.js');
+assert(js.includes('handleDualAutoSort'), 'handleDualAutoSort defined in js/daa.js');
 console.log('  ✓ JavaScript dynamic synchronization, Dual search engine, and click handlers verified');
 
 console.log('\n======================================================');

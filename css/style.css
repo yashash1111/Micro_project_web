@@ -5855,154 +5855,42 @@ select option,
   margin: 0.2rem 0 0 0;
 }
 
-/* Dual Controls Card */
-.dual-controls-card {
+/* Dual Dataset & Search Cards */
+.dual-array-config-card {
+  margin-top: 0;
+  padding: 1.15rem 1.25rem;
   background: var(--bg-elevated);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 1rem 1.15rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
 }
 
-[data-theme="light"] .dual-controls-card {
-  background: #f8fafc;
-  border-color: #e2e8f0;
+.dual-search-hero {
+  margin-top: 0;
+  border-left: 3px solid var(--accent-daa);
+  padding: 1rem 1.25rem;
+  background: var(--bg-elevated);
 }
 
-.dual-controls-top-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.dual-ctrl-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-secondary);
-  display: block;
-  margin-bottom: 0.35rem;
-}
-
-.dual-target-input-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.dual-input-box-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.dual-search-input {
-  width: 130px;
-  padding: 0.45rem 0.75rem;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  background: var(--bg-input, var(--bg-surface));
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  outline: none;
-  transition: all var(--transition-fast);
-}
-
-.dual-search-input:focus {
-  border-color: var(--accent-daa);
-  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+.dual-playback-console {
+  margin-top: 0;
+  padding: 0.85rem 1.25rem;
+  background: var(--bg-elevated);
 }
 
 .dual-search-btn {
-  padding: 0.45rem 0.85rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  border-radius: var(--radius-sm);
-  white-space: nowrap;
+  background: linear-gradient(135deg, #06b6d4, #0284c7);
+  border-color: #06b6d4;
+  color: #ffffff;
 }
 
-/* Figure 3 Presets Pills */
-.dual-presets-group {
-  display: flex;
-  flex-direction: column;
+.dual-search-btn:hover {
+  background: linear-gradient(135deg, #22d3ee, #06b6d4);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
 }
 
-.dual-pills-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.dual-preset-pill {
-  padding: 0.35rem 0.65rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  font-family: var(--font-mono);
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 9999px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.dual-preset-pill:hover {
-  border-color: var(--accent-daa);
-  color: var(--accent-daa);
-  background: rgba(6, 182, 212, 0.08);
-}
-
-.dual-preset-pill.active {
-  background: rgba(6, 182, 212, 0.18);
-  border-color: var(--accent-daa);
-  color: var(--accent-daa);
-  font-weight: 700;
-}
-
-[data-theme="light"] .dual-preset-pill.active {
-  background: #e0f2fe;
-  border-color: #0284c7;
-  color: #0369a1;
-}
-
-.dual-speed-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.dual-speed-select {
-  padding: 0.42rem 0.65rem;
-  font-size: 0.82rem;
-}
-
-/* Dual Playback Bar */
-.dual-playback-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--border-subtle);
-}
-
-.dual-playback-left {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.dual-playback-right {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+[data-theme="light"] .dual-array-config-card,
+[data-theme="light"] .dual-search-hero,
+[data-theme="light"] .dual-playback-console {
+  background: #f8fafc;
+  border-color: #e2e8f0;
 }
 
 /* Dual Columns Grid (Side-by-Side 50/50) */

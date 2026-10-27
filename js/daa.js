@@ -112,6 +112,10 @@ var DaaLab = (() => {
       linearTraceBadge: document.getElementById('daa-linear-trace-badge'),
       linearTraceList: document.getElementById('daa-linear-trace-list'),
       // Dual Real-Time Visualizer Elements
+      dualArrayInput: document.getElementById('daa-dual-array-input'),
+      dualArrayFeedback: document.getElementById('daa-dual-array-feedback'),
+      dualBtnSortHelper: document.getElementById('daa-dual-btn-sort-helper'),
+      dualBtnRandom: document.getElementById('daa-dual-btn-random'),
       dualBinaryTrack: document.getElementById('daa-dual-binary-array-track'),
       dualBinaryStatus: document.getElementById('daa-dual-binary-status'),
       dualBinaryTraceBadge: document.getElementById('daa-dual-binary-trace-badge'),
@@ -160,6 +164,9 @@ var DaaLab = (() => {
         const parsedArr = arrRaw.split(',').map(s => Number(s.trim()));
         const parsedTarget = Number(targetRaw);
 
+        if (dom.dualArrayInput) dom.dualArrayInput.value = parsedArr.join(', ');
+        if (dom.linearTargetInput) dom.linearTargetInput.value = parsedTarget;
+
         // Run solely in the Dual Visualizer without modifying or scrolling to top search playground
         initDualComparison(parsedArr, parsedTarget, true);
       });
@@ -172,7 +179,7 @@ var DaaLab = (() => {
       });
     });
 
-    // Dual Presets Quick Pills
+    // Dual Presets Quick Chips
     const dualPresetPills = document.querySelectorAll('.dual-preset-pill');
     dualPresetPills.forEach(pill => {
       pill.addEventListener('click', () => {
@@ -182,9 +189,28 @@ var DaaLab = (() => {
         const parsedArr = arrRaw.split(',').map(s => Number(s.trim()));
         const parsedTarget = Number(targetRaw);
 
+        if (dom.dualArrayInput) dom.dualArrayInput.value = parsedArr.join(', ');
+        if (dom.linearTargetInput) dom.linearTargetInput.value = parsedTarget;
+
         initDualComparison(parsedArr, parsedTarget, true);
       });
     });
+
+    // Dual Comparison Array & Target Events
+    if (dom.dualBtnSortHelper) dom.dualBtnSortHelper.addEventListener('click', handleDualAutoSort);
+    if (dom.dualBtnRandom) dom.dualBtnRandom.addEventListener('click', handleDualRandomArray);
+    if (dom.dualArrayInput) {
+      dom.dualArrayInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleDualSearchClick();
+        }
+      });
+      dom.dualArrayInput.addEventListener('input', () => {
+        clearError(dom.dualArrayFeedback);
+        dom.dualArrayInput.classList.remove('is-invalid');
+      });
+    }
 
     // Dual Visualizer Events
     if (dom.linearBtnStart) dom.linearBtnStart.addEventListener('click', handleDualSearchClick);
@@ -1024,11 +1050,18 @@ var DaaLab = (() => {
     linearTargetValue = dualTargetValue;
     linearSteps = dualLinearSteps;
 
+    // Synchronize Dual Dataset & Target Inputs
+    if (dom.dualArrayInput) {
+      dom.dualArrayInput.value = dualArrayData.join(', ');
+      dom.dualArrayInput.classList.remove('is-invalid');
+    }
+    clearError(dom.dualArrayFeedback);
+
     if (dom.linearTargetInput) {
       dom.linearTargetInput.value = dualTargetValue;
+      dom.linearTargetInput.classList.remove('is-invalid');
     }
     clearError(dom.linearTargetFeedback);
-    if (dom.linearTargetInput) dom.linearTargetInput.classList.remove('is-invalid');
 
     // Update Presets & Table Row Highlight
     updateReportTableActiveRow(dualArrayData, dualTargetValue);
@@ -1412,41 +1445,202 @@ var DaaLab = (() => {
     if (dom.linearBtnRestart) dom.linearBtnRestart.disabled = !hasSteps;
   }
 
-  function handleDualSearchClick() {
-    pauseDualPlayback();
-    if (!dom.linearTargetInput) return;
-    const raw = dom.linearTargetInput.value.trim();
-    if (raw === '') {
-      showError(dom.linearTargetFeedback, 'Please specify an integer target to compare.');
-      dom.linearTargetInput.classList.add('is-invalid');
-      return;
-    }
-    const target = Number(raw);
-    if (isNaN(target) || !Number.isInteger(target)) {
-      showError(dom.linearTargetFeedback, 'Target must be a valid safe integer.');
-      dom.linearTargetInput.classList.add('is-invalid');
-      return;
+  function validateDualArrayInput() {
+    if (!dom.dualArrayInput) return dualArrayData;
+    const raw = dom.dualArrayInput.value;
+    if (!raw || raw.trim() === '') {
+      dom.dualArrayInput.classList.add('is-invalid');
+      const msg = 'Array cannot be empty. Please enter comma-separated integers.';
+      showError(dom.dualArrayFeedback, msg);
+      if (typeof App !== 'undefined' && App.showPopup) {
+        App.showPopup({
+          type: 'error',
+          title: 'Comparison Array Missing! ⚠️',
+          message: msg
+        });
+      }
+      return null;
     }
 
-    clearError(dom.linearTargetFeedback);
-    dom.linearTargetInput.classList.remove('is-invalid');
+    const rawTokens = raw.split(',');
+    if (rawTokens.some((t, idx) => t.trim() === '' && (idx < rawTokens.length - 1 || rawTokens.length === 1))) {
+      dom.dualArrayInput.classList.add('is-invalid');
+      const msg = 'Malformed input: empty item between commas (e.g. "2,,4").';
+      showError(dom.dualArrayFeedback, msg);
+      return null;
+    }
 
-    initDualComparison(dualArrayData, target, true);
+    const nums = parseArray(raw);
+    if (nums.length === 0) {
+      dom.dualArrayInput.classList.add('is-invalid');
+      showError(dom.dualArrayFeedback, 'Please enter at least 1 valid integer element.');
+      return null;
+    }
+
+    if (nums.some(n => isNaN(n) || !Number.isInteger(n) || !Number.isSafeInteger(n))) {
+      dom.dualArrayInput.classList.add('is-invalid');
+      showError(dom.dualArrayFeedback, 'All elements must be safe valid integers.');
+      return null;
+    }
+
+    if (nums.length > 25) {
+      dom.dualArrayInput.classList.add('is-invalid');
+      showError(dom.dualArrayFeedback, 'Array size exceeds maximum 25 items for visual clarity.');
+      return null;
+    }
+
+    // Check ascending order
+    for (let i = 1; i < nums.length; i++) {
+      if (nums[i] < nums[i - 1]) {
+        dom.dualArrayInput.classList.add('is-invalid');
+        const descMsg = `Array is unsorted! Elements [${nums[i - 1]}, ${nums[i]}] violate ascending order. Binary Search requires sorted elements. Click "Auto-Sort" to sort ascending!`;
+        showError(dom.dualArrayFeedback, descMsg);
+
+        if (typeof App !== 'undefined' && App.showPopup) {
+          App.showPopup({
+            type: 'error',
+            title: 'Comparison Array Unsorted! ⚠️',
+            message: `Elements [${nums[i - 1]}, ${nums[i]}] violate ascending order. Binary Search requires a sorted dataset to divide search space. Click "Auto-Sort" to fix.`,
+            badges: [
+              { label: 'Rule', value: 'Ascending Order' },
+              { label: 'Violation', value: `${nums[i - 1]} > ${nums[i]}` }
+            ]
+          });
+        }
+        return null;
+      }
+    }
+
+    dom.dualArrayInput.classList.remove('is-invalid');
+    clearError(dom.dualArrayFeedback);
+    return nums;
   }
 
-  function handleDualSync() {
-    pauseDualPlayback();
-    if (arrayData && arrayData.length > 0) {
-      dualArrayData = [...arrayData];
+  function validateDualTargetInput() {
+    if (!dom.linearTargetInput) return dualTargetValue;
+    const raw = dom.linearTargetInput.value.trim();
+    if (raw === '') {
+      dom.linearTargetInput.classList.add('is-invalid');
+      const msg = 'Please specify an integer target to compare.';
+      showError(dom.linearTargetFeedback, msg);
+      if (typeof App !== 'undefined' && App.showPopup) {
+        App.showPopup({
+          type: 'error',
+          title: 'Target Required! ⚠️',
+          message: msg
+        });
+      }
+      return null;
     }
-    const target = (targetValue !== null && targetValue !== undefined) ? targetValue : (dualArrayData[0] || 7);
-    initDualComparison(dualArrayData, target, true);
+
+    const num = Number(raw);
+    if (isNaN(num) || !Number.isInteger(num) || !Number.isSafeInteger(num)) {
+      dom.linearTargetInput.classList.add('is-invalid');
+      const msg = 'Target must be a valid safe integer.';
+      showError(dom.linearTargetFeedback, msg);
+      return null;
+    }
+
+    dom.linearTargetInput.classList.remove('is-invalid');
+    clearError(dom.linearTargetFeedback);
+    return num;
+  }
+
+  function handleDualSearchClick() {
+    pauseDualPlayback();
+
+    const arr = validateDualArrayInput();
+    const target = validateDualTargetInput();
+    if (!arr || target === null) return;
+
+    initDualComparison(arr, target, true);
+  }
+
+  function handleDualAutoSort() {
+    if (!dom.dualArrayInput) return;
+    const raw = dom.dualArrayInput.value;
+    if (!raw || !raw.trim()) {
+      showError(dom.dualArrayFeedback, 'Please enter comma-separated numbers before auto-sorting.');
+      return;
+    }
+
+    const nums = parseArray(raw);
+    if (nums.length === 0 || nums.some(n => isNaN(n) || !Number.isInteger(n))) {
+      showError(dom.dualArrayFeedback, 'Cannot sort non-integer values.');
+      return;
+    }
+
+    nums.sort((a, b) => a - b);
+    dom.dualArrayInput.value = nums.join(', ');
+    clearError(dom.dualArrayFeedback);
+    dom.dualArrayInput.classList.remove('is-invalid');
+
+    const target = (dom.linearTargetInput && dom.linearTargetInput.value.trim() !== '' && !isNaN(Number(dom.linearTargetInput.value)))
+      ? Number(dom.linearTargetInput.value)
+      : nums[Math.floor(nums.length / 2)];
+
+    initDualComparison(nums, target, false);
 
     if (typeof App !== 'undefined' && App.showPopup) {
       App.showPopup({
         type: 'success',
-        title: 'Dual Visualizer Synchronized! 🔄',
-        message: `Dataset synchronized with active array [${dualArrayData.join(', ')}] and target ${target}.`
+        title: 'Comparison Dataset Auto-Sorted! ✓',
+        message: `Sorted ${nums.length} element(s) ascending for comparison.`
+      });
+    }
+  }
+
+  function handleDualRandomArray() {
+    pauseDualPlayback();
+    const len = Math.floor(Math.random() * 5) + 6; // 6 to 10
+    const set = new Set();
+    while (set.size < len) {
+      set.add(Math.floor(Math.random() * 50) + 1);
+    }
+    const arr = Array.from(set).sort((a, b) => a - b);
+
+    let target;
+    if (Math.random() < 0.65) {
+      target = arr[Math.floor(Math.random() * arr.length)];
+    } else {
+      target = Math.floor(Math.random() * 50) + 1;
+      while (arr.includes(target)) {
+        target += 1;
+      }
+    }
+
+    if (dom.dualArrayInput) dom.dualArrayInput.value = arr.join(', ');
+    if (dom.linearTargetInput) dom.linearTargetInput.value = target;
+
+    initDualComparison(arr, target, true);
+
+    if (typeof App !== 'undefined' && App.showPopup) {
+      App.showPopup({
+        type: 'success',
+        title: 'Random Dataset Generated! 🎲',
+        message: `Generated comparison vector of ${arr.length} integers with target ${target}.`
+      });
+    }
+  }
+
+  function handleDualSync() {
+    pauseDualPlayback();
+    let arr = [1, 3, 5, 7, 9];
+    if (arrayData && arrayData.length > 0) {
+      arr = [...arrayData];
+    }
+    const target = (targetValue !== null && targetValue !== undefined) ? targetValue : (arr[0] || 7);
+
+    if (dom.dualArrayInput) dom.dualArrayInput.value = arr.join(', ');
+    if (dom.linearTargetInput) dom.linearTargetInput.value = target;
+
+    initDualComparison(arr, target, true);
+
+    if (typeof App !== 'undefined' && App.showPopup) {
+      App.showPopup({
+        type: 'success',
+        title: 'Dual Visualizer Synced! 🔄',
+        message: `Dataset synchronized with active array [${arr.join(', ')}] and target ${target}.`
       });
     }
   }
