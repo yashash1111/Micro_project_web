@@ -1,5 +1,8 @@
 # ConceptLab — Computer Science Concepts Playground
 
+> 🚀 **Live Demo:** [https://microprojectweb.netlify.app/](https://microprojectweb.netlify.app/)  
+> 📦 **GitHub Repository:** [https://github.com/yashash1111/Micro_project_web.git](https://github.com/yashash1111/Micro_project_web.git)
+
 **ConceptLab** is a developer-grade, zero-dependency educational web application and interactive curriculum workbench engineered using pure standard web technologies (**HTML5**, **CSS3**, and **Vanilla JavaScript**).
 
 ConceptLab delivers authentic, mathematically verified, client-side learning environments across three foundational computer science undergraduate engineering disciplines:
@@ -36,7 +39,8 @@ Micro_project_web/
 │   ├── daa.js              # Module 1: Binary Search Visualizer & Linear Benchmark
 │   ├── coa.js              # Module 2: Radix converter, BigInt math & Two's Complement ALU
 │   ├── flat.js             # Module 3: DFA string validator & interactive SVG state machine
-│   ├── quiz.js             # Practice Arena: 18 questions + Dynamic Parameterized Generator
+│   ├── quiz-questions.js   # Question Bank: 42 verified questions with multi-criteria rubrics
+│   ├── quiz.js             # Practice Arena: 5-step assessment engine & session persistence
 │   └── presentation.js     # Presentation Mode: 9-slide review deck with embedded live demos
 ├── reports/
 │   ├── DAA-Report.md       # Binary Search mathematical analysis & empirical test report
@@ -44,6 +48,8 @@ Micro_project_web/
 │   └── FLAT-Report.md      # DFA formal definition & transition verification report
 ├── test_phase2.js          # Automated test suite for Phase 2 core algorithm engines
 ├── test_phase3.js          # Automated test suite for Phase 3 persistence, XP & presentation
+├── test_coa_upgrade.js     # Automated test suite for COA Number System Lab specification
+├── test_practice_arena.js  # Automated test suite for Practice Arena assessment engine
 └── README.md               # Master system documentation & setup guide
 ```
 
@@ -51,9 +57,10 @@ Micro_project_web/
 
 ## 🚀 How to Run the Application Locally
 
-1. Open a terminal in the project directory:
+1. Clone the repository and navigate into the project directory:
    ```bash
-   cd /path/to/Micro_project_web
+   git clone https://github.com/yashash1111/Micro_project_web.git
+   cd Micro_project_web
    ```
 
 2. Start a lightweight local Python HTTP server:
@@ -198,12 +205,16 @@ node test_phase3.js
 
 # Run COA Number System Lab Verification Suite (All Section 8 test cases)
 node test_coa_upgrade.js
+
+# Run Practice Arena Assessment & Pedagogical Verification Suite
+node test_practice_arena.js
 ```
 
 ### Verification Results:
 - **`test_phase2.js`:** 100% Pass (Binary search edge cases, BigInt conversions, Two's complement range checks, all 6 DFA transitions, parameterized question generator).
 - **`test_phase3.js`:** 100% Pass (Schema v2 initialization, XP deduplication, Triple Master 50 XP bonus, 80% quiz bonus, all 8 canonical achievements, calendar streak calculation, safe factory reset preserving preferences, 9 presentation slides).
-- **`test_coa_upgrade.js`:** 100% Pass (All 15 Section 8 test cases: Binary 1011→11, Dec 25→11001, Dec 255→FF, Hex FF→255, Octal 17→15, rejections for Binary 102, Octal 89, Dec 12A, Zero in all bases, BigInt 2⁶⁰, 8-bit two's complement of -5→11111011, bounds [-128..+127], rejections for 128 and -129, 16-bit bounds, 32-bit bounds, positional expansion math, and repeated division steps).
+- **`test_coa_upgrade.js`:** 100% Pass (All Section 8 test cases: Binary 1011→11, Dec 25→11001, Dec 255→FF, Hex FF→255, Octal 17→15, rejections for Binary 102, Octal 89, Dec 12A, Zero in all bases, BigInt 2⁶⁰, 8-bit two's complement of -5→11111011, bounds [-128..+127], rejections for 128 and -129, 16-bit bounds, 32-bit bounds, positional expansion math, and repeated division steps).
+- **`test_practice_arena.js`:** 100% Pass (All 42 curriculum questions schema, deterministic 10-question mixed pedagogical sequence, multi-criteria subjective rubric evaluation, and storage session persistence).
 
 ---
 
