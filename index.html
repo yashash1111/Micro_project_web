@@ -870,7 +870,7 @@
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
                       Figure 3 Report Benchmark
                     </span>
-                    <span id="daa-speedup-badge" class="speedup-badge">Speedup: -</span>
+                    <span id="daa-speedup-badge" class="speedup-badge font-mono">Speedup: -</span>
                   </div>
                 </div>
 
@@ -879,7 +879,7 @@
                   <div class="comparison-table-header-bar">
                     <div class="ct-header-left">
                       <span class="ct-table-title">Empirical Comparison Table (Figure 3 Test Suite)</span>
-                      <span class="ct-table-subtitle">Click any row or button to load and trace in the visualizer</span>
+                      <span class="ct-table-subtitle">Click any row or button to load and compare both algorithms simultaneously in real time</span>
                     </div>
                     <span class="ct-verified-tag">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -899,7 +899,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr class="comparison-row" data-arr="1, 3, 5, 7, 9" data-target="7" tabindex="0" role="button" aria-label="Load array 1, 3, 5, 7, 9 with target 7">
+                        <tr class="comparison-row active-comparison-row" data-arr="1, 3, 5, 7, 9" data-target="7" tabindex="0" role="button" aria-label="Load array 1, 3, 5, 7, 9 with target 7" aria-current="true">
                           <td class="td-array"><code class="array-code font-mono">[1, 3, 5, 7, 9]</code></td>
                           <td class="td-target"><span class="target-val font-mono font-bold">7</span></td>
                           <td class="td-binary"><span class="badge-count binary-badge-count font-mono">2</span></td>
@@ -907,7 +907,7 @@
                           <td class="td-action">
                             <button type="button" class="btn btn-sm btn-outline-cyan btn-test-row" data-arr="1, 3, 5, 7, 9" data-target="7">
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                              <span>Load &amp; Trace</span>
+                              <span>Compare Both</span>
                             </button>
                           </td>
                         </tr>
@@ -919,7 +919,7 @@
                           <td class="td-action">
                             <button type="button" class="btn btn-sm btn-outline-cyan btn-test-row" data-arr="1, 3, 5, 7, 9" data-target="2">
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                              <span>Load &amp; Trace</span>
+                              <span>Compare Both</span>
                             </button>
                           </td>
                         </tr>
@@ -931,7 +931,7 @@
                           <td class="td-action">
                             <button type="button" class="btn btn-sm btn-outline-cyan btn-test-row" data-arr="1, 3, 5, 7, 9" data-target="9">
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                              <span>Load &amp; Trace</span>
+                              <span>Compare Both</span>
                             </button>
                           </td>
                         </tr>
@@ -943,7 +943,7 @@
                           <td class="td-action">
                             <button type="button" class="btn btn-sm btn-outline-cyan btn-test-row" data-arr="4" data-target="4">
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                              <span>Load &amp; Trace</span>
+                              <span>Compare Both</span>
                             </button>
                           </td>
                         </tr>
@@ -952,178 +952,175 @@
                   </div>
                 </div>
 
-                <!-- Dedicated Linear Search Real-Time Studio & Visualizer -->
-                <div class="linear-studio-wrapper">
-                  <div class="linear-studio-header">
-                    <div class="lsh-title-group">
-                      <div class="panel-title-icon daa linear-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <!-- Dual Real-Time Comparison Studio (Side-by-Side Synchronized Visualizer) -->
+                <div class="dual-comparison-studio linear-studio-wrapper">
+                  <!-- Studio Controls Header Bar -->
+                  <div class="dual-studio-header">
+                    <div class="dual-studio-title-group">
+                      <div class="panel-title-icon daa">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                       </div>
                       <div>
-                        <h4 class="linear-studio-title">Linear Search Real-Time Studio &amp; Visualizer</h4>
-                        <p class="linear-studio-desc">Sequential left-to-right element inspection with moving pointer and live comparison telemetry</p>
+                        <h4 class="dual-studio-title">Simultaneous Search Visualizer: Linear Search vs Binary Search</h4>
+                        <p class="dual-studio-subtitle">Step both search algorithms side-by-side in real time without altering the main playground above</p>
                       </div>
-                    </div>
-                    <div class="lsh-badges">
-                      <span class="benchmark-badge linear font-mono">O(n) Linear Scan</span>
                     </div>
                   </div>
 
-                  <!-- 1. Dedicated Search Bar for Linear Search -->
-                  <div class="search-hero-card linear-search-hero">
-                    <div class="search-hero-header">
-                      <span class="search-hero-label">Linear Search Target &amp; Algorithm Mode:</span>
-                      <span class="search-hero-hint">Enter an integer target to scan sequentially, or sync with active dataset</span>
-                    </div>
-                    <div class="search-box-row">
-                      <div class="search-input-group">
-                        <div class="search-icon-left" aria-hidden="true">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                  <!-- 1. Dedicated Dual Controls Card -->
+                  <div class="dual-controls-card">
+                    <div class="dual-controls-top-row">
+                      <div class="dual-target-input-group">
+                        <label for="daa-linear-target-input" class="dual-ctrl-label">Target to Compare:</label>
+                        <div class="dual-input-box-wrap">
+                          <input id="daa-linear-target-input" class="dual-search-input font-mono" type="text" inputmode="numeric" placeholder="Target (e.g. 7)" value="7" autocomplete="off" spellcheck="false">
+                          <button id="daa-linear-btn-start" class="btn btn-search-primary dual-search-btn" type="button" title="Initiate Dual Real-time Comparison">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            <span>Compare Both</span>
+                          </button>
                         </div>
-                        <input id="daa-linear-target-input" class="search-hero-input font-mono" type="text" inputmode="numeric" placeholder="Enter target (e.g. 7)..." autocomplete="off" spellcheck="false">
-                        <div class="search-kbd-hint" title="Press Enter to scan"><span>↵ Enter</span></div>
                       </div>
 
-                      <div class="search-speed-wrapper">
-                        <label for="daa-linear-speed-select" class="speed-label">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                          <span>Speed:</span>
-                        </label>
-                        <select id="daa-linear-speed-select" class="speed-select-control">
-                          <option value="1600">0.25x (1.6s)</option>
-                          <option value="1200">0.5x (1.2s)</option>
-                          <option value="800" selected>1.0x (0.8s)</option>
-                          <option value="500">1.5x (0.5s)</option>
-                          <option value="300">2.0x (0.3s)</option>
+                      <div class="dual-presets-group">
+                        <span class="dual-ctrl-label">Figure 3 Presets:</span>
+                        <div class="dual-pills-row">
+                          <button type="button" class="dual-preset-pill active" data-arr="1, 3, 5, 7, 9" data-target="7">Target 7</button>
+                          <button type="button" class="dual-preset-pill" data-arr="1, 3, 5, 7, 9" data-target="2">Target 2 (Absent)</button>
+                          <button type="button" class="dual-preset-pill" data-arr="1, 3, 5, 7, 9" data-target="9">Target 9</button>
+                          <button type="button" class="dual-preset-pill" data-arr="4" data-target="4">[4] Target 4</button>
+                        </div>
+                      </div>
+
+                      <div class="dual-speed-group">
+                        <label for="daa-linear-speed-select" class="dual-ctrl-label">Speed:</label>
+                        <select id="daa-linear-speed-select" class="speed-select-control dual-speed-select">
+                          <option value="1600">0.25x</option>
+                          <option value="1200">0.5x</option>
+                          <option value="800" selected>1.0x</option>
+                          <option value="500">1.5x</option>
+                          <option value="300">2.0x</option>
                         </select>
                       </div>
-
-                      <button id="daa-linear-btn-start" class="btn btn-search-primary linear-search-btn" type="button" title="Initiate Linear Search">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        <span>Scan Target</span>
-                      </button>
-
-                      <button id="daa-linear-btn-sync" class="btn btn-secondary btn-sync-array" type="button" title="Sync array from Binary Search above">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
-                        <span>Sync Array</span>
-                      </button>
                     </div>
                     <div id="daa-linear-target-feedback" class="input-feedback" role="alert"></div>
-                  </div>
 
-                  <!-- 2. Dedicated Playback Controls Console for Linear Search -->
-                  <div class="playback-console-card linear-playback-console">
-                    <div class="playback-left-group">
-                      <button id="daa-linear-btn-restart" class="btn btn-secondary btn-step" type="button" title="Restart simulation from beginning">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 19 2 12 11 5 11 19"></polygon><polygon points="22 19 13 12 22 5 22 19"></polygon></svg>
-                        <span>Restart</span>
-                      </button>
-
-                      <button id="daa-linear-btn-play" class="btn btn-play linear-play-btn" type="button" title="Play or pause auto-step execution">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                        <span>Play</span>
-                      </button>
-
-                      <div class="step-buttons-group">
-                        <button id="daa-linear-btn-prev" class="btn btn-secondary btn-step" type="button" disabled title="Step to previous comparison">
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                          <span>Previous</span>
+                    <!-- Dual Playback Action Bar -->
+                    <div class="dual-playback-bar">
+                      <div class="dual-playback-left">
+                        <button id="daa-linear-btn-restart" class="btn btn-secondary btn-step btn-sm" type="button" title="Restart simulation from beginning">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 19 2 12 11 5 11 19"></polygon><polygon points="22 19 13 12 22 5 22 19"></polygon></svg>
+                          <span>Restart</span>
                         </button>
-
-                        <button id="daa-linear-btn-next" class="btn btn-secondary btn-step" type="button" disabled title="Step to next comparison">
-                          <span>Next</span>
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        <button id="daa-linear-btn-play" class="btn btn-play linear-play-btn btn-sm" type="button" title="Play or pause auto-step execution">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                          <span>Play Both</span>
+                        </button>
+                        <div class="step-buttons-group">
+                          <button id="daa-linear-btn-prev" class="btn btn-secondary btn-step btn-sm" type="button" disabled title="Step back both algorithms">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            <span>Prev</span>
+                          </button>
+                          <button id="daa-linear-btn-next" class="btn btn-secondary btn-step btn-sm" type="button" title="Step forward both algorithms">
+                            <span>Next</span>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                          </button>
+                        </div>
+                        <button id="daa-linear-btn-reset" class="btn btn-danger-outline btn-sm" type="button" title="Reset simulation">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                          <span>Reset</span>
+                        </button>
+                        <button id="daa-linear-btn-sync" class="btn btn-secondary btn-sync-array btn-sm" type="button" title="Sync array from main visualizer above">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                          <span>Sync Array Input</span>
                         </button>
                       </div>
 
-                      <div id="daa-linear-step-badge" class="step-counter-badge">
-                        <span>Step: Ready</span>
+                      <div class="dual-playback-right">
+                        <div id="daa-linear-step-badge" class="step-counter-badge font-mono">
+                          <span>Step: Ready</span>
+                        </div>
+                        <div id="daa-linear-progress-wrapper" class="step-progress-wrapper" title="Dual simulation progress">
+                          <div class="step-progress-label"><span id="daa-linear-progress-fraction" class="font-mono">0 / 0</span></div>
+                          <div class="step-progress-bar"><div id="daa-linear-progress-fill" class="step-progress-fill" style="width: 0%;"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 2. Dual Side-by-Side Visualizer Columns Grid -->
+                  <div class="dual-columns-grid">
+                    <!-- Column 1: Linear Search O(n) -->
+                    <div class="dual-column linear-column">
+                      <div class="dual-col-header">
+                        <div class="dual-col-badge-wrap">
+                          <span class="benchmark-badge linear font-mono">Linear Search: O(n)</span>
+                          <span class="dual-inspect-mode">Sequential Scan</span>
+                        </div>
+                        <div class="dual-col-metric">
+                          <span class="metric-title">Comparisons:</span>
+                          <span id="daa-linear-comps" class="metric-value linear font-mono">0</span>
+                        </div>
+                      </div>
+
+                      <div class="dual-col-status-bar">
+                        <span class="dual-status-label">Status:</span>
+                        <span id="daa-linear-tel-status" class="dual-status-val font-mono">Ready for execution</span>
+                      </div>
+
+                      <!-- Array Track Box -->
+                      <div id="daa-linear-visualizer-stage" class="dual-visualizer-stage">
+                        <div id="daa-linear-empty-state" class="empty-state" style="display: none;">
+                          <p class="empty-state-desc">No array loaded.</p>
+                        </div>
+                        <div id="daa-linear-array-track" class="array-track dual-array-track" aria-live="polite"></div>
+                      </div>
+
+                      <!-- Step-by-Step Inspection Trace -->
+                      <div class="dual-col-trace-panel">
+                        <div class="dual-trace-header">
+                          <span class="dual-trace-title">Sequential Inspection Trace</span>
+                          <span id="daa-linear-trace-badge" class="trace-badge font-mono">0 Comparisons</span>
+                        </div>
+                        <ul id="daa-linear-trace-list" class="trace-log-list dual-trace-list" aria-live="polite">
+                          <li class="trace-log-item">Ready. Click "Compare Both" or "Play Both".</li>
+                        </ul>
                       </div>
                     </div>
 
-                    <div class="playback-right-group">
-                      <div id="daa-linear-progress-wrapper" class="step-progress-wrapper" title="Linear search progress">
-                        <div class="step-progress-label"><span id="daa-linear-progress-fraction">0 / 0</span></div>
-                        <div class="step-progress-bar"><div id="daa-linear-progress-fill" class="step-progress-fill" style="width: 0%;"></div></div>
+                    <!-- Column 2: Binary Search O(log n) -->
+                    <div class="dual-column binary-column">
+                      <div class="dual-col-header">
+                        <div class="dual-col-badge-wrap">
+                          <span class="benchmark-badge binary font-mono">Binary Search: O(log n)</span>
+                          <span class="dual-inspect-mode">Divide &amp; Conquer</span>
+                        </div>
+                        <div class="dual-col-metric">
+                          <span class="metric-title">Comparisons:</span>
+                          <span id="daa-binary-comps" class="metric-value binary font-mono">0</span>
+                        </div>
                       </div>
 
-                      <button id="daa-linear-btn-reset" class="btn btn-danger-outline btn-sm" type="button" title="Reset linear visualizer">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-                        <span>Reset</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- 3. Dedicated Visualizer Stage for Linear Search -->
-                  <div id="daa-linear-visualizer-stage" class="visualizer-stage linear-visualizer-stage">
-                    <div id="daa-linear-empty-state" class="empty-state" style="display: none;">
-                      <h4 class="empty-state-title">No Linear Search in Progress</h4>
-                      <p class="empty-state-desc">Enter a target above to start sequential scan.</p>
-                    </div>
-                    <div id="daa-linear-array-track" class="array-track" aria-live="polite"></div>
-                  </div>
-
-                  <!-- Telemetry Bar for Linear Search -->
-                  <div class="linear-telemetry-strip">
-                    <div class="linear-tel-item">
-                      <span class="linear-tel-label">Scan Pointer:</span>
-                      <span id="daa-linear-tel-index" class="linear-tel-val font-mono">i = 0</span>
-                    </div>
-                    <div class="linear-tel-item">
-                      <span class="linear-tel-label">Element A[i]:</span>
-                      <span id="daa-linear-tel-val" class="linear-tel-val font-mono">-</span>
-                    </div>
-                    <div class="linear-tel-item">
-                      <span class="linear-tel-label">Comparison:</span>
-                      <span id="daa-linear-tel-comparison" class="linear-tel-val font-mono">-</span>
-                    </div>
-                    <div class="linear-tel-item">
-                      <span class="linear-tel-label">Status:</span>
-                      <span id="daa-linear-tel-status" class="linear-tel-val font-mono status-ready">Ready</span>
-                    </div>
-                  </div>
-
-                  <!-- 4. Separate Tracing Space after its Heading -->
-                  <div class="trace-log-panel linear-trace-log-panel">
-                    <div class="trace-log-header">
-                      <div class="trace-log-title-wrapper">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                        <h4>Linear Search Step-by-Step Inspection Trace</h4>
+                      <div class="dual-col-status-bar">
+                        <span class="dual-status-label">Status:</span>
+                        <span id="daa-dual-binary-status" class="dual-status-val font-mono">Ready for execution</span>
                       </div>
-                      <span id="daa-linear-trace-badge" class="trace-badge font-mono">0 Comparisons</span>
-                    </div>
-                    <ul id="daa-linear-trace-list" class="trace-log-list" aria-live="polite">
-                      <li class="trace-log-item">Linear Search initialized. Ready for execution.</li>
-                    </ul>
-                  </div>
-                </div>
 
-                <!-- Active Search Real-time HUD cards -->
-                <div class="benchmark-grid">
-                  <div class="benchmark-card linear">
-                    <div class="benchmark-badge linear">Linear Search: O(n)</div>
-                    <div class="benchmark-stat-row">
-                      <span class="benchmark-stat-label">Real Comparisons:</span>
-                      <span id="daa-linear-comps" class="benchmark-stat-val font-mono">0</span>
-                    </div>
-                    <div class="benchmark-stat-row">
-                      <span class="benchmark-stat-label">Measured Wall-Clock Time:</span>
-                      <span id="daa-linear-time" class="benchmark-stat-val font-mono">0.000 ms</span>
-                    </div>
-                    <div class="benchmark-note">Inspects elements sequentially from index 0 until match or end.</div>
-                  </div>
+                      <!-- Array Track Box -->
+                      <div id="daa-dual-binary-visualizer-stage" class="dual-visualizer-stage">
+                        <div id="daa-dual-binary-array-track" class="array-track dual-array-track" aria-live="polite"></div>
+                      </div>
 
-                  <div class="benchmark-card binary">
-                    <div class="benchmark-badge binary">Binary Search: O(log n)</div>
-                    <div class="benchmark-stat-row">
-                      <span class="benchmark-stat-label">Real Comparisons:</span>
-                      <span id="daa-binary-comps" class="benchmark-stat-val font-mono">0</span>
+                      <!-- Step-by-Step Inspection Trace -->
+                      <div class="dual-col-trace-panel">
+                        <div class="dual-trace-header">
+                          <span class="dual-trace-title">Subarray Midpoint Trace</span>
+                          <span id="daa-dual-binary-trace-badge" class="trace-badge font-mono">0 Comparisons</span>
+                        </div>
+                        <ul id="daa-dual-binary-trace-list" class="trace-log-list dual-trace-list" aria-live="polite">
+                          <li class="trace-log-item">Ready. Click "Compare Both" or "Play Both".</li>
+                        </ul>
+                      </div>
                     </div>
-                    <div class="benchmark-stat-row">
-                      <span class="benchmark-stat-label">Measured Wall-Clock Time:</span>
-                      <span id="daa-binary-time" class="benchmark-stat-val font-mono">0.000 ms</span>
-                    </div>
-                    <div class="benchmark-note">Halves search space on each comparison using sorted order invariant.</div>
                   </div>
                 </div>
 

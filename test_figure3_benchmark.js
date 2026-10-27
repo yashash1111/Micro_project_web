@@ -80,7 +80,15 @@ assert(html.includes('id="daa-linear-target-input"'), 'Dedicated Linear Search i
 assert(html.includes('id="daa-linear-visualizer-stage"'), 'Dedicated Linear Search visualizer stage must exist');
 assert(html.includes('id="daa-linear-array-track"'), 'Dedicated Linear Search array track must exist');
 assert(html.includes('id="daa-linear-trace-list"'), 'Dedicated Linear Search trace list must exist');
-console.log('  ✓ Table, rows, badges, asymptotic callout, and Linear Search visualizer verified in index.html');
+
+// Dual Side-by-Side Visualizer Column Assertions
+assert(html.includes('dual-columns-grid'), 'Side-by-side dual columns grid must exist');
+assert(html.includes('id="daa-dual-binary-visualizer-stage"'), 'Dedicated Dual Binary stage must exist');
+assert(html.includes('id="daa-dual-binary-array-track"'), 'Dedicated Dual Binary array track must exist');
+assert(html.includes('id="daa-dual-binary-trace-list"'), 'Dedicated Dual Binary trace list must exist');
+assert(html.includes('id="daa-linear-comps"'), 'Linear real-time comparisons metric element must exist');
+assert(html.includes('id="daa-binary-comps"'), 'Binary real-time comparisons metric element must exist');
+console.log('  ✓ Table, rows, badges, asymptotic callout, and Dual Linear vs Binary visualizer verified in index.html');
 
 // 4. Verify CSS in css/style.css
 console.log('\n[GROUP 3] CSS Styling Verification');
@@ -93,7 +101,10 @@ assert(css.includes('.asymptotic-callout-box'), 'Asymptotic callout box defined 
 assert(css.includes('.fig-badge'), 'Figure badge defined in CSS');
 assert(css.includes('.linear-studio-wrapper'), 'Linear studio wrapper defined in CSS');
 assert(css.includes('.pointer-badge.linear-pointer'), 'Linear pointer badge defined in CSS');
-console.log('  ✓ CSS classes for Figure 3 comparison table, callout, and Linear Studio verified');
+assert(css.includes('.dual-columns-grid'), 'Dual columns grid layout defined in CSS');
+assert(css.includes('.dual-column.linear-column'), 'Linear column styling defined in CSS');
+assert(css.includes('.dual-column.binary-column'), 'Binary column styling defined in CSS');
+console.log('  ✓ CSS classes for Figure 3 comparison table, callout, and Dual Visualizer studio verified');
 
 // 5. Verify DAA JavaScript module wiring
 console.log('\n[GROUP 4] JavaScript Event Wiring Verification');
@@ -104,7 +115,12 @@ assert(js.includes('.comparison-row'), 'Row click listeners bound in js/daa.js')
 assert(js.includes('computeLinearSearchTrace'), 'computeLinearSearchTrace defined in js/daa.js');
 assert(js.includes('loadLinearPresetArray'), 'loadLinearPresetArray defined in js/daa.js');
 assert(js.includes('renderLinearStep'), 'renderLinearStep defined in js/daa.js');
-console.log('  ✓ JavaScript dynamic synchronization, Linear search engine, and click handlers verified');
+assert(js.includes('initDualComparison'), 'initDualComparison defined in js/daa.js');
+assert(js.includes('computeDualBinarySearchTrace'), 'computeDualBinarySearchTrace defined in js/daa.js');
+assert(js.includes('renderDualStep'), 'renderDualStep defined in js/daa.js');
+assert(js.includes('handleDualStepForward'), 'handleDualStepForward defined in js/daa.js');
+assert(js.includes('toggleDualPlayPause'), 'toggleDualPlayPause defined in js/daa.js');
+console.log('  ✓ JavaScript dynamic synchronization, Dual search engine, and click handlers verified');
 
 console.log('\n======================================================');
 console.log('ALL FIGURE 3 BENCHMARK TESTS PASSED WITH 100% SUCCESS!');
