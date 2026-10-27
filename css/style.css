@@ -1530,6 +1530,14 @@ select option,
 .preset-tag-dot.purple { background-color: #a855f7; }
 .preset-tag-dot.amber { background-color: #f59e0b; }
 .preset-tag-dot.warn { background-color: #ef4444; }
+.preset-tag-dot.cyan { background-color: var(--accent-daa); }
+
+.preset-chip-cyan {
+  border-color: rgba(6, 182, 212, 0.4);
+  background: rgba(6, 182, 212, 0.08);
+  font-weight: 600;
+  color: var(--accent-daa);
+}
 
 /* The Dedicated Hero Search Bar Component */
 .search-hero-card {
@@ -5537,13 +5545,30 @@ select option,
   transition: width 0.25s ease;
 }
 
-/* Linear Search Benchmark Panel */
+/* Linear Search Benchmark Panel & Figure 3 Report Benchmark Suite */
 .comparison-panel {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 1.25rem;
-  margin-top: 1.25rem;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.report-fig-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  background: rgba(6, 182, 212, 0.12);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 999px;
+  color: var(--accent-daa);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .speedup-badge {
@@ -5559,11 +5584,177 @@ select option,
   font-weight: 700;
 }
 
+/* Comparison Report Table Card (Figure 3) */
+.comparison-report-table-card {
+  margin-top: 1.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+}
+
+.comparison-table-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(6, 182, 212, 0.06);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.ct-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ct-table-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.ct-table-subtitle {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.ct-verified-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 999px;
+  color: var(--status-success);
+}
+
+.table-responsive-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.comparison-report-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.comparison-report-table th {
+  padding: 0.8rem 1rem;
+  background: rgba(var(--bg-surface-rgb), 0.75);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1.5px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.comparison-report-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.comparison-row {
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.comparison-row:hover {
+  background-color: rgba(6, 182, 212, 0.06);
+}
+
+.comparison-row.active-comparison-row {
+  background-color: rgba(6, 182, 212, 0.12) !important;
+  box-shadow: inset 4px 0 0 var(--accent-daa);
+}
+
+.comparison-row.active-comparison-row td {
+  font-weight: 600;
+}
+
+.array-code {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  background: rgba(var(--bg-elevated-rgb, 15, 23, 42), 0.06);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+
+[data-theme="light"] .array-code {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.target-val {
+  font-size: 0.9rem;
+}
+
+.badge-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 28px;
+  padding: 0 0.5rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.binary-badge-count {
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  color: var(--accent-daa);
+}
+
+.linear-badge-count {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #f59e0b;
+}
+
+.btn-test-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--accent-daa);
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.btn-test-row:hover {
+  background: var(--accent-daa);
+  color: #ffffff;
+  border-color: var(--accent-daa);
+  transform: translateY(-1px);
+}
+
 .benchmark-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
 .benchmark-card {
@@ -5621,23 +5812,54 @@ select option,
   line-height: 1.4;
 }
 
-.benchmark-explanation {
-  margin-top: 1rem;
-  padding: 0.85rem 1rem;
-  background: rgba(var(--bg-surface-rgb), 0.6);
-  border: 1px solid var(--border-subtle);
+/* Asymptotic & Browser Timing Callout Box */
+.asymptotic-callout-box {
+  margin-top: 1.25rem;
+  padding: 1.15rem 1.25rem;
+  background: rgba(var(--bg-surface-rgb), 0.65);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--accent-daa);
   border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.asymptotic-callout-content {
+  line-height: 1.6;
+}
+
+.asymptotic-text {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.figure-caption-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border-color);
+}
+
+.fig-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
   font-size: 0.82rem;
-  line-height: 1.5;
   color: var(--text-secondary);
 }
 
-.bench-exp-title {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: var(--text-primary);
-  margin-bottom: 0.35rem;
+.fig-label {
+  font-weight: 700;
+  color: var(--accent-daa);
+  font-style: normal;
+}
+
+.fig-desc {
+  font-style: italic;
+  color: var(--text-muted);
 }
 
 /* Interactive Pseudocode Panel */

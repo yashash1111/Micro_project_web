@@ -625,6 +625,9 @@
                       Presets:
                     </span>
                     <div class="presets-chips-list">
+                      <button id="daa-btn-preset-report" class="preset-chip preset-chip-cyan" type="button" title="Load Report Figure 3 Array [1,3,5,7,9] with Target 7">
+                        <span class="preset-tag-dot cyan"></span>[1,3,5,7,9] ➔ Target 7 (Figure 3)
+                      </button>
                       <button id="daa-btn-preset1" class="preset-chip preset-chip-success" type="button" title="Test target 8 which exists in array">
                         <span class="preset-tag-dot success"></span>[2,4,6,8,10] ➔ Target 8 (Found)
                       </button>
@@ -858,15 +861,98 @@
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                     </div>
                     <div>
-                      <h3 class="panel-title">Empirical Benchmark: Binary vs Linear Search</h3>
-                      <p class="panel-subtitle-text">Side-by-side comparison of real comparisons and microsecond execution time</p>
+                      <h3 class="panel-title">Binary vs Linear Search</h3>
+                      <p class="panel-subtitle-text">The linear search scans the same input from the left and counts its comparisons. For the arrays above the counts are:</p>
                     </div>
                   </div>
                   <div class="panel-header-badges">
+                    <span class="report-fig-badge">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      Figure 3 Report Benchmark
+                    </span>
                     <span id="daa-speedup-badge" class="speedup-badge">Speedup: -</span>
                   </div>
                 </div>
 
+                <!-- Report Comparison Table matching Figure 3 -->
+                <div class="comparison-report-table-card">
+                  <div class="comparison-table-header-bar">
+                    <div class="ct-header-left">
+                      <span class="ct-table-title">Empirical Comparison Table (Figure 3 Test Suite)</span>
+                      <span class="ct-table-subtitle">Click any row or button to load and trace in the visualizer</span>
+                    </div>
+                    <span class="ct-verified-tag">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      Verified Counts
+                    </span>
+                  </div>
+
+                  <div class="table-responsive-wrapper">
+                    <table class="comparison-report-table" id="daa-comparison-report-table" aria-label="Binary vs Linear Search Comparison Table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Array</th>
+                          <th scope="col">Target</th>
+                          <th scope="col">Binary comparisons</th>
+                          <th scope="col">Linear comparisons</th>
+                          <th scope="col" class="th-action text-right">Interactive Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="comparison-row" data-arr="1, 3, 5, 7, 9" data-target="7" tabindex="0" role="button" aria-label="Load array 1, 3, 5, 7, 9 with target 7">
+                          <td><code class="array-code font-mono">[1, 3, 5, 7, 9]</code></td>
+                          <td><span class="target-val font-mono font-bold">7</span></td>
+                          <td><span class="badge-count binary-badge-count font-mono">2</span></td>
+                          <td><span class="badge-count linear-badge-count font-mono">4</span></td>
+                          <td class="text-right">
+                            <button type="button" class="btn btn-sm btn-outline-cyan btn-test-row" data-arr="1, 3, 5, 7, 9" data-target="7">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                              <span>Load &amp; Trace</span>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr class="comparison-row" data-arr="1, 3, 5, 7, 9" data-target="2" tabindex="0" role="button" aria-label="Load array 1, 3, 5, 7, 9 with target 2 absent">
+                          <td><code class="array-code font-mono">[1, 3, 5, 7, 9]</code></td>
+                          <td><span class="target-val font-mono font-bold">2 <small class="text-muted">(absent)</small></span></td>
+                          <td><span class="badge-count binary-badge-count font-mono">3</span></td>
+                          <td><span class="badge-count linear-badge-count font-mono">5</span></td>
+                          <td class="text-right">
+                            <button type="button" class="btn btn-sm btn-outline-cyan btn-test-row" data-arr="1, 3, 5, 7, 9" data-target="2">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                              <span>Load &amp; Trace</span>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr class="comparison-row" data-arr="1, 3, 5, 7, 9" data-target="9" tabindex="0" role="button" aria-label="Load array 1, 3, 5, 7, 9 with target 9">
+                          <td><code class="array-code font-mono">[1, 3, 5, 7, 9]</code></td>
+                          <td><span class="target-val font-mono font-bold">9</span></td>
+                          <td><span class="badge-count binary-badge-count font-mono">3</span></td>
+                          <td><span class="badge-count linear-badge-count font-mono">5</span></td>
+                          <td class="text-right">
+                            <button type="button" class="btn btn-sm btn-outline-cyan btn-test-row" data-arr="1, 3, 5, 7, 9" data-target="9">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                              <span>Load &amp; Trace</span>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr class="comparison-row" data-arr="4" data-target="4" tabindex="0" role="button" aria-label="Load single element array 4 with target 4">
+                          <td><code class="array-code font-mono">[4]</code></td>
+                          <td><span class="target-val font-mono font-bold">4</span></td>
+                          <td><span class="badge-count binary-badge-count font-mono">1</span></td>
+                          <td><span class="badge-count linear-badge-count font-mono">1</span></td>
+                          <td class="text-right">
+                            <button type="button" class="btn btn-sm btn-outline-cyan btn-test-row" data-arr="4" data-target="4">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                              <span>Load &amp; Trace</span>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Active Search Real-time HUD cards -->
                 <div class="benchmark-grid">
                   <div class="benchmark-card linear">
                     <div class="benchmark-badge linear">Linear Search: O(n)</div>
@@ -895,14 +981,19 @@
                   </div>
                 </div>
 
-                <div class="benchmark-explanation">
-                  <div class="bench-exp-title">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                    <strong>Algorithmic Operations vs Browser Wall-Clock Time:</strong>
+                <!-- Verbatim Asymptotic & Browser Timing Callout from Report -->
+                <div class="asymptotic-callout-box">
+                  <div class="asymptotic-callout-content">
+                    <p class="asymptotic-text">
+                      The gap is small for five elements but widens quickly: in the worst case an array of <strong>1,000,000</strong> elements needs about <strong>20</strong> binary comparisons (&lfloor;log<sub>2</sub> n&rfloor; + 1) against up to <strong>1,000,000</strong> linear ones. Browser timings for small arrays are only illustrative, so comparison counts and asymptotic analysis are used for the comparison.
+                    </p>
                   </div>
-                  <p>
-                    In theoretical computer science, complexity is quantified by fundamental <em>operation counts</em> (comparisons), not raw milliseconds. On tiny in-memory arrays (N &le; 25), both searches execute in fractions of a microsecond where CPU caching, branch prediction, and JavaScript JIT warmup dominate timing. However, the comparison counts strictly demonstrate the exponential asymptotic superiority of O(log n) over O(n).
-                  </p>
+                  <div class="figure-caption-banner">
+                    <div class="fig-badge">
+                      <span class="fig-label">Figure 3:</span>
+                      <span class="fig-desc">Binary vs linear search comparison counts (screenshot captured from running application).</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 

@@ -115,7 +115,33 @@ The `DaaLab` component is implemented as a self-contained IIFE with comprehensiv
 
 ---
 
-## 4. Screenshot Placeholders
+## 4. Empirical Benchmark: Binary vs Linear Search
+
+### Binary vs Linear Search
+
+The linear search scans the same input from the left and counts its comparisons. For the arrays above the counts are:
+
+| Array | Target | Binary comparisons | Linear comparisons |
+| :--- | :---: | :---: | :---: |
+| `[1, 3, 5, 7, 9]` | `7` | `2` | `4` |
+| `[1, 3, 5, 7, 9]` | `2 (absent)` | `3` | `5` |
+| `[1, 3, 5, 7, 9]` | `9` | `3` | `5` |
+| `[4]` | `4` | `1` | `1` |
+
+The gap is small for five elements but widens quickly: in the worst case an array of 1,000,000 elements needs about 20 binary comparisons ($\lfloor\log_2 n\rfloor + 1$) against up to 1,000,000 linear ones. Browser timings for small arrays are only illustrative, so comparison counts and asymptotic analysis are used for the comparison.
+
+```
++----------------------------------------------------------------------------------------------------+
+|                                                                                                    |
+|                       [ Insert screenshot captured from the running application ]                  |
+|                                                                                                    |
++----------------------------------------------------------------------------------------------------+
+```
+*Figure 3: Binary vs linear search comparison counts (screenshot to be inserted).*
+
+---
+
+## 5. Screenshot Placeholders
 
 ```
 +----------------------------------------------------------------------------------------------------+
@@ -135,13 +161,13 @@ The `DaaLab` component is implemented as a self-contained IIFE with comprehensiv
 |  Caption: DAA Side-by-Side Linear vs Binary Search Complexity Benchmark Display                    |
 |  Path: screenshots/daa_linear_benchmark.png                                                        |
 |                                                                                                    |
-|  [ Binary Search: 3 comparisons, O(log n) | Linear Search: 6 comparisons, O(n) | Speedup: 2.0x ]   |
+|  [ Binary Search: 2 comparisons, O(log n) | Linear Search: 4 comparisons, O(n) | Speedup: 2.0x ]   |
 +----------------------------------------------------------------------------------------------------+
 ```
 
 ---
 
-## 5. Test Cases & Empirical Results
+## 6. Test Cases & Empirical Results
 
 The following test suite was executed against the actual JavaScript implementation. Every comparison count and terminating condition was verified mathematically.
 
@@ -160,6 +186,6 @@ The following test suite was executed against the actual JavaScript implementati
 
 ---
 
-## 6. Conclusion & Pedagogical Impact
+## 7. Conclusion & Pedagogical Impact
 
 The DAA Algorithm Studio bridges the pedagogical gap between mathematical algorithmic theory and practical runtime intuition. By visualizing pointer movements, active subarray narrowing, and line-by-line pseudocode execution alongside an empirical benchmark against linear search, students develop a concrete, durable mental model of logarithmic divide-and-conquer efficiency.

@@ -71,6 +71,7 @@ var DaaLab = (() => {
       // Pseudocode Panel
       pseudocodeAction: document.getElementById('daa-code-current-action'),
       // Presets
+      btnPresetReport: document.getElementById('daa-btn-preset-report'),
       btnPreset1: document.getElementById('daa-btn-preset1'),
       btnPreset2: document.getElementById('daa-btn-preset2'),
       btnPreset3: document.getElementById('daa-btn-preset3'),
@@ -82,18 +83,60 @@ var DaaLab = (() => {
     if (!dom.container) return;
 
     bindEvents();
-    // Default load preset: [2, 4, 6, 8, 10], target 8
-    loadPresetArray([2, 4, 6, 8, 10], 8);
+    // Default load preset: Figure 3 canonical array [1, 3, 5, 7, 9], target 7
+    loadPresetArray([1, 3, 5, 7, 9], 7);
   }
 
   function bindEvents() {
     // Presets
+    if (dom.btnPresetReport) dom.btnPresetReport.addEventListener('click', () => {
+      loadPresetArray([1, 3, 5, 7, 9], 7);
+      handleSearchClick();
+    });
     if (dom.btnPreset1) dom.btnPreset1.addEventListener('click', () => loadPresetArray([2, 4, 6, 8, 10], 8));
     if (dom.btnPreset2) dom.btnPreset2.addEventListener('click', () => loadPresetArray([2, 4, 6, 8, 10], 7));
     if (dom.btnPreset3) dom.btnPreset3.addEventListener('click', () => loadPresetArray([5], 5));
     if (dom.btnPreset4) dom.btnPreset4.addEventListener('click', () => loadPresetArray([10, 5, 2], 5));
     if (dom.btnPreset5) dom.btnPreset5.addEventListener('click', () => loadPresetArray([2, 4, 4, 4, 6, 8], 4));
     if (dom.btnPreset6) dom.btnPreset6.addEventListener('click', () => loadPresetArray([-12, -7, -3, 0, 4, 9, 15, 23], -7));
+
+    // Figure 3 Report Benchmark Table Rows
+    const reportRows = document.querySelectorAll('.comparison-row');
+    reportRows.forEach(row => {
+      row.addEventListener('click', (e) => {
+        const arrRaw = row.getAttribute('data-arr');
+        const targetRaw = row.getAttribute('data-target');
+        if (!arrRaw || targetRaw === null) return;
+        const parsedArr = arrRaw.split(',').map(s => Number(s.trim()));
+        const parsedTarget = Number(targetRaw);
+
+        loadPresetArray(parsedArr, parsedTarget);
+        handleSearchClick();
+
+        if (dom.arrayTrack) {
+          dom.arrayTrack.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        if (typeof App !== 'undefined' && App.showPopup) {
+          App.showPopup({
+            type: 'info',
+            title: 'Figure 3 Benchmark Active! 📊',
+            message: `Loaded test array [${parsedArr.join(', ')}] with target ${parsedTarget}. Trace and comparison live!`,
+            badges: [
+              { label: 'Array', value: `[${parsedArr.join(', ')}]` },
+              { label: 'Target', value: parsedTarget }
+            ]
+          });
+        }
+      });
+
+      row.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          row.click();
+        }
+      });
+    });
 
     // Input clears
     dom.arrayInput.addEventListener('input', () => {
@@ -465,7 +508,36 @@ var DaaLab = (() => {
     runLinearSearchBenchmark(arr, target);
   }
 
+  function updateReportTableActiveRow(arr, target) {
+    const rows = document.querySelectorAll('.comparison-row');
+    if (!rows || rows.length === 0) return;
+    if (!arr || arr.length === 0 || target === null || target === undefined) {
+      rows.forEach(r => {
+        r.classList.remove('active-comparison-row');
+        r.removeAttribute('aria-current');
+      });
+      return;
+    }
+
+    const currentArrStr = arr.map(n => Number(n)).join(',');
+    const currentTarget = Number(target);
+
+    rows.forEach(row => {
+      const rowArrStr = (row.getAttribute('data-arr') || '').split(',').map(s => Number(s.trim())).join(',');
+      const rowTarget = Number(row.getAttribute('data-target'));
+
+      if (rowArrStr === currentArrStr && rowTarget === currentTarget) {
+        row.classList.add('active-comparison-row');
+        row.setAttribute('aria-current', 'true');
+      } else {
+        row.classList.remove('active-comparison-row');
+        row.removeAttribute('aria-current');
+      }
+    });
+  }
+
   function resetVisualDisplay() {
+    updateReportTableActiveRow([], null);
     dom.emptyState.style.display = 'flex';
     dom.arrayTrack.style.display = 'none';
     dom.arrayTrack.innerHTML = '';
@@ -716,6 +788,9 @@ var DaaLab = (() => {
     if (dom.speedupBadge) {
       dom.speedupBadge.textContent = `${speedupFactor}x Efficiency Ratio`;
     }
+
+    // Synchronize Figure 3 canonical report table row highlight
+    updateReportTableActiveRow(arr, target);
   }
 
   function handleSearchClick() {
